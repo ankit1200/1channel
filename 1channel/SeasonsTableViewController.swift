@@ -21,13 +21,19 @@ class SeasonsTableViewController: UITableViewController {
     
 //    #pragma mark - json parser
     
-    func getJSON(urlToRequest: String) -> NSData{
+    func getJSON(urlToRequest: String) ->NSData {
+        
         return NSData(contentsOfURL: NSURL(string: urlToRequest))
     }
     
     func parseJSON(inputURL: String) {
+        
+        
+        // retrieve data from user defaults
+        let data = NSUserDefaults.standardUserDefaults().valueForKey("series/\(self.seriesId)/seasons") as NSData
+        
         var error: NSError?
-        var jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(self.getJSON(inputURL), options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+        var jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
         seasons = results["seasons"] as NSArray
     }

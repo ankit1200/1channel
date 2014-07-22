@@ -13,7 +13,6 @@ class EpisodesTableViewController : UITableViewController {
     var seasonEpisodes = NSArray()
     var season = String()
     var seriesId = String()
-    @IBOutlet var tableViewTitle : UINavigationItem
     
     override func viewDidLoad()  {
         super.viewDidLoad()

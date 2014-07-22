@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EB30AB82196DC9930024F1F2 /* SeriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */; };
 		EB30AB84196DCCE20024F1F2 /* seriesList.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB30AB83196DCCE20024F1F2 /* seriesList.plist */; };
+		EBA812CB19702031005E4DF8 /* Shephertz_App42_iOS_API.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBA812CA19702031005E4DF8 /* Shephertz_App42_iOS_API.framework */; };
 		EBBDFBF4196B1A3400BB8C14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */; };
 		EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */; };
 		EBBDFBFB196B1A3400BB8C14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBBDFBF9196B1A3400BB8C14 /* Main.storyboard */; };
@@ -17,6 +18,7 @@
 		EBBDFC15196B1A7800BB8C14 /* SeasonsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC12196B1A7800BB8C14 /* SeasonsTableViewController.swift */; };
 		EBBDFC16196B1A7800BB8C14 /* EpisodesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */; };
 		EBBDFC17196B1A7800BB8C14 /* LinksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */; };
+		EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +34,7 @@
 /* Begin PBXFileReference section */
 		EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesTableViewController.swift; sourceTree = "<group>"; };
 		EB30AB83196DCCE20024F1F2 /* seriesList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = seriesList.plist; sourceTree = "<group>"; };
+		EBA812CA19702031005E4DF8 /* Shephertz_App42_iOS_API.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Shephertz_App42_iOS_API.framework; sourceTree = "<group>"; };
 		EBBDFBEE196B1A3400BB8C14 /* 1channel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1channel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBDFBF2196B1A3400BB8C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -45,6 +48,7 @@
 		EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodesTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinksTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFCD2196B266A00BB8C14 /* 1channel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "1channel-Bridging-Header.h"; sourceTree = "<group>"; };
+		EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBA812CB19702031005E4DF8 /* Shephertz_App42_iOS_API.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +76,7 @@
 				EBBDFBF0196B1A3400BB8C14 /* 1channel */,
 				EBBDFC05196B1A3500BB8C14 /* 1channelTests */,
 				EBBDFBEF196B1A3400BB8C14 /* Products */,
+				EBA812CA19702031005E4DF8 /* Shephertz_App42_iOS_API.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +95,7 @@
 				EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */,
 				EBBDFC18196B1A7E00BB8C14 /* Table View Controllers */,
 				EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */,
+				EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */,
 				EBBDFBF9196B1A3400BB8C14 /* Main.storyboard */,
 				EBBDFBFC196B1A3400BB8C14 /* Images.xcassets */,
 				EBBDFBF1196B1A3400BB8C14 /* Supporting Files */,
@@ -237,6 +244,7 @@
 				EB30AB82196DC9930024F1F2 /* SeriesTableViewController.swift in Sources */,
 				EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */,
 				EBBDFC17196B1A7800BB8C14 /* LinksTableViewController.swift in Sources */,
+				EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */,
 				EBBDFC16196B1A7800BB8C14 /* EpisodesTableViewController.swift in Sources */,
 				EBBDFC15196B1A7800BB8C14 /* SeasonsTableViewController.swift in Sources */,
 				EBBDFBF4196B1A3400BB8C14 /* AppDelegate.swift in Sources */,
@@ -359,6 +367,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/agarwala/Downloads/App42_iOS_SDK-master/2.8",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = 1channel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -375,6 +388,11 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/agarwala/Downloads/App42_iOS_SDK-master/2.8",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = 1channel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
