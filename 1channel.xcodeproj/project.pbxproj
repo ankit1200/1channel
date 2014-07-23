@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		EB30AB82196DC9930024F1F2 /* SeriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */; };
 		EB30AB84196DCCE20024F1F2 /* seriesList.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB30AB83196DCCE20024F1F2 /* seriesList.plist */; };
-		EBA812CB19702031005E4DF8 /* Shephertz_App42_iOS_API.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBA812CA19702031005E4DF8 /* Shephertz_App42_iOS_API.framework */; };
 		EBBDFBF4196B1A3400BB8C14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */; };
 		EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */; };
 		EBBDFBFB196B1A3400BB8C14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBBDFBF9196B1A3400BB8C14 /* Main.storyboard */; };
@@ -18,6 +17,17 @@
 		EBBDFC15196B1A7800BB8C14 /* SeasonsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC12196B1A7800BB8C14 /* SeasonsTableViewController.swift */; };
 		EBBDFC16196B1A7800BB8C14 /* EpisodesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */; };
 		EBBDFC17196B1A7800BB8C14 /* LinksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */; };
+		EBE4FF6A197EE15B00745582 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */; };
+		EBE4FF6B197EE15B00745582 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF65197EE10100745582 /* StoreKit.framework */; };
+		EBE4FF6C197EE15B00745582 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF63197EE0FA00745582 /* Security.framework */; };
+		EBE4FF6D197EE15B00745582 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF61197EE0F300745582 /* QuartzCore.framework */; };
+		EBE4FF6E197EE15B00745582 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */; };
+		EBE4FF6F197EE15B00745582 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF5D197EE0E100745582 /* libz.dylib */; };
+		EBE4FF70197EE15B00745582 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF5B197EE0D100745582 /* CoreLocation.framework */; };
+		EBE4FF71197EE15B00745582 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */; };
+		EBE4FF72197EE15B00745582 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF57197EE0C300745582 /* CFNetwork.framework */; };
+		EBE4FF73197EE15B00745582 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */; };
+		EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF53197EE08800745582 /* Parse.framework */; };
 		EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +44,6 @@
 /* Begin PBXFileReference section */
 		EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesTableViewController.swift; sourceTree = "<group>"; };
 		EB30AB83196DCCE20024F1F2 /* seriesList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = seriesList.plist; sourceTree = "<group>"; };
-		EBA812CA19702031005E4DF8 /* Shephertz_App42_iOS_API.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Shephertz_App42_iOS_API.framework; sourceTree = "<group>"; };
 		EBBDFBEE196B1A3400BB8C14 /* 1channel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1channel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBDFBF2196B1A3400BB8C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -48,6 +57,17 @@
 		EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodesTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinksTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFCD2196B266A00BB8C14 /* 1channel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "1channel-Bridging-Header.h"; sourceTree = "<group>"; };
+		EBE4FF53197EE08800745582 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		EBE4FF57197EE0C300745582 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		EBE4FF5B197EE0D100745582 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		EBE4FF5D197EE0E100745582 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		EBE4FF61197EE0F300745582 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		EBE4FF63197EE0FA00745582 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		EBE4FF65197EE10100745582 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,7 +76,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBA812CB19702031005E4DF8 /* Shephertz_App42_iOS_API.framework in Frameworks */,
+				EBE4FF6A197EE15B00745582 /* SystemConfiguration.framework in Frameworks */,
+				EBE4FF6B197EE15B00745582 /* StoreKit.framework in Frameworks */,
+				EBE4FF6C197EE15B00745582 /* Security.framework in Frameworks */,
+				EBE4FF6D197EE15B00745582 /* QuartzCore.framework in Frameworks */,
+				EBE4FF6E197EE15B00745582 /* MobileCoreServices.framework in Frameworks */,
+				EBE4FF6F197EE15B00745582 /* libz.dylib in Frameworks */,
+				EBE4FF70197EE15B00745582 /* CoreLocation.framework in Frameworks */,
+				EBE4FF71197EE15B00745582 /* CoreGraphics.framework in Frameworks */,
+				EBE4FF72197EE15B00745582 /* CFNetwork.framework in Frameworks */,
+				EBE4FF73197EE15B00745582 /* AudioToolbox.framework in Frameworks */,
+				EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,7 +106,7 @@
 				EBBDFBF0196B1A3400BB8C14 /* 1channel */,
 				EBBDFC05196B1A3500BB8C14 /* 1channelTests */,
 				EBBDFBEF196B1A3400BB8C14 /* Products */,
-				EBA812CA19702031005E4DF8 /* Shephertz_App42_iOS_API.framework */,
+				EBE4FF69197EE13A00745582 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,6 +169,24 @@
 				EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */,
 			);
 			name = "Table View Controllers";
+			sourceTree = "<group>";
+		};
+		EBE4FF69197EE13A00745582 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */,
+				EBE4FF65197EE10100745582 /* StoreKit.framework */,
+				EBE4FF63197EE0FA00745582 /* Security.framework */,
+				EBE4FF61197EE0F300745582 /* QuartzCore.framework */,
+				EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */,
+				EBE4FF5D197EE0E100745582 /* libz.dylib */,
+				EBE4FF5B197EE0D100745582 /* CoreLocation.framework */,
+				EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */,
+				EBE4FF57197EE0C300745582 /* CFNetwork.framework */,
+				EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */,
+				EBE4FF53197EE08800745582 /* Parse.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

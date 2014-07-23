@@ -16,14 +16,7 @@ class SeriesTableViewController: UITableViewController {
         super.viewDidLoad()
         readSeriesPlist()
         
-        let dataManager = DataManager()
         
-        dataManager.downloadSeriesData("Heroes", primewireId: "watch-4127-Heroes")
-
-        var objectIdDict = NSDictionary()
-        objectIdDict = NSKeyedUnarchiver.unarchiveObjectWithFile(dataManager.getFilePath()) as NSDictionary
-        println("\n\n\n\(objectIdDict)")
-        println(dataManager.retrieveJson(collectionName: "Heroes", objectId:objectIdDict["series_Heroes_seasons"] as String))
     }
     
     

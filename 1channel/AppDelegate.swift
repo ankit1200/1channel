@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let splitViewController = self.window!.rootViewController as UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.endIndex-1] as UINavigationController
         splitViewController.delegate = navigationController.topViewController as DetailViewController
+        
+        Parse.setApplicationId("EW0pxeQlkY3n1bPwzLdG3YVYjRVAtS6zTJmZhObN", clientKey: "LOvP72WZzGhBnMu956p5Uft026G3dWe6X6gy9sX7")
+        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        
         return true
     }
 
