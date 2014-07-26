@@ -11,18 +11,36 @@ import UIKit
 class SeriesTableViewController: UITableViewController {
 
     var series = NSDictionary()
-    
+    var seriesToDownload = NSDictionary()
     
     override func viewDidLoad()  {
         super.viewDidLoad()
         readSeriesPlist()
+        readSeriesToDownloadPlist()
+        
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            // background thread
+            let manager = DataManager()
+            for key in self.seriesToDownload.allKeys {
+                let key = key as String
+                manager.downloadSeriesData(key, seriesId: self.seriesToDownload[key] as String)
+            }
+        })
+
     }
     
     
-    //MARK: plist parser
+    //MARK: plist parsers
     func readSeriesPlist() {
-        let path = NSBundle.mainBundle().pathForResource("seriesList", ofType: "plist")
+        let path = NSBundle.mainBundle().pathForResource("seriesDownloaded", ofType: "plist")
         series = NSDictionary(contentsOfFile: path)
+    }
+    
+    
+    func readSeriesToDownloadPlist() {
+        let path = NSBundle.mainBundle().pathForResource("seriesList", ofType: "plist")
+        seriesToDownload = NSDictionary(contentsOfFile: path)
     }
     
     

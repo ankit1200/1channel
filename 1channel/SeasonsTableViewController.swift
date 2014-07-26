@@ -18,13 +18,6 @@ class SeasonsTableViewController: UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         self.getSeasonsForSeries()
-        
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            
-            // background thread
-            let manager = DataManager()
-            manager.downloadSeriesData(self.seriesName, seriesId: self.seriesId)
-        })
     }
     
     

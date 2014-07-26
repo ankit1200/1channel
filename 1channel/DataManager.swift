@@ -20,6 +20,9 @@ class DataManager : NSObject
 
         // download episodes for each season and links for each episode and save it to parse
         let primewireId = seriesId.stringByReplacingOccurrencesOfString("watch", withString: "tv", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        
+        var seriesClassName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        seriesClassName = seriesName.stringByReplacingOccurrencesOfString(":", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
         self.downloadEpisodesForSeason(seriesName, seriesId: primewireId, seasons: seasons)
     }
     
@@ -105,7 +108,7 @@ class DataManager : NSObject
                 seriesObject["episodeTitle"] = episodeInfo["title"]
                 seriesObject["links"] = links
                 seriesObject.saveInBackground()
-                println("new object")
+                println("new object\n\(episodeInfo)")
                 
             } else {
                 // The find succeeded update found object
@@ -116,8 +119,7 @@ class DataManager : NSObject
                 foundObject["episodeTitle"] = episodeInfo["title"]
                 foundObject["links"] = links
                 foundObject.saveInBackground()
-                println("update object")
-                println(episodeInfo)
+                println("update object\n\(episodeInfo)")
             }
         }
     }

@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Heroes</key>
-	<string>watch-4127-Heroes</string>
 	<key>Friends</key>
 	<string>watch-5153-Friends</string>
 	<key>Big Bang Theory</key>
@@ -20,8 +18,6 @@
 	<string>watch-2735251-Arrow</string>
 	<key>Breaking Bad</key>
 	<string>watch-2742853-Breaking-Bad</string>
-	<key>Suits</key>
-	<string>watch-2724131-Suits</string>
 	<key>White Collar</key>
 	<string>watch-26774-White-Collar</string>
 	<key>Scrubs</key>

@@ -49,7 +49,7 @@ class LinksTableViewController : UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // set variables
-            dvc.link = "" //(links[indexPath.row] as NSDictionary)["link"] as String
+            dvc.link = links[indexPath.row].link
         }
     }
     
@@ -68,7 +68,7 @@ class LinksTableViewController : UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         if links.count != 0 {
-//            cell.textLabel.text = linksDict["source"] as String
+            cell.textLabel.text = links[indexPath.row].source
         }
         return cell
     }
@@ -78,12 +78,13 @@ class LinksTableViewController : UITableViewController {
     
     func getLinksFromQuery(objects: [AnyObject]!) {
         
-        for object in objects {
-            println(objects)
-            let link = (object as PFObject)["links"] as Dictionary<String, String>
+        let linksFromQuery = (objects[0] as PFObject)["links"] as NSArray
+        
+        for link in linksFromQuery {
+            let link = link as Dictionary<String, String>
             self.links += (link["link"]!, link["source"]!)
         }
-//        println(self.links)
+        
         self.tableView.reloadData()
     }
 }
