@@ -10,33 +10,33 @@ import UIKit
 
 class EpisodesTableViewController : UITableViewController {
     
-    var seasonEpisodes = NSArray()
+    var episodes = Dictionary<String, String>()
     var season = String()
     var seriesId = String()
+    var seriesName = String()
     
     override func viewDidLoad()  {
         super.viewDidLoad()
-        self.parseJSON(self.createUrl())
+        println("test \(episodes.count)")
+//        self.getEpisodesForSeason()
     }
     
     
     //    #pragma mark - json parser
     
-    func getJSON(urlToRequest: String) -> NSData{
-        return NSData(contentsOfURL: NSURL(string: urlToRequest))
+    func getEpisodesForSeason() {
+        
+        let query = PFQuery(className: seriesName)
+        query.selectKeys(["episodeNumber", "episodeTitle"])
+        query.whereKey("season", equalTo: season)
+        
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            if !error {
+                self.getEpisodesFromQuery(objects)
+            }
+        }
     }
-    
-    func parseJSON(inputURL: String) {
-        var error: NSError?
-        var jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(self.getJSON(inputURL), options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
-        let results = jsonDict["results"] as NSDictionary
-        seasonEpisodes = results["episodes"] as NSArray
-    }
-    
-    func createUrl() -> String {
-        return "https://www.kimonolabs.com/api/2lcduwri?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)"
-    }
-    
     
     //     #pragma mark - Segues
     
@@ -44,17 +44,13 @@ class EpisodesTableViewController : UITableViewController {
         if segue.identifier == "showSources" {
             let ltvc = segue.destinationViewController as LinksTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-            let episodesDict = seasonEpisodes.objectAtIndex(indexPath.row) as NSDictionary
-            let episodeNum = episodesDict["episodeNumber"] as String
-            let episodeName = episodesDict["episodeName"] as String
-            let lowercaseEpisode = episodeNum.lowercaseString
-            let inputEpisode = lowercaseEpisode.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
             
             // variables to pass down
             ltvc.season = self.season
             ltvc.seriesId = self.seriesId
-            ltvc.episode = inputEpisode
-            ltvc.title = "\(episodeNum) - \(episodeName)"
+            ltvc.seriesName = self.seriesName
+//            ltvc.episodeNumber = episodes[indexPath.row]
+//            ltvc.title = "\(episodeNum) - \(episodeName)"
         }
     }
     
@@ -66,19 +62,31 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return seasonEpisodes.count
+        println()
+        return episodes.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
-        if seasonEpisodes.count != 0 {
-            let episodesDict = seasonEpisodes[indexPath.row] as NSDictionary
-            let episodeNum = episodesDict["episodeNumber"] as String
-            let episodeName = episodesDict["episodeName"] as String
-            cell.textLabel.text = episodeName
-            cell.detailTextLabel.text = episodeNum
+        if episodes.count != 0 {
+            cell.textLabel.text = ""
+            cell.detailTextLabel.text = ""
         }
         return cell
+    }
+    
+    
+    //    #pragma mark - Helper Methods
+    
+    func getEpisodesFromQuery(objects: [AnyObject]!) {
+        
+        for object in objects {
+            let episodeNumber = (object as PFObject)["episodeNumber"] as String
+            let episodeTitle = (object as PFObject)["episodeTitle"] as String
+            self.episodes[episodeNumber] = episodeTitle
+        }
+        println(episodes)
+//        self.tableView.reloadData()
     }
 }

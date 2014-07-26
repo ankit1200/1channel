@@ -15,8 +15,6 @@ class SeriesTableViewController: UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         readSeriesPlist()
-        
-        
     }
     
     
@@ -36,6 +34,7 @@ class SeriesTableViewController: UITableViewController {
 
             // variables being passed
             stvc.seriesId = (series.allValues as NSArray)[indexPath.row] as String
+            stvc.seriesName = (series.allKeys as NSArray)[indexPath.row] as String
         }
     }
     

@@ -13,8 +13,8 @@ class LinksTableViewController : UITableViewController {
     var links = NSArray()
     var season = String()
     var seriesId = String()
-    var episode = String()
-    @IBOutlet var tableViewTitle : UINavigationItem
+    var seriesName = String()
+    var episodeNumber = String()
     
     
     override func viewDidLoad()  {
@@ -37,7 +37,7 @@ class LinksTableViewController : UITableViewController {
     }
     
     func createUrl() -> String {
-        return "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episode)"
+        return "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episodeNumber)"
     }
     
     

@@ -10,36 +10,40 @@ import UIKit
 
 class SeasonsTableViewController: UITableViewController {
 
-    var seasons:NSArray = NSArray()
+    var seasons:[String] = []
     var seriesId = String()
-    
-    override func viewDidLoad()  {
-        super.viewDidLoad()
-        self.parseJSON(self.createUrl())
-    }
+    var seriesName = String()
     
     
 //    #pragma mark - json parser
     
-    func getJSON(urlToRequest: String) ->NSData {
+    override func viewDidLoad()  {
+        super.viewDidLoad()
+        self.getSeasonsForSeries()
         
-        return NSData(contentsOfURL: NSURL(string: urlToRequest))
+//        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+//            
+//            // background thread
+//            let manager = DataManager()
+//            manager.downloadSeriesData(self.seriesName, seriesId: self.seriesId)
+//        })
     }
     
-    func parseJSON(inputURL: String) {
-        
-        
-        // retrieve data from user defaults
-        let data = NSUserDefaults.standardUserDefaults().valueForKey("series/\(self.seriesId)/seasons") as NSData
-        
-        var error: NSError?
-        var jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
-        let results = jsonDict["results"] as NSDictionary
-        seasons = results["seasons"] as NSArray
-    }
     
-    func createUrl() -> String {
-        return "https://www.kimonolabs.com/api/70ef8q9g?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(self.seriesId)"
+//    #pragma mark - Query From Parse
+    
+    func getSeasonsForSeries() {
+    
+        let query = PFQuery(className: seriesName)
+        query.selectKeys(["season"])
+        
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            
+            if !error {
+                self.getSeasonsFromQuery(objects)
+            }
+        }
     }
     
     
@@ -49,16 +53,13 @@ class SeasonsTableViewController: UITableViewController {
         if segue.identifier == "showEpisodes" {
             let etvc = segue.destinationViewController as EpisodesTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-            let tempDict = seasons.objectAtIndex(indexPath.row) as NSDictionary
-            let tempSeason = tempDict["season"] as String
-            let lowercaseSeason = tempSeason.lowercaseString
-            let inputSeason = lowercaseSeason.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            let inputSeriesId = seriesId.stringByReplacingOccurrencesOfString("watch", withString: "tv", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            let season = seasons[indexPath.row]
             
             // variables being passed
-            etvc.season = inputSeason
-            etvc.seriesId = inputSeriesId
-            etvc.title = tempSeason
+            etvc.season = season
+            etvc.seriesId = seriesId
+            etvc.seriesName = seriesName
+            etvc.title = season
         }
     }
 
@@ -77,11 +78,22 @@ class SeasonsTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         if seasons.count != 0 {
-            let seasonDict = seasons[indexPath.row] as NSDictionary
-            let label = seasonDict["season"] as String
-            cell.textLabel.text = label
+            cell.textLabel.text = seasons[indexPath.row]
         }
         return cell
     }
+    
+//    #pragma mark - Helper Methods
+    func getSeasonsFromQuery(objects: [AnyObject]!) {
+        
+        for object in objects {
+            
+            let season = (object as PFObject)["season"] as String
+            self.seasons.append(season)
+            self.seasons = NSSet(array: self.seasons).allObjects as Array<String>
+            self.seasons = self.seasons.reverse()
+        }
+        self.tableView.reloadData()
+    }    
 }
 
