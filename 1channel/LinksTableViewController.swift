@@ -19,26 +19,11 @@ class LinksTableViewController : UITableViewController {
     
     override func viewDidLoad()  {
         super.viewDidLoad()
-        self.parseJSON(self.createUrl())
     }
     
     
-    //    #pragma mark - json parser
+    //    #pragma mark - Query From Parse
     
-    func getJSON(urlToRequest: String) -> NSData{
-        return NSData(contentsOfURL: NSURL(string: urlToRequest))
-    }
-    
-    func parseJSON(inputURL: String) {
-        var error: NSError?
-        var jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(self.getJSON(inputURL), options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
-        let results = jsonDict["results"] as NSDictionary
-        links = results["episode_links"] as NSArray
-    }
-    
-    func createUrl() -> String {
-        return "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episodeNumber)"
-    }
     
     
     //    #pragma mark - prepare for segue

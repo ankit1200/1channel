@@ -10,11 +10,11 @@ import UIKit
 
 class EpisodesTableViewController : UITableViewController {
     
-//    var episodes = Dictionary<String, String>()
     var episodes:[(episodeNumber: String, episodeName: String)] = []
     var season = String()
     var seriesId = String()
     var seriesName = String()
+    
     
     override func viewDidLoad()  {
         super.viewDidLoad()
@@ -22,7 +22,7 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     
-    //    #pragma mark - json parser
+    //    #pragma mark - Query From Parse
     
     func getEpisodesForSeason() {
         
@@ -37,6 +37,7 @@ class EpisodesTableViewController : UITableViewController {
             }
         }
     }
+    
     
     //     #pragma mark - Segues
     

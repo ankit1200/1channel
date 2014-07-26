@@ -13,9 +13,7 @@ class SeasonsTableViewController: UITableViewController {
     var seasons:[String] = []
     var seriesId = String()
     var seriesName = String()
-    
-    
-//    #pragma mark - json parser
+
     
     override func viewDidLoad()  {
         super.viewDidLoad()
@@ -62,6 +60,7 @@ class SeasonsTableViewController: UITableViewController {
             etvc.title = season
         }
     }
+    
 
 //    #pragma mark - Table View
 
@@ -83,7 +82,9 @@ class SeasonsTableViewController: UITableViewController {
         return cell
     }
     
+    
 //    #pragma mark - Helper Methods
+    
     func getSeasonsFromQuery(objects: [AnyObject]!) {
         
         for object in objects {

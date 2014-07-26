@@ -12,6 +12,7 @@ class SeriesTableViewController: UITableViewController {
 
     var series = NSDictionary()
     
+    
     override func viewDidLoad()  {
         super.viewDidLoad()
         readSeriesPlist()
