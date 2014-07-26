@@ -19,16 +19,16 @@ class SeasonsTableViewController: UITableViewController {
         super.viewDidLoad()
         self.getSeasonsForSeries()
         
-//        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-//            
-//            // background thread
-//            let manager = DataManager()
-//            manager.downloadSeriesData(self.seriesName, seriesId: self.seriesId)
-//        })
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            
+            // background thread
+            let manager = DataManager()
+            manager.downloadSeriesData(self.seriesName, seriesId: self.seriesId)
+        })
     }
     
     
-//    #pragma mark - Query From Parse
+//MARK: Query From Parse
     
     func getSeasonsForSeries() {
     
@@ -62,7 +62,7 @@ class SeasonsTableViewController: UITableViewController {
     }
     
 
-//    #pragma mark - Table View
+//MARK: Table View
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -83,7 +83,7 @@ class SeasonsTableViewController: UITableViewController {
     }
     
     
-//    #pragma mark - Helper Methods
+//MARK: Helper Methods
     
     func getSeasonsFromQuery(objects: [AnyObject]!) {
         

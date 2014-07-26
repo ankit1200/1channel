@@ -10,7 +10,7 @@ import UIKit
 
 class LinksTableViewController : UITableViewController {
     
-    var links = NSArray()
+    var links:[(link: String, source: String)] = []
     var season = String()
     var seriesId = String()
     var seriesName = String()
@@ -19,14 +19,29 @@ class LinksTableViewController : UITableViewController {
     
     override func viewDidLoad()  {
         super.viewDidLoad()
+        self.getLinksForEpisode()
     }
     
     
-    //    #pragma mark - Query From Parse
+    //#MARK: Query From Parse
+    
+    func getLinksForEpisode() {
+        
+        let query = PFQuery(className: seriesName)
+        query.selectKeys(["links"])
+        query.whereKey("season", equalTo: season)
+        query.whereKey("episodeNumber", equalTo: episodeNumber)
+        
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            if !error {
+                self.getLinksFromQuery(objects)
+            }
+        }
+    }
     
     
-    
-    //    #pragma mark - prepare for segue
+    //MARK: prepare for segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
@@ -34,12 +49,12 @@ class LinksTableViewController : UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // set variables
-            dvc.link = (links[indexPath.row] as NSDictionary)["link"] as String
+            dvc.link = "" //(links[indexPath.row] as NSDictionary)["link"] as String
         }
     }
     
     
-    //    #pragma mark - Table View
+    //MARK: Table View
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -53,10 +68,22 @@ class LinksTableViewController : UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         if links.count != 0 {
-            let linksDict = links[indexPath.row] as NSDictionary
-            let label = linksDict["source"] as String
-            cell.textLabel.text = label
+//            cell.textLabel.text = linksDict["source"] as String
         }
         return cell
+    }
+    
+    
+    //MARK: Helper Methods
+    
+    func getLinksFromQuery(objects: [AnyObject]!) {
+        
+        for object in objects {
+            println(objects)
+            let link = (object as PFObject)["links"] as Dictionary<String, String>
+            self.links += (link["link"]!, link["source"]!)
+        }
+//        println(self.links)
+        self.tableView.reloadData()
     }
 }

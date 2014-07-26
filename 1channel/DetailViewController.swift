@@ -12,7 +12,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
 
     var masterPopoverController: UIPopoverController? = nil
     var link = String()
-    @IBOutlet var webView : UIWebView
+    @IBOutlet var webView : UIWebView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +38,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
     func loadAddressURL() {
         
         let request = NSURLRequest(URL: (NSURL(string: link)))
-        webView.loadRequest(request)
+        webView!.loadRequest(request)
     }
 }
 

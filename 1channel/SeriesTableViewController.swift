@@ -19,7 +19,7 @@ class SeriesTableViewController: UITableViewController {
     }
     
     
-    //    #pragma mark - plist parser
+    //MARK: plist parser
     func readSeriesPlist() {
         let path = NSBundle.mainBundle().pathForResource("seriesList", ofType: "plist")
         series = NSDictionary(contentsOfFile: path)
@@ -40,7 +40,7 @@ class SeriesTableViewController: UITableViewController {
     }
     
     
-    //    #pragma mark - Table View
+    //MARK: Table View
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1

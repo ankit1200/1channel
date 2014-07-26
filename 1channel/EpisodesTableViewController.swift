@@ -22,7 +22,7 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     
-    //    #pragma mark - Query From Parse
+    //MARK: Query From Parse
     
     func getEpisodesForSeason() {
         
@@ -59,7 +59,7 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     
-    //    #pragma mark - Table View
+    //MARK: Table View
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -80,7 +80,7 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     
-    //    #pragma mark - Helper Methods
+    //MARK: Helper Methods
     
     func getEpisodesFromQuery(objects: [AnyObject]!) {
 
