@@ -10,15 +10,15 @@ import UIKit
 
 class EpisodesTableViewController : UITableViewController {
     
-    var episodes = Dictionary<String, String>()
+//    var episodes = Dictionary<String, String>()
+    var episodes:[(episodeNumber: String, episodeName: String)] = []
     var season = String()
     var seriesId = String()
     var seriesName = String()
     
     override func viewDidLoad()  {
         super.viewDidLoad()
-        println("test \(episodes.count)")
-//        self.getEpisodesForSeason()
+        self.getEpisodesForSeason()
     }
     
     
@@ -45,12 +45,15 @@ class EpisodesTableViewController : UITableViewController {
             let ltvc = segue.destinationViewController as LinksTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
             
+            let episodeNumber = episodes[indexPath.row].episodeNumber
+            let episodeName = episodes[indexPath.row].episodeName
+            
             // variables to pass down
             ltvc.season = self.season
             ltvc.seriesId = self.seriesId
             ltvc.seriesName = self.seriesName
-//            ltvc.episodeNumber = episodes[indexPath.row]
-//            ltvc.title = "\(episodeNum) - \(episodeName)"
+            ltvc.episodeNumber = episodes[indexPath.row].episodeNumber
+            ltvc.title = "\(episodeNumber) - \(episodeName)"
         }
     }
     
@@ -62,7 +65,6 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        println()
         return episodes.count
     }
     
@@ -70,8 +72,8 @@ class EpisodesTableViewController : UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         if episodes.count != 0 {
-            cell.textLabel.text = ""
-            cell.detailTextLabel.text = ""
+            cell.textLabel.text = episodes[indexPath.row].episodeName
+            cell.detailTextLabel.text = episodes[indexPath.row].episodeNumber
         }
         return cell
     }
@@ -80,13 +82,12 @@ class EpisodesTableViewController : UITableViewController {
     //    #pragma mark - Helper Methods
     
     func getEpisodesFromQuery(objects: [AnyObject]!) {
-        
+
         for object in objects {
-            let episodeNumber = (object as PFObject)["episodeNumber"] as String
-            let episodeTitle = (object as PFObject)["episodeTitle"] as String
-            self.episodes[episodeNumber] = episodeTitle
+            let number = (object as PFObject)["episodeNumber"] as String
+            let name = (object as PFObject)["episodeTitle"] as String
+            self.episodes += (number, name)
         }
-        println(episodes)
-//        self.tableView.reloadData()
+        self.tableView.reloadData()
     }
 }

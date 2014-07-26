@@ -191,9 +191,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Episodes" id="Qaw-YP-0s0"/>
-                    <connections>
-                        <outlet property="tableViewTitle" destination="Qaw-YP-0s0" id="HVy-GB-Vrm"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SCE-ms-Qre" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
