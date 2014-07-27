@@ -10,7 +10,8 @@ import UIKit
 
 class SeriesTableViewController: UITableViewController {
 
-    var series = NSDictionary()
+    var seriesList = NSDictionary()
+    let episode = Episode()
     var seriesToDownload = NSDictionary()
     
     override func viewDidLoad()  {
@@ -18,15 +19,15 @@ class SeriesTableViewController: UITableViewController {
         readSeriesPlist()
         readSeriesToDownloadPlist()
         
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            
-            // background thread
-            let manager = DataManager()
-            for key in self.seriesToDownload.allKeys {
-                let key = key as String
-                manager.downloadSeriesData(key, seriesId: self.seriesToDownload[key] as String)
-            }
-        })
+//        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+//            
+//            // background thread
+//            let manager = DataManager()
+//            for key in self.seriesToDownload.allKeys {
+//                let key = key as String
+//                manager.downloadSeriesData(key, seriesId: self.seriesToDownload[key] as String)
+//            }
+//        })
 
     }
     
@@ -34,7 +35,7 @@ class SeriesTableViewController: UITableViewController {
     //MARK: plist parsers
     func readSeriesPlist() {
         let path = NSBundle.mainBundle().pathForResource("seriesDownloaded", ofType: "plist")
-        series = NSDictionary(contentsOfFile: path)
+        seriesList = NSDictionary(contentsOfFile: path)
     }
     
     
@@ -51,9 +52,11 @@ class SeriesTableViewController: UITableViewController {
             let stvc = segue.destinationViewController as SeasonsTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
 
+            episode.seriesId = (seriesList.allValues as NSArray)[indexPath.row] as String
+            episode.seriesName = (seriesList.allKeys as NSArray)[indexPath.row] as String
+            
             // variables being passed
-            stvc.seriesId = (series.allValues as NSArray)[indexPath.row] as String
-            stvc.seriesName = (series.allKeys as NSArray)[indexPath.row] as String
+            stvc.episode = episode
         }
     }
     
@@ -66,14 +69,14 @@ class SeriesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.series.count
+        return self.seriesList.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        if series.count != 0 {
-            let keys = series.allKeys as NSArray
+        if seriesList.count != 0 {
+            let keys = seriesList.allKeys as NSArray
             let label = keys[indexPath.row] as String
             cell.textLabel.text = label
         }

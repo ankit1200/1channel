@@ -12,15 +12,18 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
 
     var masterPopoverController: UIPopoverController? = nil
     var link = String()
+    
     @IBOutlet var webView : UIWebView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        loadAddressURL()
+//        loadAddressURL()
+        println(link)
     }
 
-    // #pragma mark - Split view
+    
+    //MARK: Split view
 
     func splitViewController(splitController: UISplitViewController, willHideViewController viewController: UIViewController, withBarButtonItem barButtonItem: UIBarButtonItem, forPopoverController popoverController: UIPopoverController) {
         
@@ -34,6 +37,8 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
         self.navigationItem.setLeftBarButtonItem(nil, animated: true)
         self.masterPopoverController = nil
     }
+    
+    //MARK: Web View Methods
 
     func loadAddressURL() {
         

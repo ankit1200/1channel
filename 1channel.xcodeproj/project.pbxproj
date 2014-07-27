@@ -30,6 +30,7 @@
 		EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF53197EE08800745582 /* Parse.framework */; };
 		EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */; };
 		EBF979F4198393C100B44654 /* seriesDownloaded.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBF979F3198393C100B44654 /* seriesDownloaded.plist */; };
+		EBF979F61984620500B44654 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF979F51984620500B44654 /* Episode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		EBF979F3198393C100B44654 /* seriesDownloaded.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = seriesDownloaded.plist; sourceTree = "<group>"; };
+		EBF979F51984620500B44654 /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 				EBBDFC18196B1A7E00BB8C14 /* Table View Controllers */,
 				EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */,
 				EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */,
+				EBF979F51984620500B44654 /* Episode.swift */,
 				EBBDFBF9196B1A3400BB8C14 /* Main.storyboard */,
 				EBBDFBFC196B1A3400BB8C14 /* Images.xcassets */,
 				EBBDFBF1196B1A3400BB8C14 /* Supporting Files */,
@@ -295,6 +298,7 @@
 			files = (
 				EB30AB82196DC9930024F1F2 /* SeriesTableViewController.swift in Sources */,
 				EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */,
+				EBF979F61984620500B44654 /* Episode.swift in Sources */,
 				EBBDFC17196B1A7800BB8C14 /* LinksTableViewController.swift in Sources */,
 				EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */,
 				EBBDFC16196B1A7800BB8C14 /* EpisodesTableViewController.swift in Sources */,

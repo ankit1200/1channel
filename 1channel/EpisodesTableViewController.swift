@@ -11,9 +11,7 @@ import UIKit
 class EpisodesTableViewController : UITableViewController {
     
     var episodes:[(episodeNumber: String, episodeName: String)] = []
-    var season = String()
-    var seriesId = String()
-    var seriesName = String()
+    var episode = Episode()
     
     
     override func viewDidLoad()  {
@@ -26,9 +24,9 @@ class EpisodesTableViewController : UITableViewController {
     
     func getEpisodesForSeason() {
         
-        let query = PFQuery(className: seriesName)
+        let query = PFQuery(className: episode.seriesName)
         query.selectKeys(["episodeNumber", "episodeTitle"])
-        query.whereKey("season", equalTo: season)
+        query.whereKey("season", equalTo: episode.season)
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
@@ -46,15 +44,12 @@ class EpisodesTableViewController : UITableViewController {
             let ltvc = segue.destinationViewController as LinksTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
             
-            let episodeNumber = episodes[indexPath.row].episodeNumber
-            let episodeName = episodes[indexPath.row].episodeName
+            episode.episodeNumber = episodes[indexPath.row].episodeNumber
+            episode.episodeName = episodes[indexPath.row].episodeName
             
             // variables to pass down
-            ltvc.season = self.season
-            ltvc.seriesId = self.seriesId
-            ltvc.seriesName = self.seriesName
-            ltvc.episodeNumber = episodes[indexPath.row].episodeNumber
-            ltvc.title = "\(episodeNumber) - \(episodeName)"
+            ltvc.episode = episode
+            ltvc.title = "\(episode.episodeNumber) - \(episode.episodeName)"
         }
     }
     

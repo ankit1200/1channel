@@ -11,8 +11,7 @@ import UIKit
 class SeasonsTableViewController: UITableViewController {
 
     var seasons:[String] = []
-    var seriesId = String()
-    var seriesName = String()
+    var episode = Episode()
 
     
     override func viewDidLoad()  {
@@ -25,7 +24,7 @@ class SeasonsTableViewController: UITableViewController {
     
     func getSeasonsForSeries() {
     
-        let query = PFQuery(className: seriesName)
+        let query = PFQuery(className: episode.seriesName)
         query.selectKeys(["season"])
         
         query.findObjectsInBackgroundWithBlock {
@@ -38,19 +37,17 @@ class SeasonsTableViewController: UITableViewController {
     }
     
     
-//     #pragma mark - Segues
+//MARK: Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showEpisodes" {
             let etvc = segue.destinationViewController as EpisodesTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-            let season = seasons[indexPath.row]
+            episode.season = seasons[indexPath.row]
             
             // variables being passed
-            etvc.season = season
-            etvc.seriesId = seriesId
-            etvc.seriesName = seriesName
-            etvc.title = season
+            etvc.episode = episode
+            etvc.title = episode.season
         }
     }
     

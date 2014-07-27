@@ -11,10 +11,7 @@ import UIKit
 class LinksTableViewController : UITableViewController {
     
     var links:[(link: String, source: String)] = []
-    var season = String()
-    var seriesId = String()
-    var seriesName = String()
-    var episodeNumber = String()
+    var episode = Episode()
     
     
     override func viewDidLoad()  {
@@ -27,10 +24,10 @@ class LinksTableViewController : UITableViewController {
     
     func getLinksForEpisode() {
         
-        let query = PFQuery(className: seriesName)
+        let query = PFQuery(className: episode.seriesName)
         query.selectKeys(["links"])
-        query.whereKey("season", equalTo: season)
-        query.whereKey("episodeNumber", equalTo: episodeNumber)
+        query.whereKey("season", equalTo: episode.season)
+        query.whereKey("episodeNumber", equalTo: episode.episodeNumber)
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
