@@ -10,12 +10,17 @@ import UIKit
 
 class LinksTableViewController : UITableViewController {
     
+    var detailViewController: DetailViewController? = nil
     var links:[(link: String, source: String)] = []
     var episode = Episode()
     
     
     override func viewDidLoad()  {
         super.viewDidLoad()
+        
+        let controllers = self.splitViewController.viewControllers
+        self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
+        
         self.getLinksForEpisode()
     }
     
@@ -42,8 +47,10 @@ class LinksTableViewController : UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
+            
             let dvc = (segue.destinationViewController as UINavigationController).topViewController as DetailViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
+            
             
             // set variables
             dvc.link = links[indexPath.row].link

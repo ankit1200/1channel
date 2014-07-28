@@ -8,35 +8,23 @@
 
 import UIKit
 
-class DetailViewController: UIViewController, UISplitViewControllerDelegate {
+class DetailViewController: UIViewController {
 
     var masterPopoverController: UIPopoverController? = nil
-    var link = String()
+    var link:String? {
+        didSet {
+            self.configureView()
+        }
+    }
     
-    @IBOutlet var webView : UIWebView?
+    @IBOutlet weak var webView : UIWebView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-//        loadAddressURL()
-        println(link)
+        self.configureView()
     }
 
-    
-    //MARK: Split view
-
-    func splitViewController(splitController: UISplitViewController, willHideViewController viewController: UIViewController, withBarButtonItem barButtonItem: UIBarButtonItem, forPopoverController popoverController: UIPopoverController) {
-        
-        barButtonItem.title = "select" // NSLocalizedString(@"Master", @"Master")
-        self.navigationItem.setLeftBarButtonItem(barButtonItem, animated: true)
-        self.masterPopoverController = popoverController
-    }
-
-    func splitViewController(splitController: UISplitViewController, willShowViewController viewController: UIViewController, invalidatingBarButtonItem barButtonItem: UIBarButtonItem) {
-        // Called when the view is shown again in the split view, invalidating the button and popover controller.
-        self.navigationItem.setLeftBarButtonItem(nil, animated: true)
-        self.masterPopoverController = nil
-    }
     
     //MARK: Web View Methods
 
@@ -44,6 +32,15 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
         
         let request = NSURLRequest(URL: (NSURL(string: link)))
         webView!.loadRequest(request)
+    }
+    
+    func configureView() {
+        // Update the user interface for the detail item.
+        if let detail: AnyObject = self.link {
+            if let loadLink = self.webView {
+               loadAddressURL()
+            }
+        }
     }
 }
 
