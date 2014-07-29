@@ -10,53 +10,60 @@ import UIKit
 
 class SeriesTableViewController: UITableViewController {
 
-    var seriesList = NSDictionary()
+    var seriesList = Array<Episode>()
     let episode = Episode()
-    var seriesToDownload = NSDictionary()
     
     override func viewDidLoad()  {
         super.viewDidLoad()
-        readSeriesPlist()
-        readSeriesToDownloadPlist()
+        getSupportedSeries()
+    }
+    
+    
+    //MARK: parse methods
+    func getSupportedSeries() {
         
-//        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-//            
-//            // background thread
-//            let manager = DataManager()
-//            for key in self.seriesToDownload.allKeys {
-//                let key = key as String
-//                manager.downloadSeriesData(key, seriesId: self.seriesToDownload[key] as String)
-//            }
-//        })
-
+        let query = PFQuery(className: "Series")
+        
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            println(objects)
+            if !error {
+                for object in objects {
+                    
+                    let series = Episode()
+                    var seriesName = (object as PFObject)["name"] as String
+                    
+                    series.seriesName = seriesName
+                    series.seriesId = (object as PFObject)["seriesID"] as String
+                    self.seriesList += series
+                }
+                self.tableView.reloadData()
+//                self.updateDatabase()
+            }
+        }
+    }
+    
+    func updateDatabase() {
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+        
+            // background thread
+            let manager = DataManager()
+            for series in self.seriesList {
+                manager.downloadSeriesData(series.seriesName, seriesId: series.seriesId)
+            }
+        })
     }
     
     
-    //MARK: plist parsers
-    func readSeriesPlist() {
-        let path = NSBundle.mainBundle().pathForResource("seriesDownloaded", ofType: "plist")
-        seriesList = NSDictionary(contentsOfFile: path)
-    }
-    
-    
-    func readSeriesToDownloadPlist() {
-        let path = NSBundle.mainBundle().pathForResource("seriesList", ofType: "plist")
-        seriesToDownload = NSDictionary(contentsOfFile: path)
-    }
-    
-    
-    //     #pragma mark - Segues
+    //MARK: Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSeasons" {
             let stvc = segue.destinationViewController as SeasonsTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-
-            episode.seriesId = (seriesList.allValues as NSArray)[indexPath.row] as String
-            episode.seriesName = (seriesList.allKeys as NSArray)[indexPath.row] as String
             
             // variables being passed
-            stvc.episode = episode
+            stvc.episode = seriesList[indexPath.row]
         }
     }
     
@@ -76,9 +83,8 @@ class SeriesTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         if seriesList.count != 0 {
-            let keys = seriesList.allKeys as NSArray
-            let label = keys[indexPath.row] as String
-            cell.textLabel.text = label
+        let seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            cell.textLabel.text = seriesName
         }
         return cell
     }

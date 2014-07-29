@@ -29,7 +29,6 @@
 		EBE4FF73197EE15B00745582 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */; };
 		EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF53197EE08800745582 /* Parse.framework */; };
 		EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */; };
-		EBF979F4198393C100B44654 /* seriesDownloaded.plist in Resources */ = {isa = PBXBuildFile; fileRef = EBF979F3198393C100B44654 /* seriesDownloaded.plist */; };
 		EBF979F61984620500B44654 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF979F51984620500B44654 /* Episode.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,7 +70,6 @@
 		EBE4FF65197EE10100745582 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
-		EBF979F3198393C100B44654 /* seriesDownloaded.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = seriesDownloaded.plist; sourceTree = "<group>"; };
 		EBF979F51984620500B44654 /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,7 +142,6 @@
 				EBBDFCD2196B266A00BB8C14 /* 1channel-Bridging-Header.h */,
 				EBBDFBF2196B1A3400BB8C14 /* Info.plist */,
 				EB30AB83196DCCE20024F1F2 /* seriesList.plist */,
-				EBF979F3198393C100B44654 /* seriesDownloaded.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -276,7 +273,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EBF979F4198393C100B44654 /* seriesDownloaded.plist in Resources */,
 				EB30AB84196DCCE20024F1F2 /* seriesList.plist in Resources */,
 				EBBDFBFB196B1A3400BB8C14 /* Main.storyboard in Resources */,
 				EBBDFBFD196B1A3500BB8C14 /* Images.xcassets in Resources */,

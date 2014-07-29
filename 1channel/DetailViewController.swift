@@ -24,7 +24,7 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.configureView()
     }
-
+    
     
     //MARK: Web View Methods
 

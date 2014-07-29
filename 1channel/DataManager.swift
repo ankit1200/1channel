@@ -12,19 +12,24 @@ import Foundation
 
 class DataManager : NSObject
 {
+    var addNewSeries = true;
+    
     //MARK: download series info
     
     func downloadSeriesData(seriesName: String, seriesId: String) {
         // download number of seasons
+        println("Starting Download")
+        
         let seasons = self.downloadSeriesNameAndSeasons(seriesId)
-
+        println("Seasons Downloaded")
+        
         // download episodes for each season and links for each episode and save it to parse
         let primewireId = seriesId.stringByReplacingOccurrencesOfString("watch", withString: "tv", options: NSStringCompareOptions.LiteralSearch, range: nil)
-        
         var seriesClassName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-        seriesClassName = seriesName.stringByReplacingOccurrencesOfString(":", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
         self.downloadEpisodesForSeason(seriesName, seriesId: primewireId, seasons: seasons)
+        println("Download Complete")
     }
+    
     
     //MARK: helper methods
     
@@ -33,7 +38,13 @@ class DataManager : NSObject
         // get data from kimono
         var error: NSError?
         let seriesNameAndSeasonsUrl = "https://www.kimonolabs.com/api/70ef8q9g?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)"
-        let seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
+        var seriesNameAndSeasonsData:NSData? = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
+        
+        while !seriesNameAndSeasonsData {
+            println("seasons fetch failed, trying again....")
+            seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
+        }
+        
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(seriesNameAndSeasonsData, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
         let seasons = results["seasons"] as NSArray
@@ -42,7 +53,7 @@ class DataManager : NSObject
     }
     
     func downloadEpisodesForSeason(seriesName: String, seriesId:String, seasons: NSArray) {
-        
+        println("Downloaded episodes for season")
         for season in seasons {
             
             let tempSeasonDict = season as NSDictionary
@@ -53,16 +64,19 @@ class DataManager : NSObject
             // get data from kimono
             var error: NSError?
             let episodesForSeasonUrl = "https://www.kimonolabs.com/api/2lcduwri?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(seasonNum)"
-            let episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
+            var episodesForSeasonData:NSData? = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
+            
+            while !episodesForSeasonData {
+                println("episodes fetch failed, trying again....")
+                episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
+            }
             
             let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
             let results = jsonDict["results"] as NSDictionary
             let episodes = results["episodes"] as NSArray
             
-            
             // get links for each episode in current season
             for episode in episodes {
-                
                 let tempEpisodeDict = episode as NSDictionary
                 var episodeNum = tempEpisodeDict["episodeNumber"] as String
                 episodeNum = episodeNum.lowercaseString
@@ -74,11 +88,15 @@ class DataManager : NSObject
     }
     
     func downloadLinksForEpisode(seriesName:String, seriesId:String, season:String, episodeNum:String) {
-        
         // get data from kimono
         var error: NSError?
         let linksForEpisodeUrl = "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episodeNum)"
-        let linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
+        var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
+        
+        while !linksForEpisodeData {
+            println("links fetch failed, trying again....")
+            linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
+        }
         
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
@@ -101,26 +119,24 @@ class DataManager : NSObject
             if !foundObject {
                 // The find failed create new object and add
                 let seriesObject = PFObject(className:seriesName)
-                seriesObject["seriesName"] = seriesName
-                seriesObject["seriesId"] = seriesId
-                seriesObject["season"] = episodeInfo["season"]
-                seriesObject["episodeNumber"] = episodeInfo["episode"]
-                seriesObject["episodeTitle"] = episodeInfo["title"]
-                seriesObject["links"] = links
-                seriesObject.saveInBackground()
+                self.configureParseObject(seriesObject, seriesName: seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links)
                 println("new object\n\(episodeInfo)")
-                
-            } else {
+            } else if !self.addNewSeries {
                 // The find succeeded update found object
-                foundObject["seriesName"] = seriesName
-                foundObject["seriesId"] = seriesId
-                foundObject["season"] = episodeInfo["season"]
-                foundObject["episodeNumber"] = episodeInfo["episode"]
-                foundObject["episodeTitle"] = episodeInfo["title"]
-                foundObject["links"] = links
-                foundObject.saveInBackground()
+                self.configureParseObject(foundObject, seriesName: seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links)
                 println("update object\n\(episodeInfo)")
             }
         }
+    }
+    
+    
+    func configureParseObject(object:PFObject, seriesName: String, seriesId: String, episodeInfo: NSDictionary, links:NSArray) {
+        object["seriesName"] = seriesName
+        object["seriesId"] = seriesId
+        object["season"] = episodeInfo["season"]
+        object["episodeNumber"] = episodeInfo["episode"]
+        object["episodeTitle"] = episodeInfo["title"]
+        object["links"] = links
+        object.saveInBackground()
     }
 }
