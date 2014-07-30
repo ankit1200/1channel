@@ -11,17 +11,18 @@ import UIKit
 class DetailViewController: UIViewController {
 
     var masterPopoverController: UIPopoverController? = nil
+    @IBOutlet weak var webView : UIWebView!
+    
     var link:String? {
         didSet {
             self.configureView()
         }
     }
-    
-    @IBOutlet weak var webView : UIWebView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
         self.configureView()
     }
     

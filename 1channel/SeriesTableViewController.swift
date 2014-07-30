@@ -26,7 +26,6 @@ class SeriesTableViewController: UITableViewController {
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            println(objects)
             if !error {
                 for object in objects {
                     
@@ -83,7 +82,9 @@ class SeriesTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         if seriesList.count != 0 {
-        let seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            println(seriesList[indexPath.row].seriesName)
+        var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
             cell.textLabel.text = seriesName
         }
         return cell
