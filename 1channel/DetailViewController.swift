@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController, UISplitViewControllerDelegate {
 
     var masterPopoverController: UIPopoverController? = nil
     @IBOutlet weak var webView : UIWebView!
@@ -23,6 +23,23 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.configureView()
+    }
+    
+    
+    //MARK: Split View delegates
+    func splitViewController(svc: UISplitViewController!, willHideViewController aViewController: UIViewController!, withBarButtonItem barButtonItem: UIBarButtonItem!, forPopoverController pc: UIPopoverController!) {
+        
+        barButtonItem.title = "Select"
+        self.navigationItem.setLeftBarButtonItem(barButtonItem, animated: true)
+        self.masterPopoverController = pc;
+    }
+    
+    func splitViewController(svc: UISplitViewController!, willShowViewController aViewController: UIViewController!, invalidatingBarButtonItem barButtonItem: UIBarButtonItem!)  {
+        
+        // Called when the view is shown again in the split view,
+        // invalidating the button and popover controller.
+        self.navigationItem.setLeftBarButtonItem(nil, animated: true)
+        self.masterPopoverController = nil;
     }
     
     

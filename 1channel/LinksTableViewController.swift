@@ -10,6 +10,7 @@ import UIKit
 
 class LinksTableViewController : UITableViewController {
     
+    var detailViewController: DetailViewController? = nil
     var links:[(link: String, source: String)] = []
     var episode = Episode()
     
@@ -17,6 +18,9 @@ class LinksTableViewController : UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         self.getLinksForEpisode()
+        
+        let controllers = self.splitViewController.viewControllers
+        self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
     }
     
     
@@ -69,6 +73,11 @@ class LinksTableViewController : UITableViewController {
             cell.textLabel.text = links[indexPath.row].source
         }
         return cell
+    }
+    
+    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        
+        self.detailViewController!.link = links[indexPath.row].link
     }
     
     //MARK: Helper Methods

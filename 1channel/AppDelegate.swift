@@ -15,11 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
+        
         // Override point for customization after application launch.
         let splitViewController = self.window!.rootViewController as UISplitViewController
         let navigationController = splitViewController.viewControllers[splitViewController.viewControllers.count-1] as UINavigationController
-        navigationController.topViewController.navigationItem.leftBarButtonItem =  splitViewController.displayModeButtonItem()
-        splitViewController.delegate = self
+        
+        if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_1) {
+            navigationController.topViewController.navigationItem.leftBarButtonItem =  splitViewController.displayModeButtonItem()
+            splitViewController.delegate = self
+        } else {
+            splitViewController.delegate = navigationController.topViewController as DetailViewController
+        }
         
         Parse.setApplicationId("EW0pxeQlkY3n1bPwzLdG3YVYjRVAtS6zTJmZhObN", clientKey: "LOvP72WZzGhBnMu956p5Uft026G3dWe6X6gy9sX7")
         PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
