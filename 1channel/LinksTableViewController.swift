@@ -11,6 +11,7 @@ import UIKit
 class LinksTableViewController : UITableViewController {
     
     var detailViewController: DetailViewController? = nil
+    
     var links:[(link: String, source: String)] = []
     var episode = Episode()
     
@@ -19,7 +20,6 @@ class LinksTableViewController : UITableViewController {
         super.viewDidLoad()
         
         let controllers = self.splitViewController.viewControllers
-        self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
         
         self.getLinksForEpisode()
     }

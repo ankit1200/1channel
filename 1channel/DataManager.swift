@@ -47,6 +47,7 @@ class DataManager : NSObject
         
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(seriesNameAndSeasonsData, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
+        println(results)
         let seasons = results["seasons"] as NSArray
         
         return seasons;

@@ -32,6 +32,7 @@ class DetailViewController: UIViewController {
     func loadAddressURL() {
         
         let request = NSURLRequest(URL: (NSURL(string: link)))
+        webView!.scalesPageToFit = true
         webView!.loadRequest(request)
     }
     

@@ -17,7 +17,7 @@ class SeasonsTableViewController: UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         self.getSeasonsForSeries()
-//        self.updateDatabase()
+        self.updateDatabase()
     }
     
     
