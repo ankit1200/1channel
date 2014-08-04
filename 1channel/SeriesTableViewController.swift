@@ -37,7 +37,6 @@ class SeriesTableViewController: UITableViewController {
                     self.seriesList += series
                 }
                 self.tableView.reloadData()
-//                self.updateDatabase()
             }
         }
     }
