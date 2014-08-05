@@ -13,7 +13,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
     var masterPopoverController: UIPopoverController? = nil
     @IBOutlet weak var webView : UIWebView!
     
-    var link:String? {
+    var linkAndSource:(link: String, source: String)? {
         didSet {
             self.configureView()
         }
@@ -23,6 +23,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.configureView()
+        self.webView.delegate = self
     }
     
     
@@ -47,21 +48,29 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
 
     func loadAddressURL() {
         
-        let request = NSURLRequest(URL: (NSURL(string: link)))
+        let request = NSURLRequest(URL: (NSURL(string: linkAndSource!.link)))
         webView!.scalesPageToFit = true
         webView!.loadRequest(request)
     }
-//    
-//    func webView(webView: UIWebView!, shouldStartLoadWithRequest request: NSURLRequest!, navigationType: UIWebViewNavigationType) -> Bool {
-//        
-//        println("request: \(request)")
-//        
-//        return false
-//    }
+    
+    func webView(webView: UIWebView!, shouldStartLoadWithRequest request: NSURLRequest!, navigationType: UIWebViewNavigationType) -> Bool {
+        
+        let urlString = request.URL.absoluteString
+        
+        if (urlString.bridgeToObjectiveC().containsString("primewire.ag") ||
+            urlString.bridgeToObjectiveC().containsString(linkAndSource!.source) ||
+            urlString.bridgeToObjectiveC().containsString(".mp4"))
+        {
+            println("passed: \(urlString)")
+            return true
+        }
+        println("failed: \(urlString)")
+        return false
+    }
     
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail: AnyObject = self.link {
+        if let detail = self.linkAndSource {
             if let loadLink = self.webView {
                loadAddressURL()
             }

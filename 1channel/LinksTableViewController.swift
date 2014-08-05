@@ -51,7 +51,7 @@ class LinksTableViewController : UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // set variables
-            dvc.link = links[indexPath.row].link
+            dvc.linkAndSource = links[indexPath.row]
         }
     }
     
@@ -77,7 +77,7 @@ class LinksTableViewController : UITableViewController {
     
     override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         
-        self.detailViewController!.link = links[indexPath.row].link
+        self.detailViewController!.linkAndSource = links[indexPath.row]
     }
     
     //MARK: Helper Methods
