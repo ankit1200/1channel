@@ -15,13 +15,16 @@ class SeriesTableViewController: UITableViewController {
     
     override func viewDidLoad()  {
         super.viewDidLoad()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
         getSupportedSeries()
     }
     
     
     //MARK: parse methods
     func getSupportedSeries() {
-        
+        seriesList = []
         let query = PFQuery(className: "Series")
         
         query.findObjectsInBackgroundWithBlock {
@@ -39,17 +42,6 @@ class SeriesTableViewController: UITableViewController {
                 self.tableView.reloadData()
             }
         }
-    }
-    
-    func updateDatabase() {
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-        
-            // background thread
-            let manager = DataManager()
-            for series in self.seriesList {
-                manager.downloadSeriesData(series.seriesName, seriesId: series.seriesId)
-            }
-        })
     }
     
     
@@ -81,8 +73,7 @@ class SeriesTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         if seriesList.count != 0 {
-            println(seriesList[indexPath.row].seriesName)
-        var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
             cell.textLabel.text = seriesName
         }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailViewController: UIViewController, UISplitViewControllerDelegate {
+class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIWebViewDelegate {
 
     var masterPopoverController: UIPopoverController? = nil
     @IBOutlet weak var webView : UIWebView!
@@ -51,6 +51,13 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate {
         webView!.scalesPageToFit = true
         webView!.loadRequest(request)
     }
+//    
+//    func webView(webView: UIWebView!, shouldStartLoadWithRequest request: NSURLRequest!, navigationType: UIWebViewNavigationType) -> Bool {
+//        
+//        println("request: \(request)")
+//        
+//        return false
+//    }
     
     func configureView() {
         // Update the user interface for the detail item.

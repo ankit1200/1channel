@@ -17,7 +17,6 @@ class SeasonsTableViewController: UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         self.getSeasonsForSeries()
-//        self.updateDatabase()
     }
     
     
@@ -30,23 +29,12 @@ class SeasonsTableViewController: UITableViewController {
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-
             if !error {
                 self.getSeasonsFromQuery(objects)
             }
         }
     }
     
-    
-    func updateDatabase() {
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            
-            // background thread
-            let manager = DataManager()
-            manager.addNewSeries = false
-            manager.downloadSeriesData(self.episode.seriesName, seriesId: self.episode.seriesId)
-        })
-    }
     
 //MARK: Segues
     
@@ -89,7 +77,6 @@ class SeasonsTableViewController: UITableViewController {
     func getSeasonsFromQuery(objects: [AnyObject]!) {
         
         for object in objects {
-            
             let season = (object as PFObject)["season"] as String
             self.seasons.append(season)
         }
