@@ -52,6 +52,17 @@ class LinksTableViewController : UITableViewController {
             
             // set variables
             dvc.linkAndSource = links[indexPath.row]
+
+            
+            // analytics
+            let dimensions = [
+                "seriesName": episode.seriesName,
+                "season": episode.season,
+                "episodeNum": episode.episodeNumber,
+                "source": links[indexPath.row].source
+            ]
+            // Send the dimensions to Parse along with the 'search' event
+            PFAnalytics.trackEvent("watchEpisode", dimensions:dimensions)
         }
     }
     

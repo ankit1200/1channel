@@ -56,10 +56,11 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
     func webView(webView: UIWebView!, shouldStartLoadWithRequest request: NSURLRequest!, navigationType: UIWebViewNavigationType) -> Bool {
         
         let urlString = request.URL.absoluteString
+        let source = getSourceName(linkAndSource!.source)
         
-        if (urlString.bridgeToObjectiveC().containsString("primewire.ag") ||
-            urlString.bridgeToObjectiveC().containsString(linkAndSource!.source) ||
-            urlString.bridgeToObjectiveC().containsString(".mp4"))
+        if (urlString.bridgeToObjectiveC().rangeOfString("primewire.ag").location != NSNotFound ||
+            urlString.bridgeToObjectiveC().rangeOfString(source).location != NSNotFound ||
+            urlString.bridgeToObjectiveC().rangeOfString(".mp4").location != NSNotFound)
         {
             println("passed: \(urlString)")
             return true
@@ -68,6 +69,7 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
         return false
     }
     
+    
     func configureView() {
         // Update the user interface for the detail item.
         if let detail = self.linkAndSource {
@@ -75,6 +77,22 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
                loadAddressURL()
             }
         }
+    }
+    
+    
+    //MARK: helper methods
+    func getSourceName(source: String) -> String {
+        var sourceString = ""
+        
+        for char in source {
+            if char == "." {
+                return sourceString
+            } else {
+                sourceString += char
+            }
+        }
+        
+        return source
     }
 }
 

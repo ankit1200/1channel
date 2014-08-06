@@ -54,6 +54,13 @@ class SeriesTableViewController: UITableViewController {
             
             // variables being passed
             stvc.episode = seriesList[indexPath.row]
+            
+            // analytics
+            let dimensions = [
+                "seriesName": episode.seriesName,
+            ]
+            // Send the dimensions to Parse along with the 'search' event
+            PFAnalytics.trackEvent("watchSeries", dimensions:dimensions)
         }
     }
     
