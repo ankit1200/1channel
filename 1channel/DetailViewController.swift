@@ -9,6 +9,22 @@
 import UIKit
 import Foundation
 
+extension String {
+    func contains(other: String) -> Bool{
+        var start = startIndex
+        
+        do{
+            var subString = self[Range(start: start++, end: endIndex)]
+            if subString.hasPrefix(other){
+                return true
+            }
+            
+        }while start != endIndex
+        
+        return false
+    }
+}
+
 class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIWebViewDelegate {
 
     var masterPopoverController: UIPopoverController? = nil
@@ -59,9 +75,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
         let urlString = request.URL.absoluteString
         let source = getSourceName(linkAndSource!.source)
         
-        if (urlString as NSString).rangeOfString("primewire.ag").location != NSNotFound ||
-            (urlString as NSString).rangeOfString(source).location != NSNotFound ||
-            (urlString as NSString).rangeOfString(".mp4").location != NSNotFound
+        if urlString.contains("primewire.ag") ||
+            urlString.contains(source) ||
+            urlString.contains(".mp4")
         {
             println("passed: \(urlString)")
             return true
