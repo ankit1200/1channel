@@ -40,7 +40,7 @@ class DataManager : NSObject
         let seriesNameAndSeasonsUrl = "https://www.kimonolabs.com/api/70ef8q9g?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)"
         var seriesNameAndSeasonsData:NSData? = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
         
-        while !seriesNameAndSeasonsData {
+        while seriesNameAndSeasonsData == nil {
             println("seasons fetch failed, trying again....")
             seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
         }
@@ -66,7 +66,7 @@ class DataManager : NSObject
             let episodesForSeasonUrl = "https://www.kimonolabs.com/api/2lcduwri?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(seasonNum)"
             var episodesForSeasonData:NSData? = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
             
-            while !episodesForSeasonData {
+            while episodesForSeasonData == nil {
                 println("episodes fetch failed, trying again....")
                 episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
             }
@@ -93,7 +93,7 @@ class DataManager : NSObject
         let linksForEpisodeUrl = "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episodeNum)"
         var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
         
-        while !linksForEpisodeData {
+        while linksForEpisodeData == nil {
             println("links fetch failed, trying again....")
             linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
         }

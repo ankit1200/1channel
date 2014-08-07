@@ -99,7 +99,7 @@ class LinksTableViewController : UITableViewController {
         
         for link in linksFromQuery {
             let link = link as Dictionary<String, String>
-            self.links += (link["link"]!, link["source"]!)
+            self.links.append(link: link["link"]!, source: link["source"]!)
         }
         
         self.tableView.reloadData()

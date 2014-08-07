@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIWebViewDelegate {
 
@@ -58,9 +59,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
         let urlString = request.URL.absoluteString
         let source = getSourceName(linkAndSource!.source)
         
-        if (urlString.bridgeToObjectiveC().rangeOfString("primewire.ag").location != NSNotFound ||
-            urlString.bridgeToObjectiveC().rangeOfString(source).location != NSNotFound ||
-            urlString.bridgeToObjectiveC().rangeOfString(".mp4").location != NSNotFound)
+        if (urlString as NSString).rangeOfString("primewire.ag").location != NSNotFound ||
+            (urlString as NSString).rangeOfString(source).location != NSNotFound ||
+            (urlString as NSString).rangeOfString(".mp4").location != NSNotFound
         {
             println("passed: \(urlString)")
             return true

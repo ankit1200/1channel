@@ -37,7 +37,7 @@ class SeriesTableViewController: UITableViewController {
                     
                     series.seriesName = seriesName
                     series.seriesId = (object as PFObject)["seriesID"] as String
-                    self.seriesList += series
+                    self.seriesList.append(series)
                 }
                 self.tableView.reloadData()
             }

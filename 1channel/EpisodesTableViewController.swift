@@ -82,7 +82,7 @@ class EpisodesTableViewController : UITableViewController {
         for object in objects {
             let number = (object as PFObject)["episodeNumber"] as String
             let name = (object as PFObject)["episodeTitle"] as String
-            self.episodes += (number, name)
+            self.episodes.append(episodeNumber: number, episodeName: name)
         }
         self.tableView.reloadData()
     }
