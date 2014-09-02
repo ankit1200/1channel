@@ -75,9 +75,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
         let urlString = request.URL.absoluteString
         let source = getSourceName(linkAndSource!.source)
         
-        if urlString.contains("primewire.ag") ||
-            urlString.contains(source) ||
-            urlString.contains(".mp4")
+        if urlString?.lowercaseString.rangeOfString("primewire.ag") != nil ||
+           urlString?.lowercaseString.rangeOfString(source) != nil ||
+            urlString?.lowercaseString.rangeOfString(".mp4") != nil
         {
             println("passed: \(urlString)")
             return true
@@ -105,10 +105,9 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
             if char == "." {
                 return sourceString
             } else {
-                sourceString += char
+                sourceString =  sourceString + [char]
             }
         }
-        
         return source
     }
 }

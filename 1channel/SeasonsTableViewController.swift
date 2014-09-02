@@ -29,7 +29,7 @@ class SeasonsTableViewController: UITableViewController {
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            if !error {
+            if (error != nil) {
                 self.getSeasonsFromQuery(objects)
             }
         }

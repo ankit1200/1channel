@@ -45,7 +45,7 @@ class DataManager : NSObject
             seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
         }
         
-        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(seriesNameAndSeasonsData, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(seriesNameAndSeasonsData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
         let seasons = results["seasons"] as NSArray
         
@@ -71,7 +71,7 @@ class DataManager : NSObject
                 episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
             }
             
-            let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+            let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
             let results = jsonDict["results"] as NSDictionary
             let episodes = results["episodes"] as NSArray
             
@@ -98,7 +98,7 @@ class DataManager : NSObject
             linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
         }
         
-        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
         let links = results["episode_links"] as NSArray
         let episodeInfo = (results["episode_info"] as NSArray)[0] as NSDictionary
@@ -116,7 +116,7 @@ class DataManager : NSObject
         query.getFirstObjectInBackgroundWithBlock {
             (foundObject: PFObject!, error: NSError!) -> Void in
 
-            if !foundObject {
+            if (foundObject != nil) {
                 // The find failed create new object and add
                 let seriesObject = PFObject(className:seriesName)
                 self.configureParseObject(seriesObject, seriesName: seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links)
