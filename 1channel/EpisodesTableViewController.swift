@@ -30,7 +30,7 @@ class EpisodesTableViewController : UITableViewController {
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            if !error {
+            if !(error != nil) {
                 self.getEpisodesFromQuery(objects)
             }
         }
@@ -44,8 +44,8 @@ class EpisodesTableViewController : UITableViewController {
             let ltvc = segue.destinationViewController as LinksTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
             
-            episode.episodeNumber = episodes[indexPath.row].episodeNumber
-            episode.episodeName = episodes[indexPath.row].episodeName
+            episode.episodeNumber = episodes[indexPath!.row].episodeNumber
+            episode.episodeName = episodes[indexPath!.row].episodeName
             
             // variables to pass down
             ltvc.episode = episode
@@ -68,8 +68,8 @@ class EpisodesTableViewController : UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         if episodes.count != 0 {
-            cell.textLabel.text = episodes[indexPath.row].episodeName
-            cell.detailTextLabel.text = episodes[indexPath.row].episodeNumber
+            cell.textLabel!.text = episodes[indexPath.row].episodeName
+            cell.detailTextLabel!.text = episodes[indexPath.row].episodeNumber
         }
         return cell
     }

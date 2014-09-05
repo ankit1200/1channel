@@ -19,7 +19,7 @@ class LinksTableViewController : UITableViewController {
         super.viewDidLoad()
         self.getLinksForEpisode()
         
-        let controllers = self.splitViewController.viewControllers
+        let controllers = self.splitViewController!.viewControllers
         self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
     }
     
@@ -35,7 +35,7 @@ class LinksTableViewController : UITableViewController {
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            if !error {
+            if !(error != nil) {
                 self.getLinksFromQuery(objects)
             }
         }
@@ -51,7 +51,7 @@ class LinksTableViewController : UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // set variables
-            dvc.linkAndSource = links[indexPath.row]
+            dvc.linkAndSource = links[indexPath!.row]
 
             
             // analytics
@@ -59,7 +59,7 @@ class LinksTableViewController : UITableViewController {
                 "seriesName": episode.seriesName,
                 "season": episode.season,
                 "episodeNum": episode.episodeNumber,
-                "source": links[indexPath.row].source
+                "source": links[indexPath!.row].source
             ]
             // Send the dimensions to Parse along with the 'search' event
             PFAnalytics.trackEvent("watchEpisode", dimensions:dimensions)
@@ -81,12 +81,12 @@ class LinksTableViewController : UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         if links.count != 0 {
-            cell.textLabel.text = links[indexPath.row].source
+            cell.textLabel!.text = links[indexPath.row].source
         }
         return cell
     }
     
-    override func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: (NSIndexPath!)) {
         
         self.detailViewController!.linkAndSource = links[indexPath.row]
     }

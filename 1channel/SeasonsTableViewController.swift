@@ -29,7 +29,7 @@ class SeasonsTableViewController: UITableViewController {
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            if !error {
+            if !(error != nil) {
                 self.getSeasonsFromQuery(objects)
             }
         }
@@ -42,7 +42,7 @@ class SeasonsTableViewController: UITableViewController {
         if segue.identifier == "showEpisodes" {
             let etvc = segue.destinationViewController as EpisodesTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-            episode.season = seasons[indexPath.row]
+            episode.season = seasons[indexPath!.row]
             
             // variables being passed
             etvc.episode = episode
@@ -66,7 +66,7 @@ class SeasonsTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         if seasons.count != 0 {
-            cell.textLabel.text = seasons[indexPath.row]
+            cell.textLabel!.text = seasons[indexPath.row]
         }
         return cell
     }

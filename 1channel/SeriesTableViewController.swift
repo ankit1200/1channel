@@ -26,12 +26,10 @@ class SeriesTableViewController: UITableViewController {
     func getSupportedSeries() {
         seriesList = []
         let query = PFQuery(className: "Series")
-        
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            if !error {
+            if !(error != nil) {
                 for object in objects {
-                    
                     let series = Episode()
                     var seriesName = (object as PFObject)["name"] as String
                     
@@ -53,7 +51,7 @@ class SeriesTableViewController: UITableViewController {
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // variables being passed
-            stvc.episode = seriesList[indexPath.row]
+            stvc.episode = seriesList[indexPath!.row]
             
             // analytics
             let dimensions = [
@@ -82,7 +80,7 @@ class SeriesTableViewController: UITableViewController {
         if seriesList.count != 0 {
             var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            cell.textLabel.text = seriesName
+            cell.textLabel!.text = seriesName
         }
         return cell
     }
