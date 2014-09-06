@@ -21,7 +21,6 @@ class DataManager : NSObject
         println("Starting Download")
         
         let seasons = self.downloadSeriesNameAndSeasons(seriesId)
-        println(seasons)
         println("Seasons Downloaded")
         
         // download episodes for each season and links for each episode and save it to parse
@@ -61,8 +60,8 @@ class DataManager : NSObject
     
     func downloadEpisodesForSeason(seriesName: String, seriesId:String, seasons: Array<String>) {
         println("Downloaded episodes for season")
-        for season in seasons {
-            
+        // Start downloading from the lastest season
+        for season in seasons.reverse() {
             var seasonNum = season.lowercaseString
             seasonNum = seasonNum.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
             
@@ -79,13 +78,17 @@ class DataManager : NSObject
             // parse json outputted from Kimono
             let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
             let results = jsonDict["results"] as NSDictionary
-            let episodes = results["episodes"] as NSArray
+            
+            // create swift array from NSArray
+            var episodes:Array<(String, String)> = []
+            for episode in (results["episodes"] as NSArray) {
+                episodes.append((episode["episodeNumber"] as String), (episode["episodeName"] as String))
+            }
             
             // get links for each episode in current season
-            for episode in episodes {
-                let tempEpisodeDict = episode as NSDictionary
-                var episodeNum = tempEpisodeDict["episodeNumber"] as String
-                episodeNum = episodeNum.lowercaseString
+            // start downloading from the latest episode
+            for episode in episodes.reverse() {
+                var episodeNum = (episode.0).lowercaseString
                 episodeNum = episodeNum.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 
                 self.downloadLinksForEpisode(seriesName, seriesId:seriesId, season:seasonNum, episodeNum:episodeNum)
