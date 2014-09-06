@@ -28,7 +28,7 @@ class SeriesTableViewController: UITableViewController {
         let query = PFQuery(className: "Series")
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            if !(error != nil) {
+            if error == nil {
                 for object in objects {
                     let series = Episode()
                     var seriesName = (object as PFObject)["name"] as String

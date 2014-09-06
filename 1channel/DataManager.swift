@@ -12,15 +12,16 @@ import Foundation
 
 class DataManager : NSObject
 {
-    var addNewSeries = true;
+//    var addNewSeries = true;
     
     //MARK: download series info
     
-    func downloadSeriesData(seriesName: String, seriesId: String) {
+    func downloadSeriesData(seriesName: String, seriesId: String, seasonsFromParseQuery: Array<String>) {
         // download number of seasons
         println("Starting Download")
         
         let seasons = self.downloadSeriesNameAndSeasons(seriesId)
+        println(seasons)
         println("Seasons Downloaded")
         
         // download episodes for each season and links for each episode and save it to parse
@@ -33,7 +34,7 @@ class DataManager : NSObject
     
     //MARK: helper methods
     
-    func downloadSeriesNameAndSeasons(seriesId: String) -> NSArray {
+    func downloadSeriesNameAndSeasons(seriesId: String) -> Array<String> {
         
         // get data from kimono
         var error: NSError?
@@ -45,20 +46,24 @@ class DataManager : NSObject
             seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
         }
         
+        // parse json outputted from Kimono
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(seriesNameAndSeasonsData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
-        let seasons = results["seasons"] as NSArray
+
+        // create swift array from NSArray
+        var seasons:Array<String> = []
+        for season in (results["seasons"] as NSArray) {
+            seasons.append(season["season"] as String)
+        }
         
         return seasons;
     }
     
-    func downloadEpisodesForSeason(seriesName: String, seriesId:String, seasons: NSArray) {
+    func downloadEpisodesForSeason(seriesName: String, seriesId:String, seasons: Array<String>) {
         println("Downloaded episodes for season")
         for season in seasons {
             
-            let tempSeasonDict = season as NSDictionary
-            var seasonNum = tempSeasonDict["season"] as String
-            seasonNum = seasonNum.lowercaseString
+            var seasonNum = season.lowercaseString
             seasonNum = seasonNum.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
             
             // get data from kimono
@@ -71,6 +76,7 @@ class DataManager : NSObject
                 episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
             }
             
+            // parse json outputted from Kimono
             let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
             let results = jsonDict["results"] as NSDictionary
             let episodes = results["episodes"] as NSArray
@@ -98,6 +104,7 @@ class DataManager : NSObject
             linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
         }
         
+        // parse json outputted from Kimono
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
         let links = results["episode_links"] as NSArray
@@ -116,12 +123,12 @@ class DataManager : NSObject
         query.getFirstObjectInBackgroundWithBlock {
             (foundObject: PFObject!, error: NSError!) -> Void in
 
-            if !(foundObject != nil) {
+            if foundObject == nil {
                 // The find failed create new object and add
                 let seriesObject = PFObject(className:seriesName)
                 self.configureParseObject(seriesObject, seriesName: seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links)
                 println("new object\n\(episodeInfo)")
-            } else if !self.addNewSeries {
+            } else {
                 // The find succeeded update found object
                 self.configureParseObject(foundObject, seriesName: seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links)
                 println("update object\n\(episodeInfo)")

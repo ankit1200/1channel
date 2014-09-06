@@ -35,7 +35,7 @@ class LinksTableViewController : UITableViewController {
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            if !(error != nil) {
+            if error == nil {
                 self.getLinksFromQuery(objects)
             }
         }

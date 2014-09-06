@@ -30,7 +30,7 @@ class EpisodesTableViewController : UITableViewController {
         
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
-            if !(error != nil) {
+            if error == nil {
                 self.getEpisodesFromQuery(objects)
             }
         }
