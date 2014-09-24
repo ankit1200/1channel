@@ -84,6 +84,7 @@ class EpisodesTableViewController : UITableViewController {
             let name = (object as PFObject)["episodeTitle"] as String
             self.episodes.append(episodeNumber: number, episodeName: name)
         }
+        self.episodes.sort({$0.0 < $1.0})
         self.tableView.reloadData()
     }
 }

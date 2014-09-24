@@ -19,7 +19,7 @@ extension String {
                 return true
             }
             
-        }while start != endIndex
+        } while start != endIndex
         
         return false
     }

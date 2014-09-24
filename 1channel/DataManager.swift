@@ -114,7 +114,9 @@ class DataManager : NSObject
         let episodeInfo = (results["episode_info"] as NSArray)[0] as NSDictionary
 
         // save data to parse
-        self.saveObjectToParse(seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links);
+        if !checkFakeLinks(links) {
+            self.saveObjectToParse(seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links);
+        }
     }
     
     func saveObjectToParse(seriesName:String, seriesId: String, episodeInfo: NSDictionary, links: NSArray) {
@@ -148,5 +150,18 @@ class DataManager : NSObject
         object["episodeTitle"] = episodeInfo["title"]
         object["links"] = links
         object.saveInBackground()
+    }
+    
+    // check to see if season is fake
+    func checkFakeLinks(links: NSArray) -> Bool{
+        
+        for link in links {
+            let link = link as Dictionary<String, String>
+            
+            if link["source"] != "Watch HD" {
+                return false;
+            }
+        }
+        return true;
     }
 }

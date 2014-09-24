@@ -86,11 +86,6 @@ class LinksTableViewController : UITableViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: (NSIndexPath!)) {
-        
-        self.detailViewController!.linkAndSource = links[indexPath.row]
-    }
-    
     //MARK: Helper Methods
     
     func getLinksFromQuery(objects: [AnyObject]!) {
