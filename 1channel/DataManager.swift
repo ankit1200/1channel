@@ -112,7 +112,19 @@ class DataManager : NSObject
         let results = jsonDict["results"] as NSDictionary
         let links = results["episode_links"] as NSArray
         let episodeInfo = (results["episode_info"] as NSArray)[0] as NSDictionary
-
+        
+        // add image to the series
+        let query = PFQuery(className: "Series")
+        query.whereKey("seriesID", equalTo: seriesId.stringByReplacingOccurrencesOfString("tv", withString: "watch", options: NSStringCompareOptions.LiteralSearch, range: nil))
+        query.getFirstObjectInBackgroundWithBlock {
+            (object: PFObject!, error: NSError!) -> Void in
+            if object != nil {
+                object["image"] = episodeInfo["image"];
+                println("image downloaded")
+            }
+            object.saveInBackground()
+        }
+        
         // save data to parse
         if !checkFakeLinks(links) {
             self.saveObjectToParse(seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links);
@@ -141,7 +153,7 @@ class DataManager : NSObject
         }
     }
     
-    
+    // add object to parse
     func configureParseObject(object:PFObject, seriesName: String, seriesId: String, episodeInfo: NSDictionary, links:NSArray) {
         object["seriesName"] = seriesName
         object["seriesId"] = seriesId

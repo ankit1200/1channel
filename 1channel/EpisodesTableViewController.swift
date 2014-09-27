@@ -10,7 +10,7 @@ import UIKit
 
 class EpisodesTableViewController : UITableViewController {
     
-    var episodes:[(episodeNumber: String, episodeName: String)] = []
+    var episodes:[(episodeNumber: Int, episodeName: String)] = []
     var episode = Episode()
     
     
@@ -44,7 +44,7 @@ class EpisodesTableViewController : UITableViewController {
             let ltvc = segue.destinationViewController as LinksTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
             
-            episode.episodeNumber = episodes[indexPath!.row].episodeNumber
+            episode.episodeNumber = "Episode \(episodes[indexPath!.row].episodeNumber)"
             episode.episodeName = episodes[indexPath!.row].episodeName
             
             // variables to pass down
@@ -69,7 +69,7 @@ class EpisodesTableViewController : UITableViewController {
         
         if episodes.count != 0 {
             cell.textLabel!.text = episodes[indexPath.row].episodeName
-            cell.detailTextLabel!.text = episodes[indexPath.row].episodeNumber
+            cell.detailTextLabel!.text = "Episode \(episodes[indexPath.row].episodeNumber)"
         }
         return cell
     }
@@ -80,9 +80,11 @@ class EpisodesTableViewController : UITableViewController {
     func getEpisodesFromQuery(objects: [AnyObject]!) {
 
         for object in objects {
-            let number = (object as PFObject)["episodeNumber"] as String
+            var numberString = (object as PFObject)["episodeNumber"] as String
             let name = (object as PFObject)["episodeTitle"] as String
-            self.episodes.append(episodeNumber: number, episodeName: name)
+            numberString = numberString.stringByReplacingOccurrencesOfString("Episode ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            let number = numberString.toInt()
+            self.episodes.append(episodeNumber: number!, episodeName: name)
         }
         self.episodes.sort({$0.0 < $1.0})
         self.tableView.reloadData()

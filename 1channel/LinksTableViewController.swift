@@ -94,7 +94,9 @@ class LinksTableViewController : UITableViewController {
         
         for link in linksFromQuery {
             let link = link as Dictionary<String, String>
-            self.links.append(link: link["link"]!, source: link["source"]!)
+            if link["source"] != "Watch HD" {
+                self.links.append(link: link["link"]!, source: link["source"]!)
+            }
         }
         
         self.tableView.reloadData()
