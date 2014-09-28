@@ -94,7 +94,8 @@ class LinksTableViewController : UITableViewController {
         
         for link in linksFromQuery {
             let link = link as Dictionary<String, String>
-            if link["source"] != "Watch HD" {
+            if link["source"] != "Watch HD" ||
+                link["soure"] != "promptfile.com" {
                 self.links.append(link: link["link"]!, source: link["source"]!)
             }
         }

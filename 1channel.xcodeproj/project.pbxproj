@@ -17,7 +17,6 @@
 		EBBDFC16196B1A7800BB8C14 /* EpisodesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */; };
 		EBBDFC17196B1A7800BB8C14 /* LinksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */; };
 		EBE4FF6A197EE15B00745582 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */; };
-		EBE4FF6B197EE15B00745582 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF65197EE10100745582 /* StoreKit.framework */; };
 		EBE4FF6C197EE15B00745582 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF63197EE0FA00745582 /* Security.framework */; };
 		EBE4FF6D197EE15B00745582 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF61197EE0F300745582 /* QuartzCore.framework */; };
 		EBE4FF6E197EE15B00745582 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */; };
@@ -65,7 +64,6 @@
 		EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		EBE4FF61197EE0F300745582 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		EBE4FF63197EE0FA00745582 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		EBE4FF65197EE10100745582 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		EBF979F51984620500B44654 /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
@@ -77,7 +75,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBE4FF6A197EE15B00745582 /* SystemConfiguration.framework in Frameworks */,
-				EBE4FF6B197EE15B00745582 /* StoreKit.framework in Frameworks */,
 				EBE4FF6C197EE15B00745582 /* Security.framework in Frameworks */,
 				EBE4FF6D197EE15B00745582 /* QuartzCore.framework in Frameworks */,
 				EBE4FF6E197EE15B00745582 /* MobileCoreServices.framework in Frameworks */,
@@ -175,7 +172,6 @@
 			isa = PBXGroup;
 			children = (
 				EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */,
-				EBE4FF65197EE10100745582 /* StoreKit.framework */,
 				EBE4FF63197EE0FA00745582 /* Security.framework */,
 				EBE4FF61197EE0F300745582 /* QuartzCore.framework */,
 				EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */,
@@ -239,6 +235,14 @@
 					EBBDFBED196B1A3400BB8C14 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = A28NM53F25;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+							com.apple.OMC = {
+								enabled = 0;
+							};
+						};
 					};
 					EBBDFC01196B1A3500BB8C14 = {
 						CreatedOnToolsVersion = 6.0;
@@ -415,6 +419,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = 1channel/1channel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -440,6 +445,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = 1channel/1channel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
