@@ -10,7 +10,6 @@ import UIKit
 
 class LinksTableViewController : UITableViewController {
     
-    var detailViewController: DetailViewController? = nil
     var links:[(link: String, source: String)] = []
     var episode = Episode()
     
@@ -18,9 +17,6 @@ class LinksTableViewController : UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         self.getLinksForEpisode()
-        
-        let controllers = self.splitViewController!.viewControllers
-        self.detailViewController = controllers[controllers.count-1].topViewController as? DetailViewController
     }
     
     
@@ -45,15 +41,14 @@ class LinksTableViewController : UITableViewController {
     //MARK: prepare for segue
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showDetail" {
+        if segue.identifier == "showLink" {
             
-            let dvc = (segue.destinationViewController as UINavigationController).topViewController as DetailViewController
+            let dvc = segue.destinationViewController as DetailViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // set variables
             dvc.linkAndSource = links[indexPath!.row]
 
-            
             // analytics
             let dimensions = [
                 "seriesName": episode.seriesName,
@@ -68,11 +63,6 @@ class LinksTableViewController : UITableViewController {
     
     
     //MARK: Table View
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return links.count
     }
@@ -91,12 +81,12 @@ class LinksTableViewController : UITableViewController {
     func getLinksFromQuery(objects: [AnyObject]!) {
         
         let linksFromQuery = (objects[0] as PFObject)["links"] as NSArray
-        
         for link in linksFromQuery {
             let link = link as Dictionary<String, String>
-            if link["source"] != "Watch HD" ||
-                link["soure"] != "promptfile.com" {
-                self.links.append(link: link["link"]!, source: link["source"]!)
+            let source = link["source"]!
+            if source != "Watch HD" &&
+                source != "promptfile.com" {
+                self.links.append(link: link["link"]!, source: source)
             }
         }
         

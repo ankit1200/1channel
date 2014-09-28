@@ -25,9 +25,8 @@ extension String {
     }
 }
 
-class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIWebViewDelegate {
+class DetailViewController: UIViewController, UIWebViewDelegate {
 
-    var masterPopoverController: UIPopoverController? = nil
     @IBOutlet weak var webView : UIWebView!
     
     var linkAndSource:(link: String, source: String)? {
@@ -42,24 +41,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
         self.configureView()
         self.webView.delegate = self
     }
-    
-    
-    //MARK: Split View delegates
-    func splitViewController(svc: UISplitViewController!, willHideViewController aViewController: UIViewController!, withBarButtonItem barButtonItem: UIBarButtonItem!, forPopoverController pc: UIPopoverController!) {
-        
-        barButtonItem.title = "Select"
-        self.navigationItem.setLeftBarButtonItem(barButtonItem, animated: true)
-        self.masterPopoverController = pc;
-    }
-    
-    func splitViewController(svc: UISplitViewController!, willShowViewController aViewController: UIViewController!, invalidatingBarButtonItem barButtonItem: UIBarButtonItem!)  {
-        
-        // Called when the view is shown again in the split view,
-        // invalidating the button and popover controller.
-        self.navigationItem.setLeftBarButtonItem(nil, animated: true)
-        self.masterPopoverController = nil;
-    }
-    
     
     //MARK: Web View Methods
 
@@ -108,7 +89,6 @@ class DetailViewController: UIViewController, UISplitViewControllerDelegate, UIW
                 sourceString = sourceString + [char]
             }
         }
-        
         return source
     }
 }
