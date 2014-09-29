@@ -181,10 +181,10 @@
             </objects>
             <point key="canvasLocation" x="-220" y="-627"/>
         </scene>
-        <!--Series View Controller-->
+        <!--Collection View Controller-->
         <scene sceneID="Qba-Vc-Iya">
             <objects>
-                <viewController id="4SR-2c-2RJ" customClass="SeriesViewController" customModule="_channel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="4SR-2c-2RJ" customClass="CollectionViewController" customModule="_channel" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sAQ-qH-wnf"/>
                         <viewControllerLayoutGuide type="bottom" id="zM9-ZI-Wn2"/>
@@ -235,9 +235,20 @@
                             <constraint firstItem="zM9-ZI-Wn2" firstAttribute="top" secondItem="jUM-pg-a3o" secondAttribute="bottom" id="zPF-aW-A9h"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="yzH-Zs-WCB"/>
+                    <navigationItem key="navigationItem" id="yzH-Zs-WCB">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="ILc-lH-Bgh">
+                            <rect key="frame" x="180" y="7" width="240" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="TV Shows"/>
+                                <segment title="Movies"/>
+                            </segments>
+                        </segmentedControl>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="jUM-pg-a3o" id="qYM-Be-C43"/>
+                        <outlet property="segmentControl" destination="ILc-lH-Bgh" id="gJ2-pi-08q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aRR-Mn-uxH" userLabel="First Responder" sceneMemberID="firstResponder"/>

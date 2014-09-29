@@ -10,12 +10,13 @@ import UIKit
 
 let reuseIdentifier = "Cell"
 
-class SeriesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
     var seriesList = Array<Episode>()
     let episode = Episode()
     var selectedIndex = 0
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var segmentControl: UISegmentedControl!
     
     override func viewDidAppear(animated: Bool) {
         getSupportedSeries()
@@ -43,7 +44,7 @@ class SeriesViewController: UIViewController, UICollectionViewDataSource, UIColl
     //MARK: Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showSeasons" {
+        if segue.identifier == "showSeasons" && segmentControl.selectedSegmentIndex == 0 {
             let stvc = segue.destinationViewController as SeasonsTableViewController
             let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
             
@@ -84,6 +85,9 @@ class SeriesViewController: UIViewController, UICollectionViewDataSource, UIColl
     // MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         selectedIndex = indexPath.row
+        if segmentControl.selectedSegmentIndex == 1 {
+            performSegueWithIdentifier("showSources", sender: self)
+        }
     }
 
 }
