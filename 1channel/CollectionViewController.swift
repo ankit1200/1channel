@@ -1,5 +1,5 @@
 //
-//  SeriesCollectionViewController.swift
+//  CollectionViewController.swift
 //  1channel
 //
 //  Created by Ankit Agarwal on 9/28/14.
@@ -8,18 +8,22 @@
 
 import UIKit
 
-let reuseIdentifier = "Cell"
-
 class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
 
     var seriesList = Array<Episode>()
     let episode = Episode()
+    var movieList = Array<Movie>()
+    let movie = Movie()
     var selectedIndex = 0
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var segmentControl: UISegmentedControl!
     
     override func viewDidAppear(animated: Bool) {
-        getSupportedSeries()
+        if segmentControl.selectedSegmentIndex == 0 {
+            getSupportedSeries()
+        } else if segmentControl.selectedSegmentIndex == 1 {
+            getMovies()
+        }
     }
 
     //MARK: parse methods
@@ -41,10 +45,30 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
+    func getMovies() {
+        movieList = []
+        let query = PFQuery(className: "Movies")
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]!, error: NSError!) -> Void in
+            if error == nil {
+                for object in objects {
+                    let movie = Movie()
+                    movie.name = (object as PFObject)["name"] as String
+                    movie.id = (object as PFObject)["movieId"] as String
+                    movie.imageUrl = (object as PFObject)["image"] as String
+                    movie.links = (object as PFObject)["links"] as NSArray
+                    self.movieList.append(movie)
+                }
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
     //MARK: Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showSeasons" && segmentControl.selectedSegmentIndex == 0 {
+        if segue.identifier == "showSeasons"{
+            // destination view controller
             let stvc = segue.destinationViewController as SeasonsTableViewController
             let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
             
@@ -57,6 +81,21 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             ]
             // Send the dimensions to Parse along with the 'search' event
             PFAnalytics.trackEvent("watchSeries", dimensions:dimensions)
+        } else if segue.identifier == "showSources" {
+            // destination view controller
+            let ltvc = segue.destinationViewController as LinksTableViewController
+            let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
+            
+            // variables being passed
+            ltvc.movie = movieList[indexPath.row]
+            ltvc.isMovie = true
+            
+            // analytics
+            let dimensions = [
+                "movieName": episode.seriesName,
+            ]
+            // Send the dimensions to Parse along with the 'search' event
+            PFAnalytics.trackEvent("watchMovie", dimensions:dimensions)
         }
     }
 
@@ -64,30 +103,54 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: UICollectionViewDataSource
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.seriesList.count
+        if segmentControl.selectedSegmentIndex == 0 {
+            return self.seriesList.count
+        } else {
+            return self.movieList.count
+        }
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as SeriesCollectionViewCell
-        
-        if seriesList.count != 0 {
-            var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        if segmentControl.selectedSegmentIndex == 0 {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("seriesCell", forIndexPath: indexPath) as SeriesCollectionViewCell
+            
+            if seriesList.count != 0 {
+                var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
 
-            var url = NSURL.URLWithString(seriesList[indexPath.row].imageUrl)
-            var data = NSData(contentsOfURL : url)
-            cell.seriesImage.image = UIImage(data : data)
+                var url = NSURL.URLWithString(seriesList[indexPath.row].imageUrl)
+                var data = NSData(contentsOfURL : url)
+                cell.image.image = UIImage(data : data)
+            }
+            
+            return cell
+        } else {
+            
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("movieCell", forIndexPath: indexPath) as MovieCollectionViewCell
+            
+            if movieList.count != 0 {
+                var movieName = movieList[indexPath.row].name.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                let url = NSURL.URLWithString(movieList[indexPath.row].imageUrl)
+                let data = NSData(contentsOfURL: url)
+                cell.image.image = UIImage(data: data)
+            
+            }
+            return cell
         }
-        
-        return cell
     }
 
     // MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         selectedIndex = indexPath.row
-        if segmentControl.selectedSegmentIndex == 1 {
-            performSegueWithIdentifier("showSources", sender: self)
+    }
+    
+    
+    @IBAction func segmentValueChanged(sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            getSupportedSeries()
+        } else if sender.selectedSegmentIndex == 1 {
+            getMovies()
         }
     }
-
 }

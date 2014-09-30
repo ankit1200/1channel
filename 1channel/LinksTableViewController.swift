@@ -12,11 +12,16 @@ class LinksTableViewController : UITableViewController {
     
     var links:[(link: String, source: String)] = []
     var episode = Episode()
-    
+    var movie = Movie()
+    var isMovie = false
     
     override func viewDidLoad()  {
         super.viewDidLoad()
-        self.getLinksForEpisode()
+        if isMovie {
+            self.getLinksForMovie(movie.links)
+        } else {
+            self.getLinksForEpisode()
+        }
     }
     
     
@@ -89,7 +94,18 @@ class LinksTableViewController : UITableViewController {
                 self.links.append(link: link["link"]!, source: source)
             }
         }
-        
+        self.tableView.reloadData()
+    }
+    
+    func getLinksForMovie(linksArray: NSArray) {
+        for link in linksArray {
+            let link = link as Dictionary<String, String>
+            let source = link["source"]!
+            if source != "Watch HD" &&
+                source != "promptfile.com" {
+                    self.links.append(link: link["links"]!, source: source)
+            }
+        }
         self.tableView.reloadData()
     }
 }

@@ -50,6 +50,7 @@ class EpisodesTableViewController : UITableViewController {
             // variables to pass down
             ltvc.episode = episode
             ltvc.title = "\(episode.episodeNumber) - \(episode.episodeName)"
+            ltvc.isMovie = false
         }
     }
     
