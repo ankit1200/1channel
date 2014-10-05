@@ -121,6 +121,7 @@ class DataManager : NSObject
         
         // add image to the series
         let query = PFQuery(className: "Series")
+        query.limit = 1000
         query.whereKey("seriesID", equalTo: seriesId.stringByReplacingOccurrencesOfString("tv", withString: "watch", options: NSStringCompareOptions.LiteralSearch, range: nil))
         query.getFirstObjectInBackgroundWithBlock {
             (object: PFObject!, error: NSError!) -> Void in
@@ -140,9 +141,9 @@ class DataManager : NSObject
     func saveObjectToParse(name:String, id: String, info: NSDictionary, links: NSArray, image: String,  isMovie: Bool) {
 
         var query: PFQuery
-        
         if isMovie {
             query = PFQuery(className: "Movies")
+            query.limit = 1000
             var queryName = info["name"] as String
             queryName = queryName.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
             queryName = queryName.stringByReplacingOccurrencesOfString(":", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
@@ -150,6 +151,7 @@ class DataManager : NSObject
             
         } else {
             query = PFQuery(className: name)
+            query.limit = 1000
             query.whereKey("episodeNumber", equalTo: info["episode"])
             query.whereKey("episodeTitle", equalTo: info["title"])
         }

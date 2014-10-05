@@ -30,6 +30,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     func getSupportedSeries() {
         seriesList = []
         let query = PFQuery(className: "Series")
+        query.limit = 1000
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if error == nil {
@@ -48,9 +49,11 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     func getMovies() {
         movieList = []
         let query = PFQuery(className: "Movies")
+        query.limit = 1000
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if error == nil {
+                var count = (objects as Array<PFObject>).count
                 for object in objects {
                     let movie = Movie()
                     movie.name = (object as PFObject)["name"] as String
@@ -118,9 +121,11 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
 
-                var url = NSURL.URLWithString(seriesList[indexPath.row].imageUrl)
-                var data = NSData(contentsOfURL : url)
-                cell.image.image = UIImage(data : data)
+//                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    var url = NSURL.URLWithString(self.seriesList[indexPath.row].imageUrl)
+                    var data = NSData(contentsOfURL : url)
+                    cell.image.image = UIImage(data : data)
+//                })
             }
             
             return cell
@@ -131,9 +136,12 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             if movieList.count != 0 {
                 var movieName = movieList[indexPath.row].name.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                let url = NSURL.URLWithString(movieList[indexPath.row].imageUrl)
-                let data = NSData(contentsOfURL: url)
-                cell.image.image = UIImage(data: data)
+                
+//                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    let url = NSURL.URLWithString(self.movieList[indexPath.row].imageUrl)
+                    let data = NSData(contentsOfURL: url)
+                    cell.image.image = UIImage(data: data)
+//                })
             
             }
             return cell

@@ -30,6 +30,7 @@ class LinksTableViewController : UITableViewController {
     func getLinksForEpisode() {
         
         let query = PFQuery(className: episode.seriesName)
+        query.limit = 1000
         query.selectKeys(["links"])
         query.whereKey("season", equalTo: episode.season)
         query.whereKey("episodeNumber", equalTo: episode.episodeNumber)
@@ -90,7 +91,9 @@ class LinksTableViewController : UITableViewController {
             let link = link as Dictionary<String, String>
             let source = link["source"]!
             if source != "Watch HD" &&
-                source != "promptfile.com" {
+                source != "promptfile.com" &&
+                source != "sockshare.com" &&
+                source != "putlocker.com" {
                 self.links.append(link: link["link"]!, source: source)
             }
         }
@@ -102,7 +105,9 @@ class LinksTableViewController : UITableViewController {
             let link = link as Dictionary<String, String>
             let source = link["source"]!
             if source != "Watch HD" &&
-                source != "promptfile.com" {
+                source != "promptfile.com" &&
+                source != "sockshare.com" &&
+                source != "putlocker.com" {
                     self.links.append(link: link["links"]!, source: source)
             }
         }

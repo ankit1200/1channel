@@ -11,7 +11,6 @@
 		47706B3819D7D4DF00957A7E /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47706B3719D7D4DF00957A7E /* CollectionViewController.swift */; };
 		47706B3A19D7D72200957A7E /* SeriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47706B3919D7D72200957A7E /* SeriesCollectionViewCell.swift */; };
 		47B3EB6619DA58D80095B9FE /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B3EB6519DA58D80095B9FE /* MovieCollectionViewCell.swift */; };
-		47E20B1919D7EF4900EE26A1 /* 1channel.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 47E20B1819D7EF4900EE26A1 /* 1channel.entitlements */; };
 		EBBDFBF4196B1A3400BB8C14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */; };
 		EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */; };
 		EBBDFBFB196B1A3400BB8C14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBBDFBF9196B1A3400BB8C14 /* Main.storyboard */; };
@@ -49,7 +48,6 @@
 		47706B3719D7D4DF00957A7E /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		47706B3919D7D72200957A7E /* SeriesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesCollectionViewCell.swift; sourceTree = "<group>"; };
 		47B3EB6519DA58D80095B9FE /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
-		47E20B1819D7EF4900EE26A1 /* 1channel.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = 1channel.entitlements; sourceTree = "<group>"; };
 		EBBDFBEE196B1A3400BB8C14 /* 1channel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1channel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBDFBF2196B1A3400BB8C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -144,7 +142,6 @@
 		EBBDFBF1196B1A3400BB8C14 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				47E20B1819D7EF4900EE26A1 /* 1channel.entitlements */,
 				EBBDFCD2196B266A00BB8C14 /* 1channel-Bridging-Header.h */,
 				EBBDFBF2196B1A3400BB8C14 /* Info.plist */,
 			);
@@ -286,7 +283,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47E20B1919D7EF4900EE26A1 /* 1channel.entitlements in Resources */,
 				EBBDFBFB196B1A3400BB8C14 /* Main.storyboard in Resources */,
 				EBBDFBFD196B1A3500BB8C14 /* Images.xcassets in Resources */,
 			);
@@ -367,7 +363,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Appify LLC (A28NM53F25)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Appify LLC (A28NM53F25)";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -410,7 +407,9 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Appify LLC (A28NM53F25)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Appify LLC (A28NM53F25)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Appify LLC (A28NM53F25)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -435,7 +434,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = 1channel/1channel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
@@ -461,8 +459,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = 1channel/1channel.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
