@@ -89,12 +89,7 @@ class SeasonsTableViewController: UITableViewController {
     
     
     func downloadData(seasonsFromParseQuery: Array<String>) {
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            // background thread
-            let manager = DataManager()
-//            manager.downloadSeriesData(self.episode.seriesName, seriesId: self.episode.seriesId, seasonsFromParseQuery: seasonsFromParseQuery)
-//            manager.downloadMovieData()
-        })
+
     }
 }
 
