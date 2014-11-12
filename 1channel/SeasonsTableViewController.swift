@@ -67,7 +67,7 @@ class SeasonsTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         if seasons.count != 0 {
-            cell.textLabel!.text = seasons[indexPath.row]
+            cell.textLabel.text = seasons[indexPath.row]
         }
         return cell
     }
@@ -83,10 +83,17 @@ class SeasonsTableViewController: UITableViewController {
         }
         self.seasons = NSSet(array: self.seasons).allObjects as Array<String>
         self.seasons = sorted(self.seasons)
-        downloadData(self.seasons)
         self.tableView.reloadData()
     }
     
+    @IBAction func downloadNewEpisodes(sender: AnyObject) {
+        if !downloadStarted {
+            downloadData(self.seasons)
+            downloadStarted = true
+        } else {
+            self.tableView.reloadData()
+        }
+    }
     
     func downloadData(seasonsFromParseQuery: Array<String>) {
 

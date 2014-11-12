@@ -46,7 +46,7 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
 
     func loadAddressURL() {
         
-        let request = NSURLRequest(URL: (NSURL(string: linkAndSource!.link)))
+        let request = NSURLRequest(URL: (NSURL(string: linkAndSource!.link))!)
         webView!.scalesPageToFit = true
         webView!.loadRequest(request)
     }

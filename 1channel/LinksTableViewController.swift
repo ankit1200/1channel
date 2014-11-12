@@ -76,8 +76,18 @@ class LinksTableViewController : UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
+        let source = links[indexPath.row].source
+        
         if links.count != 0 {
-            cell.textLabel!.text = links[indexPath.row].source
+            cell.textLabel.text = source
+            
+            if source == "thevideo.me" ||
+                source == "gorillavid.in" ||
+                source == "bestreams.net" {
+                cell.textLabel.textColor = UIColor.greenColor()
+            } else {
+                cell.textLabel.textColor = UIColor.blackColor()
+            }
         }
         return cell
     }

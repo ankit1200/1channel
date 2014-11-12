@@ -70,7 +70,7 @@ class EpisodesTableViewController : UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         if episodes.count != 0 {
-            cell.textLabel!.text = episodes[indexPath.row].episodeName
+            cell.textLabel.text = episodes[indexPath.row].episodeName
             cell.detailTextLabel!.text = "Episode \(episodes[indexPath.row].episodeNumber)"
         }
         return cell

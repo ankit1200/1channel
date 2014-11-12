@@ -122,9 +122,9 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
 
 //                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var url = NSURL.URLWithString(self.seriesList[indexPath.row].imageUrl)
-                    var data = NSData(contentsOfURL : url)
-                    cell.image.image = UIImage(data : data)
+                    var url = NSURL(string: self.seriesList[indexPath.row].imageUrl)
+                    var data = NSData(contentsOfURL : url!)
+                    cell.image.image = UIImage(data : data!)
 //                })
             }
             
@@ -138,9 +138,9 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 
 //                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let url = NSURL.URLWithString(self.movieList[indexPath.row].imageUrl)
-                    let data = NSData(contentsOfURL: url)
-                    cell.image.image = UIImage(data: data)
+                    let url = NSURL(string: self.movieList[indexPath.row].imageUrl)
+                    let data = NSData(contentsOfURL: url!)
+                    cell.image.image = UIImage(data: data!)
 //                })
             
             }

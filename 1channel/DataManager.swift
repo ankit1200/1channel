@@ -12,6 +12,8 @@ import Foundation
 
 class DataManager : NSObject
 {
+    var imageDownloaded = false;
+    
     //MARK: download info
     
     func downloadSeriesData(seriesName: String, seriesId: String, seasonsFromParseQuery: Array<String>) {
@@ -20,7 +22,6 @@ class DataManager : NSObject
         // download number of seasons
         let seasons = self.downloadSeriesNameAndSeasons(seriesId)
         println("Seasons Downloaded")
-        
         // download episodes for each season and links for each episode and save it to parse
         let primewireId = seriesId.stringByReplacingOccurrencesOfString("watch", withString: "tv", options: NSStringCompareOptions.LiteralSearch, range: nil)
         var seriesClassName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
@@ -44,11 +45,11 @@ class DataManager : NSObject
         // get data from kimono
         var error: NSError?
         let seriesNameAndSeasonsUrl = "https://www.kimonolabs.com/api/70ef8q9g?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)"
-        var seriesNameAndSeasonsData:NSData? = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
+        var seriesNameAndSeasonsData:NSData? = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl)!)
         
         while seriesNameAndSeasonsData == nil {
             println("seasons fetch failed, trying again....")
-            seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
+            seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl)!)
         }
         
         // parse json outputted from Kimono
@@ -74,11 +75,11 @@ class DataManager : NSObject
             // get data from kimono
             var error: NSError?
             let episodesForSeasonUrl = "https://www.kimonolabs.com/api/2lcduwri?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(seasonNum)"
-            var episodesForSeasonData:NSData? = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
+            var episodesForSeasonData:NSData? = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl)!)
             
             while episodesForSeasonData == nil {
                 println("episodes fetch failed, trying again....")
-                episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
+                episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl)!)
             }
             
             // parse json outputted from Kimono
@@ -106,11 +107,11 @@ class DataManager : NSObject
         // get data from kimono
         var error: NSError?
         let linksForEpisodeUrl = "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episodeNum)"
-        var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
+        var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
         
         while linksForEpisodeData == nil {
             println("links fetch failed, trying again....")
-            linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
+            linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
         }
         
         // parse json outputted from Kimono
@@ -120,16 +121,19 @@ class DataManager : NSObject
         let episodeInfo = (results["episode_info"] as NSArray)[0] as NSDictionary
         
         // add image to the series
-        let query = PFQuery(className: "Series")
-        query.limit = 1000
-        query.whereKey("seriesID", equalTo: seriesId.stringByReplacingOccurrencesOfString("tv", withString: "watch", options: NSStringCompareOptions.LiteralSearch, range: nil))
-        query.getFirstObjectInBackgroundWithBlock {
-            (object: PFObject!, error: NSError!) -> Void in
-            if object != nil {
-                object["image"] = episodeInfo["image"];
-                println("image downloaded")
+        if !imageDownloaded {
+            let query = PFQuery(className: "Series")
+            query.limit = 1000
+            query.whereKey("seriesID", equalTo: seriesId.stringByReplacingOccurrencesOfString("tv", withString: "watch", options: NSStringCompareOptions.LiteralSearch, range: nil))
+            query.getFirstObjectInBackgroundWithBlock {
+                (object: PFObject!, error: NSError!) -> Void in
+                if object != nil {
+                    object["image"] = episodeInfo["image"];
+                    println("image downloaded")
+                }
+                object.saveInBackground()
             }
-            object.saveInBackground()
+            imageDownloaded = true
         }
         
         // save data to parse
@@ -214,11 +218,11 @@ class DataManager : NSObject
             // get data from kimono
             var error: NSError?
             let movieListUrl = "https://www.kimonolabs.com/api/drsxjk1y?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&page=\(i)"
-            var movieListData:NSData? = NSData(contentsOfURL: NSURL(string: movieListUrl))
+            var movieListData:NSData? = NSData(contentsOfURL: NSURL(string: movieListUrl)!)
             
             while movieListData == nil {
                 println("links fetch failed, trying again....")
-                movieListData = NSData(contentsOfURL: NSURL(string: movieListUrl))
+                movieListData = NSData(contentsOfURL: NSURL(string: movieListUrl)!)
             }
             
             // parse json outputted from Kimono
@@ -242,11 +246,11 @@ class DataManager : NSObject
         // get data from kimono
         var error: NSError?
         let linksForMovieUrl = "https://www.kimonolabs.com/api/bf6pc8gm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(movieId)"
-        var linksForMovieData:NSData? = NSData(contentsOfURL: NSURL(string: linksForMovieUrl))
+        var linksForMovieData:NSData? = NSData(contentsOfURL: NSURL(string: linksForMovieUrl)!)
         
         while linksForMovieData == nil {
             println("links fetch failed, trying again....")
-            linksForMovieData = NSData(contentsOfURL: NSURL(string: linksForMovieUrl))
+            linksForMovieData = NSData(contentsOfURL: NSURL(string: linksForMovieUrl)!)
         }
         
         // parse json outputted from Kimono
