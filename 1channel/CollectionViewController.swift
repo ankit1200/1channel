@@ -38,7 +38,13 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                     let series = Episode()
                     series.seriesName = (object as PFObject)["name"] as String
                     series.seriesId = (object as PFObject)["seriesID"] as String
-                    series.imageUrl = (object as PFObject)["image"] as String
+                    
+                    if (object as PFObject)["image"] != nil {
+                        series.imageUrl = (object as PFObject)["image"] as String
+                    } else {
+                        series.imageUrl = ""
+                    }
+                    
                     self.seriesList.append(series)
                 }
                 self.collectionView.reloadData()
@@ -121,11 +127,17 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
 
-//                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    var url = NSURL(string: self.seriesList[indexPath.row].imageUrl)
+//              dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                
+                let imageUrl = self.seriesList[indexPath.row].imageUrl
+                if imageUrl == "" {
+                    cell.image.image = UIImage(named: "noposter.jpg")
+                } else {
+                    var url = NSURL(string: imageUrl)
                     var data = NSData(contentsOfURL : url!)
                     cell.image.image = UIImage(data : data!)
-//                })
+                }
+//              })
             }
             
             return cell
@@ -138,9 +150,14 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 
 //                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                    let url = NSURL(string: self.movieList[indexPath.row].imageUrl)
-                    let data = NSData(contentsOfURL: url!)
-                    cell.image.image = UIImage(data: data!)
+                let imageUrl = self.movieList[indexPath.row].imageUrl
+                if imageUrl == "" {
+                    cell.image.image = UIImage(named: "noposter.jpg")
+                } else {
+                    var url = NSURL(string: imageUrl)
+                    var data = NSData(contentsOfURL : url!)
+                    cell.image.image = UIImage(data : data!)
+                }
 //                })
             
             }
