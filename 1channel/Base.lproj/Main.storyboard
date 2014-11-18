@@ -129,7 +129,13 @@
                             <outlet property="delegate" destination="GqX-TW-XEV" id="zsW-lL-AyP"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Episodes" id="Qaw-YP-0s0"/>
+                    <navigationItem key="navigationItem" title="Episodes" id="Qaw-YP-0s0">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="l0Y-Nl-hqs">
+                            <connections>
+                                <action selector="getNewEpisodes:" destination="GqX-TW-XEV" id="74M-oA-crf"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SCE-ms-Qre" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

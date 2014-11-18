@@ -12,7 +12,7 @@ class EpisodesTableViewController : UITableViewController {
     
     var episodes:[(episodeNumber: Int, episodeName: String)] = []
     var episode = Episode()
-    
+    var downloadStarted = false
     
     override func viewDidLoad()  {
         super.viewDidLoad()
@@ -38,7 +38,7 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     
-    //     #pragma mark - Segues
+    //MARK: Segues
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSources" {
@@ -77,6 +77,19 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     
+    //MARK: Refresh button
+    
+    @IBAction func getNewEpisodes(sender: AnyObject) {
+        
+        if !downloadStarted {
+            let season = [self.episode.season]
+            downloadData(season)
+            downloadStarted = true
+        } else {
+            self.tableView.reloadData()
+        }
+    }
+    
     //MARK: Helper Methods
     
     func getEpisodesFromQuery(objects: [AnyObject]!) {
@@ -90,5 +103,13 @@ class EpisodesTableViewController : UITableViewController {
         }
         self.episodes.sort({$0.0 < $1.0})
         self.tableView.reloadData()
+    }
+    
+    func downloadData(seasonsFromParseQuery: Array<String>) {
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            // background thread
+            let manager = DataManager()
+            manager.downloadSeriesData(self.episode.seriesName, seriesId: self.episode.seriesId, seasonsFromParseQuery: seasonsFromParseQuery)
+        })
     }
 }

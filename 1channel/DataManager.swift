@@ -20,7 +20,14 @@ class DataManager : NSObject
         println("Starting Series Download")
         
         // download number of seasons
-        let seasons = self.downloadSeriesNameAndSeasons(seriesId)
+        var seasons:Array<String>
+
+        if seasonsFromParseQuery.count == 1 {
+            seasons = seasonsFromParseQuery
+        } else {
+            seasons = self.downloadSeriesNameAndSeasons(seriesId)
+        }
+        
         println("Seasons Downloaded")
         // download episodes for each season and links for each episode and save it to parse
         let primewireId = seriesId.stringByReplacingOccurrencesOfString("watch", withString: "tv", options: NSStringCompareOptions.LiteralSearch, range: nil)
@@ -91,7 +98,7 @@ class DataManager : NSObject
             for episode in (results["episodes"] as NSArray) {
                 episodes.append((episode["episodeNumber"] as String), (episode["episodeName"] as String))
             }
-            
+
             // get links for each episode in current season
             // start downloading from the latest episode
             for episode in episodes.reverse() {
@@ -106,6 +113,7 @@ class DataManager : NSObject
     func downloadLinksForEpisode(seriesName:String, seriesId:String, season:String, episodeNum:String) {
         // get data from kimono
         var error: NSError?
+
         let linksForEpisodeUrl = "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episodeNum)"
         var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
         
@@ -117,6 +125,7 @@ class DataManager : NSObject
         // parse json outputted from Kimono
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
+
         let links = results["episode_links"] as NSArray
         let episodeInfo = (results["episode_info"] as NSArray)[0] as NSDictionary
         
