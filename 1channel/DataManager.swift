@@ -92,7 +92,7 @@ class DataManager : NSObject
             // parse json outputted from Kimono
             let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
             let results = jsonDict["results"] as NSDictionary
-            
+
             // create swift array from NSArray
             var episodes:Array<(String, String)> = []
             for episode in (results["episodes"] as NSArray) {
@@ -103,7 +103,7 @@ class DataManager : NSObject
             // start downloading from the latest episode
             for episode in episodes.reverse() {
                 var episodeNum = (episode.0).lowercaseString
-                episodeNum = episodeNum.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                episodeNum = episodeNum.stringByReplacingOccurrencesOfString("e", withString: "episode-", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 
                 self.downloadLinksForEpisode(seriesName, seriesId:seriesId, season:seasonNum, episodeNum:episodeNum)
             }

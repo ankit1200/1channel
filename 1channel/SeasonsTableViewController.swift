@@ -20,10 +20,10 @@ class SeasonsTableViewController: UITableViewController {
     }
     
     
-//MARK: Query From Parse
+    //MARK: Query From Parse
     
     func getSeasonsForSeries(){
-    
+        seasons = []
         let query = PFQuery(className: episode.seriesName)
         query.limit = 1000
         query.selectKeys(["season"])
@@ -36,28 +36,9 @@ class SeasonsTableViewController: UITableViewController {
         }
     }
     
-    
-//MARK: Segues
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showEpisodes" {
-            let etvc = segue.destinationViewController as EpisodesTableViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
-            episode.season = seasons[indexPath!.row]
-            
-            // variables being passed
-            etvc.episode = episode
-            etvc.title = episode.season
-        }
-    }
-    
 
-//MARK: Table View
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
+    //MARK: Table View
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return self.seasons.count
@@ -73,7 +54,7 @@ class SeasonsTableViewController: UITableViewController {
     }
     
     
-//MARK: Helper Methods
+    //MARK: Helper Methods
     
     func getSeasonsFromQuery(objects: [AnyObject]!) {
         
@@ -91,7 +72,7 @@ class SeasonsTableViewController: UITableViewController {
             downloadData(self.seasons)
             downloadStarted = true
         } else {
-            self.tableView.reloadData()
+            getSeasonsForSeries()
         }
     }
     
@@ -102,6 +83,21 @@ class SeasonsTableViewController: UITableViewController {
             manager.downloadSeriesData(self.episode.seriesName, seriesId: self.episode.seriesId, seasonsFromParseQuery: seasonsFromParseQuery)
 //            manager.downloadMovieData()
         })
+    }
+    
+    
+    //MARK: Segues
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showEpisodes" {
+            let etvc = segue.destinationViewController as EpisodesTableViewController
+            let indexPath = self.tableView.indexPathForSelectedRow()
+            episode.season = seasons[indexPath!.row]
+            
+            // variables being passed
+            etvc.episode = episode
+            etvc.title = episode.season
+        }
     }
 }
 

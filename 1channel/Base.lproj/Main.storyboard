@@ -130,7 +130,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Episodes" id="Qaw-YP-0s0">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="l0Y-Nl-hqs"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="l0Y-Nl-hqs">
+                            <connections>
+                                <action selector="getNewEpisodes:" destination="GqX-TW-XEV" id="TuP-XP-EK9"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SCE-ms-Qre" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -287,6 +291,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hHf-Xi-rJf"/>
+        <segue reference="omh-tC-sRS"/>
     </inferredMetricsTieBreakers>
 </document>

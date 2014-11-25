@@ -23,7 +23,7 @@ class EpisodesTableViewController : UITableViewController {
     //MARK: Query From Parse
     
     func getEpisodesForSeason() {
-        
+        episodes = []
         let query = PFQuery(className: episode.seriesName)
         query.limit = 1000
         query.selectKeys(["episodeNumber", "episodeTitle"])
@@ -38,29 +38,7 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     
-    //MARK: Segues
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showSources" {
-            let ltvc = segue.destinationViewController as LinksTableViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
-            
-            episode.episodeNumber = "Episode \(episodes[indexPath!.row].episodeNumber)"
-            episode.episodeName = episodes[indexPath!.row].episodeName
-            
-            // variables to pass down
-            ltvc.episode = episode
-            ltvc.title = "\(episode.episodeNumber) - \(episode.episodeName)"
-            ltvc.isMovie = false
-        }
-    }
-    
-    
     //MARK: Table View
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return episodes.count
@@ -86,7 +64,7 @@ class EpisodesTableViewController : UITableViewController {
             downloadData(season)
             downloadStarted = true
         } else {
-            self.tableView.reloadData()
+            getEpisodesForSeason()
         }
     }
     
@@ -111,5 +89,23 @@ class EpisodesTableViewController : UITableViewController {
             let manager = DataManager()
             manager.downloadSeriesData(self.episode.seriesName, seriesId: self.episode.seriesId, seasonsFromParseQuery: seasonsFromParseQuery)
         })
+    }
+    
+    
+    //MARK: Segues
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showSources" {
+            let ltvc = segue.destinationViewController as LinksTableViewController
+            let indexPath = self.tableView.indexPathForSelectedRow()
+            
+            episode.episodeNumber = "Episode \(episodes[indexPath!.row].episodeNumber)"
+            episode.episodeName = episodes[indexPath!.row].episodeName
+            
+            // variables to pass down
+            ltvc.episode = episode
+            ltvc.title = "\(episode.episodeNumber) - \(episode.episodeName)"
+            ltvc.isMovie = false
+        }
     }
 }
