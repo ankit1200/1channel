@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vC3-pB-5Vb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vC3-pB-5Vb">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Detail-->
@@ -18,22 +18,74 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleAspectFit" mediaPlaybackRequiresUserAction="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbh-me-wso">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <dataDetectorType key="dataDetectorTypes"/>
                             </webView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mfs-Kl-bbH">
+                                <rect key="frame" x="288" y="564" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="Ehh-s1-NDm"/>
+                                    <constraint firstAttribute="width" constant="24" id="skH-dV-A1h"/>
+                                </constraints>
+                                <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="UIButtonBarRefresh"/>
+                                <connections>
+                                    <action selector="refreshButtonTapped:" destination="JEX-9P-axG" eventType="touchUpInside" id="QDg-kr-FAR"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBX-gB-i5q">
+                                <rect key="frame" x="363" y="564" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="35w-9P-Ifb"/>
+                                    <constraint firstAttribute="height" constant="24" id="H3c-em-vNz"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="forwardGray">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="forwardButtonTapped:" destination="JEX-9P-axG" eventType="touchUpInside" id="Tds-JG-0Bd"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86A-I1-jt8">
+                                <rect key="frame" x="213" y="564" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="ZS1-eF-Ski"/>
+                                    <constraint firstAttribute="height" constant="24" id="cZo-yh-vpo"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="backGray">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButtonTapped:" destination="JEX-9P-axG" eventType="touchUpInside" id="gSF-FI-XOd"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="Mfs-Kl-bbH" firstAttribute="leading" secondItem="86A-I1-jt8" secondAttribute="trailing" constant="51" id="3eS-Or-Lcq"/>
                             <constraint firstItem="bbh-me-wso" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" id="4d9-IM-gHe"/>
                             <constraint firstAttribute="trailing" secondItem="bbh-me-wso" secondAttribute="trailing" id="6RS-ou-D8S"/>
-                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="bbh-me-wso" secondAttribute="bottom" id="cWz-vX-CKD"/>
+                            <constraint firstItem="SBX-gB-i5q" firstAttribute="leading" secondItem="Mfs-Kl-bbH" secondAttribute="trailing" constant="51" id="GRH-1E-TtZ"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="Mfs-Kl-bbH" secondAttribute="bottom" constant="12" id="IJF-dn-jfe"/>
+                            <constraint firstItem="Mfs-Kl-bbH" firstAttribute="leading" secondItem="svH-Pt-448" secondAttribute="leading" constant="277" id="YJq-Th-GJE"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="bbh-me-wso" secondAttribute="bottom" constant="44" id="cWz-vX-CKD"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="SBX-gB-i5q" secondAttribute="bottom" constant="12" id="fzV-Ad-GrV"/>
+                            <constraint firstItem="GAO-Cl-Wes" firstAttribute="top" secondItem="86A-I1-jt8" secondAttribute="bottom" constant="12" id="oVo-iG-Eg9"/>
+                            <constraint firstAttribute="centerX" secondItem="Mfs-Kl-bbH" secondAttribute="centerX" id="p1u-dq-0Ey"/>
                             <constraint firstItem="bbh-me-wso" firstAttribute="top" secondItem="svH-Pt-448" secondAttribute="top" id="zRH-Pf-3QS"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="YJq-Th-GJE"/>
+                            </mask>
+                        </variation>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Detail" id="mOI-FS-AaM"/>
                     <connections>
+                        <outlet property="backButton" destination="86A-I1-jt8" id="cnI-SD-Qdi"/>
+                        <outlet property="forwardButton" destination="SBX-gB-i5q" id="Lvw-Ef-Vrf"/>
                         <outlet property="webView" destination="bbh-me-wso" id="g0g-Gh-CD8"/>
                     </connections>
                 </viewController>
@@ -290,6 +342,11 @@
             <point key="canvasLocation" x="499" y="-634"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="UIButtonBarRefresh" width="18" height="22"/>
+        <image name="backGray" width="256" height="256"/>
+        <image name="forwardGray" width="256" height="256"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="omh-tC-sRS"/>
     </inferredMetricsTieBreakers>

@@ -79,14 +79,14 @@ class LinksTableViewController : UITableViewController {
         let source = links[indexPath.row].source
         
         if links.count != 0 {
-            cell.textLabel.text = source
+            cell.textLabel?.text = source
             
             if source == "thevideo.me" ||
                 source == "gorillavid.in" ||
                 source == "bestreams.net" {
-                cell.textLabel.textColor = UIColor.greenColor()
+                cell.textLabel?.textColor = UIColor.greenColor()
             } else {
-                cell.textLabel.textColor = UIColor.blackColor()
+                cell.textLabel?.textColor = UIColor.blackColor()
             }
         }
         return cell
@@ -103,7 +103,8 @@ class LinksTableViewController : UITableViewController {
             if source != "Watch HD" &&
                 source != "promptfile.com" &&
                 source != "sockshare.com" &&
-                source != "putlocker.com" {
+                source != "putlocker.com" &&
+                source != "Sponsor Host" {
                 self.links.append(link: link["link"]!, source: source)
             }
         }

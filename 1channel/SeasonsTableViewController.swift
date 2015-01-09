@@ -22,7 +22,7 @@ class SeasonsTableViewController: UITableViewController {
     
     //MARK: Query From Parse
     
-    func getSeasonsForSeries(){
+    func getSeasonsForSeries() {
         seasons = []
         let query = PFQuery(className: episode.seriesName)
         query.limit = 1000
@@ -48,7 +48,7 @@ class SeasonsTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         if seasons.count != 0 {
-            cell.textLabel.text = seasons[indexPath.row]
+            cell.textLabel?.text = seasons[indexPath.row]
         }
         return cell
     }
