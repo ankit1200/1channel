@@ -82,8 +82,8 @@ class LinksTableViewController : UITableViewController {
             cell.textLabel?.text = source
             
             if source == "thevideo.me" ||
-                source == "gorillavid.in" ||
-                source == "bestreams.net" {
+                source == "gorillavid.in" {
+//                source == "bestreams.net" {
                 cell.textLabel?.textColor = UIColor.greenColor()
             } else {
                 cell.textLabel?.textColor = UIColor.blackColor()
