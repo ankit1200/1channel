@@ -260,6 +260,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="jUM-pg-a3o">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="20" minimumInteritemSpacing="0.0" id="raw-h9-J9Y">
                                     <size key="itemSize" width="150" height="225"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -348,6 +349,6 @@
         <image name="forwardGray" width="256" height="256"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="omh-tC-sRS"/>
+        <segue reference="hHf-Xi-rJf"/>
     </inferredMetricsTieBreakers>
 </document>

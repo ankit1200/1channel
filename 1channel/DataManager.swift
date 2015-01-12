@@ -147,50 +147,75 @@ class DataManager : NSObject
         
         // save data to parse
         if !checkFakeLinks(links) {
-            self.saveObjectToParse(seriesName, id: seriesId, info: episodeInfo, links: links, image:"", isMovie: false);
+            self.saveObjectToParse(seriesName, id: seriesId, info: episodeInfo, links: links, image:"", year:"", isMovie: false);
         }
     }
     
-    func saveObjectToParse(name:String, id: String, info: NSDictionary, links: NSArray, image: String,  isMovie: Bool) {
+    func saveObjectToParse(name:String, id: String, info: NSDictionary, links: NSArray, image: String, year:String, isMovie: Bool) {
 
         var query: PFQuery
         if isMovie {
             query = PFQuery(className: "Movies")
+//            var queryName = name
+//            queryName = queryName.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
+//            queryName = queryName.stringByReplacingOccurrencesOfString(":", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            query.whereKey("movieId", equalTo: id)
             query.limit = 1000
-            var queryName = info["name"] as String
-            queryName = queryName.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            queryName = queryName.stringByReplacingOccurrencesOfString(":", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            query.whereKey("name", equalTo: "movie_\(queryName)")
-            
-        } else {
-            query = PFQuery(className: name)
-            query.limit = 1000
-            query.whereKey("episodeNumber", equalTo: info["episode"])
-            query.whereKey("episodeTitle", equalTo: info["title"])
-        }
 
-        query.getFirstObjectInBackgroundWithBlock {
-            (foundObject: PFObject!, error: NSError!) -> Void in
-            if foundObject == nil {
-                // The find failed create new object and add
-                var object: PFObject!
-                if isMovie {
-                    object = PFObject(className: "Movies")
-                } else {
-                    object = PFObject(className:name)
-                }
-                self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, isMovie: isMovie)
+//            println("1")
+//            query.findObjectsInBackgroundWithBlock {
+//                (objects: [AnyObject]!, error: NSError!) -> Void in
+//                println(objects)
+//                var foundObject = objects[0] as? PFObject
+//                if foundObject == nil {
+//                    // The find failed create new object and add
+//                    var object = PFObject(className: "Movies")
+//                    self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
+//                    println("new object\n\(info)")
+//                } else {
+//                    // The find succeeded update found object
+//                    self.configureParseObject(foundObject!, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
+//                    println("update object\n\(info)")
+//                }
+//            }
+//            println("2")
+            
+            var object = query.getFirstObject()
+            if object == nil {
+                var newObject = PFObject(className: "Movies")
+                self.configureParseObject(newObject, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
                 println("new object\n\(info)")
             } else {
                 // The find succeeded update found object
-                self.configureParseObject(foundObject, name: name, id: id, info: info, links: links, image: image, isMovie: isMovie)
+                self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
                 println("update object\n\(info)")
+            }
+            
+            
+        } else {
+            query = PFQuery(className: name)
+            query.whereKey("episodeNumber", equalTo: info["episode"])
+            query.whereKey("season", equalTo: info["season"])
+            query.limit = 1000
+        
+            query.getFirstObjectInBackgroundWithBlock {
+                (foundObject: PFObject!, error: NSError!) -> Void in
+                if foundObject == nil {
+                    // The find failed create new object and add
+                    var object = PFObject(className:name)
+                    self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: false)
+                    println("new object\n\(info)")
+                } else {
+                    // The find succeeded update found object
+                    self.configureParseObject(foundObject, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: false)
+                    println("update object\n\(info)")
+                }
             }
         }
     }
     
     // add object to parse
-    func configureParseObject(object:PFObject, name: String, id: String, info: NSDictionary, links:NSArray, image:String, isMovie: Bool) {
+    func configureParseObject(object:PFObject, name: String, id: String, info: NSDictionary, links:NSArray, image:String, year:String, isMovie: Bool) {
 
         if !isMovie {
             object["seriesName"] = name
@@ -205,6 +230,7 @@ class DataManager : NSObject
             object["movieId"] = id
             object["links"] = links
             object["image"] = image
+            object["year"] = year
         }
         object.saveInBackground()
     }
@@ -215,7 +241,9 @@ class DataManager : NSObject
         for link in links {
             let link = link as Dictionary<String, String>
             
-            if link["source"] != "Watch HD" {
+            if link["source"] != "Watch HD" ||
+                link["source"] != "Sponsor Host" ||
+                link["source"] != "Promo Host" {
                 return false;
             }
         }
@@ -223,7 +251,7 @@ class DataManager : NSObject
     }
     
     func downloadMovieList() {
-        for i in 1...5 {
+        for i in stride(from: 36, through: 1, by: -1) {
             // get data from kimono
             var error: NSError?
             let movieListUrl = "https://www.kimonolabs.com/api/drsxjk1y?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&page=\(i)"
@@ -245,7 +273,8 @@ class DataManager : NSObject
                 name = name.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 name = name.stringByReplacingOccurrencesOfString(":", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 name = "movie_\(name)"
-                let id = (movieDict["href"] as String).stringByReplacingOccurrencesOfString("http://www.primewire.ag/", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                var id = (movieDict["href"] as String).stringByReplacingOccurrencesOfString("http://www.primewire.ag/", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                id = id.stringByReplacingOccurrencesOfString("-online-free", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 downloadMovieLinks(name, movieId: id, image: movieDict["src"] as String)
             }
         }
@@ -268,8 +297,9 @@ class DataManager : NSObject
         if results["links"] != nil {
             let links = results["links"] as NSArray
             let movieInfo = (results["movieInfo"] as NSArray)[0] as NSDictionary
-        
-            self.saveObjectToParse(movieName, id: movieId, info: movieInfo, links: links, image: image, isMovie:true)
+            var name = (movieInfo["name"] as String).stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            var year = name.componentsSeparatedByString("(")[1].componentsSeparatedByString(")")[0]
+            self.saveObjectToParse(movieName, id: movieId, info: movieInfo, links: links, image: image, year:year, isMovie:true)
         }
     }
 }

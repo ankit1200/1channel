@@ -19,6 +19,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet var segmentControl: UISegmentedControl!
     
     override func viewDidAppear(animated: Bool) {
+//        let manager = DataManager()
+//        manager.downloadMovieData()
         if segmentControl.selectedSegmentIndex == 0 {
             getSupportedSeries()
         } else if segmentControl.selectedSegmentIndex == 1 {
@@ -56,10 +58,10 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         movieList = []
         let query = PFQuery(className: "Movies")
         query.limit = 1000
+        query.orderByDescending("updatedAt")
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if error == nil {
-                var count = (objects as Array<PFObject>).count
                 for object in objects {
                     let movie = Movie()
                     movie.name = (object as PFObject)["name"] as String
