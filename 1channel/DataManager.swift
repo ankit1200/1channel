@@ -10,6 +10,17 @@
 
 import Foundation
 
+extension NSDate
+{
+    convenience
+    init(dateString:String) {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = "LLLL dd, yyyy"
+        let d = dateStringFormatter.dateFromString(dateString)
+        self.init(timeInterval:0, sinceDate:d!)
+    }
+}
+
 class DataManager : NSObject
 {
     var imageDownloaded = false;
@@ -230,7 +241,7 @@ class DataManager : NSObject
             object["movieId"] = id
             object["links"] = links
             object["image"] = image
-            object["year"] = year
+            object["dateReleased"] = NSDate(dateString: year)
         }
         object.saveInBackground()
     }
@@ -251,7 +262,7 @@ class DataManager : NSObject
     }
     
     func downloadMovieList() {
-        for i in stride(from: 36, through: 1, by: -1) {
+        for i in stride(from: 1, through: 1, by: -1) {
             // get data from kimono
             var error: NSError?
             let movieListUrl = "https://www.kimonolabs.com/api/drsxjk1y?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&page=\(i)"
@@ -297,8 +308,7 @@ class DataManager : NSObject
         if results["links"] != nil {
             let links = results["links"] as NSArray
             let movieInfo = (results["movieInfo"] as NSArray)[0] as NSDictionary
-            var name = (movieInfo["name"] as String).stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            var year = name.componentsSeparatedByString("(")[1].componentsSeparatedByString(")")[0]
+            var year = movieInfo["releaseDate"] as String
             self.saveObjectToParse(movieName, id: movieId, info: movieInfo, links: links, image: image, year:year, isMovie:true)
         }
     }

@@ -19,13 +19,16 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet var segmentControl: UISegmentedControl!
     
     override func viewDidAppear(animated: Bool) {
-//        let manager = DataManager()
-//        manager.downloadMovieData()
         if segmentControl.selectedSegmentIndex == 0 {
             getSupportedSeries()
         } else if segmentControl.selectedSegmentIndex == 1 {
             getMovies()
         }
+        // update movies whenever app opens
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let manager = DataManager()
+            manager.downloadMovieData()
+        })
     }
 
     //MARK: parse methods
@@ -58,7 +61,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         movieList = []
         let query = PFQuery(className: "Movies")
         query.limit = 1000
-        query.orderByDescending("updatedAt")
+        query.orderByDescending("dateReleased")
         query.findObjectsInBackgroundWithBlock {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if error == nil {
@@ -103,7 +106,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             
             // analytics
             let dimensions = [
-                "movieName": episode.seriesName,
+                "movieName": movieList[indexPath.row],
             ]
             // Send the dimensions to Parse along with the 'search' event
             PFAnalytics.trackEvent("watchMovie", dimensions:dimensions)
