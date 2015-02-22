@@ -17,6 +17,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     var selectedIndex = 0
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var segmentControl: UISegmentedControl!
+    @IBOutlet var movieRefresh: UIBarButtonItem!
+
     
     override func viewDidAppear(animated: Bool) {
         if segmentControl.selectedSegmentIndex == 0 {
@@ -24,11 +26,6 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         } else if segmentControl.selectedSegmentIndex == 1 {
             getMovies()
         }
-        // update movies whenever app opens
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let manager = DataManager()
-            manager.downloadMovieData()
-        })
     }
 
     //MARK: parse methods
@@ -106,7 +103,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             
             // analytics
             let dimensions = [
-                "movieName": movieList[indexPath.row],
+                "movieName": movieList[indexPath.row].name,
             ]
             // Send the dimensions to Parse along with the 'search' event
             PFAnalytics.trackEvent("watchMovie", dimensions:dimensions)
@@ -131,18 +128,17 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             if seriesList.count != 0 {
                 var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
-
-//              dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 
                 let imageUrl = self.seriesList[indexPath.row].imageUrl
                 if imageUrl == "" {
                     cell.image.image = UIImage(named: "noposter.jpg")
                 } else {
-                    var url = NSURL(string: imageUrl)
-                    var data = NSData(contentsOfURL : url!)
-                    cell.image.image = UIImage(data : data!)
+//                    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                        var url = NSURL(string: imageUrl)
+                        var data = NSData(contentsOfURL : url!)
+                        cell.image.image = UIImage(data : data!)
+//                    })
                 }
-//              })
             }
             
             return cell
@@ -154,16 +150,18 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 var movieName = movieList[indexPath.row].name.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 
-//                dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                 let imageUrl = self.movieList[indexPath.row].imageUrl
                 if imageUrl == "" {
                     cell.image.image = UIImage(named: "noposter.jpg")
                 } else {
-                    var url = NSURL(string: imageUrl)
-                    var data = NSData(contentsOfURL : url!)
-                    cell.image.image = UIImage(data : data!)
+                    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                        var url = NSURL(string: imageUrl)
+                        var data = NSData(contentsOfURL : url!)
+                        dispatch_async(dispatch_get_main_queue(), {
+                            cell.image.image = UIImage(data : data!)
+                        })
+                    })
                 }
-//                })
             
             }
             return cell
@@ -175,6 +173,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         selectedIndex = indexPath.row
     }
     
+    // MARK: segment value changed
     
     @IBAction func segmentValueChanged(sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
@@ -183,4 +182,23 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             getMovies()
         }
     }
+    
+    @IBAction func refreshMovies(sender: AnyObject) {
+        // update movies whenever app opens
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            let manager = DataManager()
+            manager.downloadMovieData()
+            dispatch_async(dispatch_get_main_queue(), {
+                // Instantiate an alert view object
+                var alertView = UIAlertView()
+                alertView.title = "Movies Updated"
+                alertView.message = "The Movies have been updated!"
+                alertView.delegate = nil
+                alertView.addButtonWithTitle("OK")
+                alertView.show()
+            })
+            
+        })
+    }
+    
 }

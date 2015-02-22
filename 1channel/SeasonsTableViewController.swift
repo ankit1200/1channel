@@ -63,7 +63,7 @@ class SeasonsTableViewController: UITableViewController {
             self.seasons.append(season)
         }
         self.seasons = NSSet(array: self.seasons).allObjects as Array<String>
-        self.seasons = sorted(self.seasons)
+        self.seasons.sort({$0 < $1})
         self.tableView.reloadData()
     }
     
@@ -81,7 +81,6 @@ class SeasonsTableViewController: UITableViewController {
             // background thread
             let manager = DataManager()
             manager.downloadSeriesData(self.episode.seriesName, seriesId: self.episode.seriesId, seasonsFromParseQuery: seasonsFromParseQuery)
-//            manager.downloadMovieData()
         })
     }
     

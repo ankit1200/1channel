@@ -332,9 +332,15 @@
                                 <action selector="segmentValueChanged:" destination="4SR-2c-2RJ" eventType="valueChanged" id="uiz-cq-PiW"/>
                             </connections>
                         </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="Pbf-W3-xf4">
+                            <connections>
+                                <action selector="refreshMovies:" destination="4SR-2c-2RJ" id="rm9-CW-XVn"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="jUM-pg-a3o" id="qYM-Be-C43"/>
+                        <outlet property="movieRefresh" destination="Pbf-W3-xf4" id="USa-gn-f0d"/>
                         <outlet property="segmentControl" destination="ILc-lH-Bgh" id="gJ2-pi-08q"/>
                     </connections>
                 </viewController>

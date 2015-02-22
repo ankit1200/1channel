@@ -118,7 +118,9 @@ class LinksTableViewController : UITableViewController {
             if source != "Watch HD" &&
                 source != "promptfile.com" &&
                 source != "sockshare.com" &&
-                source != "putlocker.com" {
+                source != "putlocker.com" &&
+                source != "Sponsor Host" &&
+                source != "Promo Host" {
                     self.links.append(link: link["links"]!, source: source)
             }
         }
