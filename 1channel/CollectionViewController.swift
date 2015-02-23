@@ -8,17 +8,20 @@
 
 import UIKit
 
-class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
 
+    var filteredSeriesList = Array<Episode>()
     var seriesList = Array<Episode>()
     let episode = Episode()
+    var filteredMovieList = Array<Movie>()
     var movieList = Array<Movie>()
     let movie = Movie()
     var selectedIndex = 0
     @IBOutlet var collectionView: UICollectionView!
     @IBOutlet var segmentControl: UISegmentedControl!
     @IBOutlet var movieRefresh: UIBarButtonItem!
-
+    @IBOutlet var searchBar: UISearchBar!
+    @IBOutlet var dismissKeyboardButton: UIButton!
     
     override func viewDidAppear(animated: Bool) {
         if segmentControl.selectedSegmentIndex == 0 {
@@ -38,7 +41,10 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             if error == nil {
                 for object in objects {
                     let series = Episode()
-                    series.seriesName = (object as PFObject)["name"] as String
+                    var seriesName = (object as PFObject)["name"] as String
+                    seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    series.seriesName = seriesName
                     series.seriesId = (object as PFObject)["seriesID"] as String
                     
                     if (object as PFObject)["image"] != nil {
@@ -64,7 +70,10 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             if error == nil {
                 for object in objects {
                     let movie = Movie()
-                    movie.name = (object as PFObject)["name"] as String
+                    var movieName = (object as PFObject)["name"] as String
+                    movieName = movieName.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    movie.name = movieName
                     movie.id = (object as PFObject)["movieId"] as String
                     movie.imageUrl = (object as PFObject)["image"] as String
                     movie.links = (object as PFObject)["links"] as NSArray
@@ -75,49 +84,15 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
-    //MARK: Segues
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "showSeasons"{
-            // destination view controller
-            let stvc = segue.destinationViewController as SeasonsTableViewController
-            let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
-            
-            // variables being passed
-            stvc.episode = seriesList[indexPath.row]
-            
-            // analytics
-            let dimensions = [
-                "seriesName": episode.seriesName,
-            ]
-            // Send the dimensions to Parse along with the 'search' event
-            PFAnalytics.trackEvent("watchSeries", dimensions:dimensions)
-        } else if segue.identifier == "showSources" {
-            // destination view controller
-            let ltvc = segue.destinationViewController as LinksTableViewController
-            let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
-            
-            // variables being passed
-            ltvc.movie = movieList[indexPath.row]
-            ltvc.isMovie = true
-            
-            // analytics
-            let dimensions = [
-                "movieName": movieList[indexPath.row].name,
-            ]
-            // Send the dimensions to Parse along with the 'search' event
-            PFAnalytics.trackEvent("watchMovie", dimensions:dimensions)
-        }
-    }
-
 
     // MARK: UICollectionViewDataSource
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if segmentControl.selectedSegmentIndex == 0 {
-            return self.seriesList.count
+            
+            return (filteredSeriesList.count == 0 ) ? seriesList.count : filteredSeriesList.count
         } else {
-            return self.movieList.count
+            return (filteredMovieList.count == 0) ? movieList.count : filteredMovieList.count
         }
     }
     
@@ -125,11 +100,11 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         if segmentControl.selectedSegmentIndex == 0 {
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("seriesCell", forIndexPath: indexPath) as SeriesCollectionViewCell
             
+            // make sure all the series have been loaded from backend
             if seriesList.count != 0 {
-                var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                let episode = (filteredSeriesList.count == 0 ) ? seriesList[indexPath.row] : filteredSeriesList[indexPath.row]
                 
-                let imageUrl = self.seriesList[indexPath.row].imageUrl
+                let imageUrl = episode.imageUrl
                 if imageUrl == "" {
                     cell.image.image = UIImage(named: "noposter.jpg")
                 } else {
@@ -146,11 +121,11 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             
             let cell = collectionView.dequeueReusableCellWithReuseIdentifier("movieCell", forIndexPath: indexPath) as MovieCollectionViewCell
             
+            // make sure all the movies have been loaded from backend
             if movieList.count != 0 {
-                var movieName = movieList[indexPath.row].name.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                let movie = (filteredMovieList.count == 0) ? movieList[indexPath.row] : filteredMovieList[indexPath.row]
                 
-                let imageUrl = self.movieList[indexPath.row].imageUrl
+                let imageUrl = movie.imageUrl
                 if imageUrl == "" {
                     cell.image.image = UIImage(named: "noposter.jpg")
                 } else {
@@ -173,7 +148,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         selectedIndex = indexPath.row
     }
     
-    // MARK: segment value changed
+    // MARK: Segment Value Changed
     
     @IBAction func segmentValueChanged(sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
@@ -182,6 +157,37 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             getMovies()
         }
     }
+    
+    
+    // MARK: Search Bar Methods
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if segmentControl.selectedSegmentIndex == 0 {
+            filteredSeriesList = seriesList.filter({(episode: Episode) -> Bool in
+                let stringMatchName = episode.seriesName.lowercaseString.rangeOfString(searchText.lowercaseString)
+                return stringMatchName != nil
+            })
+        } else if segmentControl.selectedSegmentIndex == 1 {
+            filteredMovieList = movieList.filter({(movie: Movie) -> Bool in
+                let stringMatchName = movie.name.lowercaseString.rangeOfString(searchText.lowercaseString)
+                return stringMatchName != nil})
+        }
+        collectionView.reloadData()
+    }
+    
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        dismissKeyboardButton.hidden = false
+    }
+    
+    @IBAction func dismissKeyboard(sender: AnyObject) {
+        searchBar.resignFirstResponder()
+        dismissKeyboardButton.hidden = true
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    // MARK: Refresh Movies
     
     @IBAction func refreshMovies(sender: AnyObject) {
         // update movies whenever app opens
@@ -201,4 +207,39 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         })
     }
     
+    
+    //MARK: Segues
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showSeasons"{
+            // destination view controller
+            let stvc = segue.destinationViewController as SeasonsTableViewController
+            let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
+            
+            // variables being passed
+            stvc.episode = (filteredSeriesList.count == 0 ) ? seriesList[indexPath.row] : filteredSeriesList[indexPath.row]
+            
+            // analytics
+            let dimensions = [
+                "seriesName": episode.seriesName,
+            ]
+            // Send the dimensions to Parse along with the 'search' event
+            PFAnalytics.trackEvent("watchSeries", dimensions:dimensions)
+        } else if segue.identifier == "showSources" {
+            // destination view controller
+            let ltvc = segue.destinationViewController as LinksTableViewController
+            let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
+            
+            // variables being passed
+            ltvc.movie = (filteredMovieList.count == 0) ? movieList[indexPath.row] : filteredMovieList[indexPath.row]
+            ltvc.isMovie = true
+            
+            // analytics
+            let dimensions = [
+                "movieName": movieList[indexPath.row].name,
+            ]
+            // Send the dimensions to Parse along with the 'search' event
+            PFAnalytics.trackEvent("watchMovie", dimensions:dimensions)
+        }
+    }
 }
