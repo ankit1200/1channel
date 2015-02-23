@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UISearchControllerDelegate {
+class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
 
     var filteredSeriesList = Array<Episode>()
     var seriesList = Array<Episode>()
@@ -193,14 +193,12 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         // update movies whenever app opens
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             let manager = DataManager()
+            var alertView = UIAlertView(title: "Movies Updating", message: "The Movies are being updated!", delegate: nil, cancelButtonTitle: "OK")
+            alertView.show()
             manager.downloadMovieData()
             dispatch_async(dispatch_get_main_queue(), {
                 // Instantiate an alert view object
-                var alertView = UIAlertView()
-                alertView.title = "Movies Updated"
-                alertView.message = "The Movies have been updated!"
-                alertView.delegate = nil
-                alertView.addButtonWithTitle("OK")
+                let alertView = UIAlertView(title: "Movies Updated", message: "The Movies have been updated!", delegate: nil, cancelButtonTitle: "OK")
                 alertView.show()
             })
             
