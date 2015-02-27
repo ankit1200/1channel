@@ -24,7 +24,7 @@ class EpisodesTableViewController : UITableViewController {
     
     func getEpisodesForSeason() {
         episodes = []
-        let query = PFQuery(className: episode.seriesName)
+        let query = PFQuery(className: episode.parseQueryName)
         query.limit = 1000
         query.selectKeys(["episodeNumber", "episodeTitle"])
         query.whereKey("season", equalTo: episode.season)

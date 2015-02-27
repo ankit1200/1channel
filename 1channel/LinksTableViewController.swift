@@ -18,7 +18,7 @@ class LinksTableViewController : UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         if isMovie {
-            self.getLinksForMovie(movie.links)
+            self.getLinksForMovie()
         } else {
             self.getLinksForEpisode()
         }
@@ -29,7 +29,7 @@ class LinksTableViewController : UITableViewController {
     
     func getLinksForEpisode() {
         
-        let query = PFQuery(className: episode.seriesName)
+        let query = PFQuery(className: episode.parseQueryName)
         query.limit = 1000
         query.selectKeys(["links"])
         query.whereKey("season", equalTo: episode.season)
@@ -111,17 +111,18 @@ class LinksTableViewController : UITableViewController {
         self.tableView.reloadData()
     }
     
-    func getLinksForMovie(linksArray: NSArray) {
-        for link in linksArray {
+    func getLinksForMovie() {
+        for link in movie.links {
             let link = link as Dictionary<String, String>
-            let source = link["source"]!
+            let source = link["source"]
             if source != "Watch HD" &&
                 source != "promptfile.com" &&
                 source != "sockshare.com" &&
                 source != "putlocker.com" &&
                 source != "Sponsor Host" &&
-                source != "Promo Host" {
-                    self.links.append(link: link["links"]!, source: source)
+                source != "Promo Host" &&
+                source != "" {
+                    self.links.append(link: link["links"]!, source: source!)
             }
         }
         self.tableView.reloadData()

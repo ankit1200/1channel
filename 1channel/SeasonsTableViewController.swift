@@ -17,6 +17,7 @@ class SeasonsTableViewController: UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         self.getSeasonsForSeries()
+        self.title = episode.seriesName
     }
     
     
@@ -24,7 +25,7 @@ class SeasonsTableViewController: UITableViewController {
     
     func getSeasonsForSeries() {
         seasons = []
-        let query = PFQuery(className: episode.seriesName)
+        let query = PFQuery(className: episode.parseQueryName)
         query.limit = 1000
         query.selectKeys(["season"])
         
@@ -32,6 +33,8 @@ class SeasonsTableViewController: UITableViewController {
             (objects: [AnyObject]!, error: NSError!) -> Void in
             if error == nil {
                 self.getSeasonsFromQuery(objects)
+            } else {
+                println(error)
             }
         }
     }

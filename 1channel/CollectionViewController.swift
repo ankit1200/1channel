@@ -42,6 +42,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 for object in objects {
                     let series = Episode()
                     var seriesName = (object as PFObject)["name"] as String
+                    series.parseQueryName = seriesName
                     seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                     seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
                     series.seriesName = seriesName

@@ -12,6 +12,7 @@ import UIKit
 class Episode {
     
     var seriesName = ""
+    var parseQueryName = ""
     var seriesId = ""
     var season = ""
     var episodeNumber = ""
