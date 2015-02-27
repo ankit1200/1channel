@@ -157,7 +157,7 @@ class DataManager : NSObject
         }
         
         // save data to parse
-        if !checkFakeLinks(links) {
+        if checkFakeLinks(links) {
             self.saveObjectToParse(seriesName, id: seriesId, info: episodeInfo, links: links, image:"", year:"", isMovie: false);
         }
     }
@@ -247,7 +247,7 @@ class DataManager : NSObject
     }
     
     // check to see if season is fake
-    func checkFakeLinks(links: NSArray) -> Bool{
+    func checkFakeLinks(links: NSArray) -> Bool {
         
         for link in links {
             let link = link as Dictionary<String, String>
@@ -255,10 +255,10 @@ class DataManager : NSObject
             if link["source"] != "Watch HD" ||
                 link["source"] != "Sponsor Host" ||
                 link["source"] != "Promo Host" {
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
     
     func downloadMovieList() {
