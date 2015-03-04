@@ -167,29 +167,8 @@ class DataManager : NSObject
         var query: PFQuery
         if isMovie {
             query = PFQuery(className: "Movies")
-//            var queryName = name
-//            queryName = queryName.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
-//            queryName = queryName.stringByReplacingOccurrencesOfString(":", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             query.whereKey("movieId", equalTo: id)
             query.limit = 1000
-
-//            println("1")
-//            query.findObjectsInBackgroundWithBlock {
-//                (objects: [AnyObject]!, error: NSError!) -> Void in
-//                println(objects)
-//                var foundObject = objects[0] as? PFObject
-//                if foundObject == nil {
-//                    // The find failed create new object and add
-//                    var object = PFObject(className: "Movies")
-//                    self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
-//                    println("new object\n\(info)")
-//                } else {
-//                    // The find succeeded update found object
-//                    self.configureParseObject(foundObject!, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
-//                    println("update object\n\(info)")
-//                }
-//            }
-//            println("2")
             
             var object = query.getFirstObject()
             if object == nil {
@@ -250,12 +229,13 @@ class DataManager : NSObject
     func checkFakeLinks(links: NSArray) -> Bool {
         
         for link in links {
-            let link = link as Dictionary<String, String>
-            
-            if link["source"] != "Watch HD" ||
-                link["source"] != "Sponsor Host" ||
-                link["source"] != "Promo Host" {
-                return true;
+
+            if let link = link as? Dictionary<String, String> {
+                if link["source"] != "Watch HD" ||
+                    link["source"] != "Sponsor Host" ||
+                    link["source"] != "Promo Host" {
+                    return true;
+                }
             }
         }
         return false;

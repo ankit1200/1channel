@@ -23,7 +23,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var dismissKeyboardButton: UIButton!
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidLoad() {
         if segmentControl.selectedSegmentIndex == 0 {
             getSupportedSeries()
         } else if segmentControl.selectedSegmentIndex == 1 {
@@ -57,6 +57,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                     self.seriesList.append(series)
                 }
                 self.collectionView.reloadData()
+            } else {
+                println(error)
             }
         }
     }
@@ -81,6 +83,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                     self.movieList.append(movie)
                 }
                 self.collectionView.reloadData()
+            } else {
+                println(error)
             }
         }
     }
@@ -90,7 +94,6 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
 
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if segmentControl.selectedSegmentIndex == 0 {
-            
             return (filteredSeriesList.count == 0 ) ? seriesList.count : filteredSeriesList.count
         } else {
             return (filteredMovieList.count == 0) ? movieList.count : filteredMovieList.count
@@ -109,11 +112,9 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 if imageUrl == "" {
                     cell.image.image = UIImage(named: "noposter.jpg")
                 } else {
-//                    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var url = NSURL(string: imageUrl)
-                        var data = NSData(contentsOfURL : url!)
-                        cell.image.image = UIImage(data : data!)
-//                    })
+                    var url = NSURL(string: imageUrl)
+                    var data = NSData(contentsOfURL : url!)
+                    cell.image.image = UIImage(data : data!)
                 }
             }
             
@@ -144,13 +145,14 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
 
+    
     // MARK: UICollectionViewDelegate
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         selectedIndex = indexPath.row
     }
     
-    // MARK: Segment Value Changed
     
+    // MARK: Segment Value Changed
     @IBAction func segmentValueChanged(sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
             getSupportedSeries()
@@ -191,11 +193,11 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: Refresh Movies
     
     @IBAction func refreshMovies(sender: AnyObject) {
+        var alertView = UIAlertView(title: "Movies Updating", message: "The Movies are being updated!", delegate: nil, cancelButtonTitle: "OK")
+        alertView.show()
+        let manager = DataManager()
         // update movies whenever app opens
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            let manager = DataManager()
-            var alertView = UIAlertView(title: "Movies Updating", message: "The Movies are being updated!", delegate: nil, cancelButtonTitle: "OK")
-            alertView.show()
             manager.downloadMovieData()
             dispatch_async(dispatch_get_main_queue(), {
                 // Instantiate an alert view object

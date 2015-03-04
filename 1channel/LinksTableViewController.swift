@@ -18,7 +18,7 @@ class LinksTableViewController : UITableViewController {
     override func viewDidLoad()  {
         super.viewDidLoad()
         if isMovie {
-            self.getLinksForMovie()
+            self.getLinksForMovie(movie.links)
         } else {
             self.getLinksForEpisode()
         }
@@ -68,7 +68,8 @@ class LinksTableViewController : UITableViewController {
     }
     
     
-    //MARK: Table View
+    //MARK: Table View DataSource
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return links.count
     }
@@ -98,31 +99,36 @@ class LinksTableViewController : UITableViewController {
         
         let linksFromQuery = (objects[0] as PFObject)["links"] as NSArray
         for link in linksFromQuery {
-            let link = link as Dictionary<String, String>
-            let source = link["source"]!
-            if source != "Watch HD" &&
-                source != "promptfile.com" &&
-                source != "sockshare.com" &&
-                source != "putlocker.com" &&
-                source != "Sponsor Host" {
-                self.links.append(link: link["link"]!, source: source)
+            println(link)
+            let linkTuple = (link:link["link"] as? String, source: link["source"] as? String)
+            if let source = linkTuple.source {
+                if source != "Watch HD" &&
+                    source != "promptfile.com" &&
+                    source != "sockshare.com" &&
+                    source != "putlocker.com" &&
+                    source != "Sponsor Host" &&
+                    source != "Promo Host" &&
+                    source != "" {
+                    self.links.append(link: linkTuple.link!, source: source)
+                }
             }
         }
         self.tableView.reloadData()
     }
     
-    func getLinksForMovie() {
-        for link in movie.links {
-            let link = link as Dictionary<String, String>
-            let source = link["source"]
-            if source != "Watch HD" &&
-                source != "promptfile.com" &&
-                source != "sockshare.com" &&
-                source != "putlocker.com" &&
-                source != "Sponsor Host" &&
-                source != "Promo Host" &&
-                source != "" {
-                    self.links.append(link: link["links"]!, source: source!)
+    func getLinksForMovie(movieLinks:NSArray) {
+        for link in movieLinks {
+            if let link = link as? Dictionary<String, String> {
+                let source = link["source"]
+                if source != "Watch HD" &&
+                    source != "promptfile.com" &&
+                    source != "sockshare.com" &&
+                    source != "putlocker.com" &&
+                    source != "Sponsor Host" &&
+                    source != "Promo Host" &&
+                    source != "" {
+                        self.links.append(link: link["links"]!, source: source!)
+                }
             }
         }
         self.tableView.reloadData()
