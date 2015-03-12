@@ -17,5 +17,5 @@ class Episode {
     var season = ""
     var episodeNumber = ""
     var episodeName = ""
-    var imageUrl = ""
+    var image = UIImage(named: "noposter.jpg")
 }

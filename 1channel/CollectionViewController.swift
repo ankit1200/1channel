@@ -24,69 +24,12 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet var dismissKeyboardButton: UIButton!
     
     override func viewDidLoad() {
-        if segmentControl.selectedSegmentIndex == 0 {
-            getSupportedSeries()
-        } else if segmentControl.selectedSegmentIndex == 1 {
-            getMovies()
-        }
-    }
-
-    //MARK: parse methods
-    func getSupportedSeries() {
-        seriesList = []
-        let query = PFQuery(className: "Series")
-        query.limit = 1000
-        query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
-            if error == nil {
-                for object in objects {
-                    let series = Episode()
-                    var seriesName = (object as PFObject)["name"] as String
-                    series.parseQueryName = seriesName
-                    seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                    seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                    series.seriesName = seriesName
-                    series.seriesId = (object as PFObject)["seriesID"] as String
-                    
-                    if (object as PFObject)["image"] != nil {
-                        series.imageUrl = (object as PFObject)["image"] as String
-                    } else {
-                        series.imageUrl = ""
-                    }
-                    
-                    self.seriesList.append(series)
-                }
-                self.collectionView.reloadData()
-            } else {
-                println(error)
-            }
-        }
-    }
-    
-    func getMovies() {
-        movieList = []
-        let query = PFQuery(className: "Movies")
-        query.limit = 1000
-        query.orderByDescending("dateReleased")
-        query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
-            if error == nil {
-                for object in objects {
-                    let movie = Movie()
-                    var movieName = (object as PFObject)["name"] as String
-                    movieName = movieName.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                    movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                    movie.name = movieName
-                    movie.id = (object as PFObject)["movieId"] as String
-                    movie.imageUrl = (object as PFObject)["image"] as String
-                    movie.links = (object as PFObject)["links"] as NSArray
-                    self.movieList.append(movie)
-                }
-                self.collectionView.reloadData()
-            } else {
-                println(error)
-            }
-        }
+        // Populate Arrays
+        DataManager.sharedInstance.getSupportedSeries({
+            self.seriesList = DataManager.sharedInstance.seriesList
+            self.collectionView.reloadData()
+        })
+        DataManager.sharedInstance.getMovies({self.movieList = DataManager.sharedInstance.movieList})
     }
     
 
@@ -107,15 +50,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             // make sure all the series have been loaded from backend
             if seriesList.count != 0 {
                 let episode = (filteredSeriesList.count == 0 ) ? seriesList[indexPath.row] : filteredSeriesList[indexPath.row]
-                
-                let imageUrl = episode.imageUrl
-                if imageUrl == "" {
-                    cell.image.image = UIImage(named: "noposter.jpg")
-                } else {
-                    var url = NSURL(string: imageUrl)
-                    var data = NSData(contentsOfURL : url!)
-                    cell.image.image = UIImage(data : data!)
-                }
+                cell.image.image = episode.image
             }
             
             return cell
@@ -128,14 +63,20 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 let movie = (filteredMovieList.count == 0) ? movieList[indexPath.row] : filteredMovieList[indexPath.row]
                 
                 let imageUrl = movie.imageUrl
-                if imageUrl == "" {
-                    cell.image.image = UIImage(named: "noposter.jpg")
+                if movie.image != UIImage(named: "noposter.jpg") {
+                    cell.image.image = movie.image
                 } else {
                     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                         var url = NSURL(string: imageUrl)
                         var data = NSData(contentsOfURL : url!)
+                        var image = UIImage(data : data!)
                         dispatch_async(dispatch_get_main_queue(), {
-                            cell.image.image = UIImage(data : data!)
+                            cell.image.image = image
+                            if self.filteredMovieList.count == 0 {
+                                self.movieList[indexPath.row].image = image
+                            } else {
+                                self.filteredMovieList[indexPath.row].image = image
+                            }
                         })
                     })
                 }
@@ -155,10 +96,14 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: Segment Value Changed
     @IBAction func segmentValueChanged(sender: UISegmentedControl) {
         if sender.selectedSegmentIndex == 0 {
-            getSupportedSeries()
+            seriesList = DataManager.sharedInstance.seriesList
         } else if sender.selectedSegmentIndex == 1 {
-            getMovies()
+            movieList = DataManager.sharedInstance.movieList
         }
+        self.collectionView.performBatchUpdates({
+            self.collectionView.reloadSections(NSIndexSet(index: 0))
+        }, completion: nil)
+//        collectionView.reloadData()
     }
     
     
@@ -232,12 +177,13 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
             
             // variables being passed
-            ltvc.movie = (filteredMovieList.count == 0) ? movieList[indexPath.row] : filteredMovieList[indexPath.row]
+            let movieToPass = (filteredMovieList.count == 0) ? movieList[indexPath.row] : filteredMovieList[indexPath.row]
+            ltvc.movie = movieToPass
             ltvc.isMovie = true
-            
+            ltvc.title = movieToPass.name
             // analytics
             let dimensions = [
-                "movieName": movieList[indexPath.row].name,
+                "movieName": movieToPass.name,
             ]
             // Send the dimensions to Parse along with the 'search' event
             PFAnalytics.trackEvent("watchMovie", dimensions:dimensions)

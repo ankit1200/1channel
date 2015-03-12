@@ -15,4 +15,5 @@ class Movie {
     var id = ""
     var imageUrl = ""
     var links = []
+    var image = UIImage(named: "noposter.jpg")
 }
