@@ -103,7 +103,6 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         self.collectionView.performBatchUpdates({
             self.collectionView.reloadSections(NSIndexSet(index: 0))
         }, completion: nil)
-//        collectionView.reloadData()
     }
     
     
@@ -138,18 +137,11 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: Refresh Movies
     
     @IBAction func refreshMovies(sender: AnyObject) {
-        var alertView = UIAlertView(title: "Movies Updating", message: "The Movies are being updated!", delegate: nil, cancelButtonTitle: "OK")
+        var alertView = UIAlertView(title: "Movies Updating", message: "The movies are being updated! Movies list will refresh upon completion!", delegate: nil, cancelButtonTitle: "OK")
         alertView.show()
-        let manager = DataManager()
         // update movies whenever app opens
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            manager.downloadMovieData()
-            dispatch_async(dispatch_get_main_queue(), {
-                // Instantiate an alert view object
-                let alertView = UIAlertView(title: "Movies Updated", message: "The Movies have been updated!", delegate: nil, cancelButtonTitle: "OK")
-                alertView.show()
-            })
-            
+            DataManager.sharedInstance.downloadMovieData()
         })
     }
     

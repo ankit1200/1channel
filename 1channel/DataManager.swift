@@ -27,7 +27,8 @@ class DataManager : NSObject
     var seriesList = Array<Episode>()
     var movieList = Array<Movie>()
     
-    //MARK: Singleton function
+    
+    //MARK: Singleton Function
     
     class var sharedInstance: DataManager {
         struct Static {
@@ -41,7 +42,7 @@ class DataManager : NSObject
     }
     
     
-    //MARK: download info
+    //MARK: Download Series Data
     
     func downloadSeriesData(seriesName: String, seriesId: String, seasonsFromParseQuery: Array<String>) {
         println("Starting Series Download")
@@ -62,17 +63,6 @@ class DataManager : NSObject
         self.downloadEpisodesForSeason(seriesName, seriesId: primewireId, seasons: seasons)
         println("Series Download Complete")
     }
-    
-    func downloadMovieData() {
-        
-        println("Starting Movie Download")
-        
-        self.downloadMovieList()
-        
-        println("Movie Download Complete")
-    }
-    
-    //MARK: Download Series Data
     
     func downloadSeriesNameAndSeasons(seriesId: String) -> Array<String> {
         
@@ -182,40 +172,19 @@ class DataManager : NSObject
     
     //MARK: Download Movies Data
     
-    func downloadMovieList() {
-        for i in stride(from: 1, through: 1, by: -1) {
-            // get data from kimono
-            var error: NSError?
-            let movieListUrl = "http://www.kimonolabs.com/api/ondemand/drsxjk1y?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&page=\(i)"
-            var movieListData:NSData? = NSData(contentsOfURL: NSURL(string: movieListUrl)!)
-            
-            while movieListData == nil {
-                println("links fetch failed, trying again....")
-                movieListData = NSData(contentsOfURL: NSURL(string: movieListUrl)!)
-            }
-            
-            // parse json outputted from Kimono
-            let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(movieListData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
-            let results = jsonDict["results"] as NSDictionary
-            let list = results["movieList"] as NSArray
-            
-            for movie in list {
-                let movieDict = (movie as NSDictionary)["movie"] as NSDictionary
-                var name = (movieDict["alt"] as String).stringByReplacingOccurrencesOfString("Watch ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                name = name.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                name = name.stringByReplacingOccurrencesOfString(":", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                name = "movie_\(name)"
-                var id = (movieDict["href"] as String).stringByReplacingOccurrencesOfString("http://www.primewire.ag/", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                id = id.stringByReplacingOccurrencesOfString("-online-free", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                downloadMovieLinks(name, movieId: id, image: movieDict["src"] as String)
-            }
-        }
+    func downloadMovieData() {
+        
+        println("Starting Movie Download")
+        
+        self.downloadMovieLinks()
+        
+        println("Movie Download Complete")
     }
     
-    func downloadMovieLinks(movieName: String, movieId: String, image: String) {
+    func downloadMovieLinks() {
         // get data from kimono
         var error: NSError?
-        let linksForMovieUrl = "http://www.kimonolabs.com/api/ondemand/bf6pc8gm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(movieId)"
+        let linksForMovieUrl = "http://www.kimonolabs.com/api/bf6pc8gm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1"
         var linksForMovieData:NSData? = NSData(contentsOfURL: NSURL(string: linksForMovieUrl)!)
         
         while linksForMovieData == nil {
@@ -225,16 +194,23 @@ class DataManager : NSObject
         
         // parse json outputted from Kimono
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForMovieData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
-        let results = jsonDict["results"] as NSDictionary
-        if results["links"] != nil {
-            let links = results["links"] as NSArray
-            let movieInfo = (results["movieInfo"] as NSArray)[0] as NSDictionary
-            var year = movieInfo["releaseDate"] as String
-            self.saveObjectToParse(movieName, id: movieId, info: movieInfo, links: links, image: image, year:year, isMovie:true)
+        let results = jsonDict["results"] as NSArray
+        
+        for result in results {
+            if let page = result as? NSDictionary {
+                let movieInfo = (page["movieInfo"] as NSArray)[0] as NSDictionary
+                let movieName = (movieInfo["name"] as String)
+                var movieID = (page["url"] as String).stringByReplacingOccurrencesOfString("http://www.primewire.ag/", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                movieID = movieID.stringByReplacingOccurrencesOfString("-online-free", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                let links = removeFakeSoruces(page["links"] as NSArray)
+                let image = movieInfo["image"] as String
+                var year = movieInfo["releaseDate"] as String
+                self.saveObjectToParse(movieName, id: movieID, info: movieInfo, links: links, image: image, year:year, isMovie:true)
+            }
         }
     }
     
-    //MARK: helper methods
+    //MARK: Helper Methods
     
     func saveObjectToParse(name:String, id: String, info: NSDictionary, links: NSArray, image: String, year:String, isMovie: Bool) {
 
