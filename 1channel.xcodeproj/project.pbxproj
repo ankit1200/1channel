@@ -443,7 +443,6 @@
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/agarwala/Downloads/App42_iOS_SDK-master/2.8",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = 1channel/Info.plist;
@@ -469,7 +468,6 @@
 				DEFINES_MODULE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/agarwala/Downloads/App42_iOS_SDK-master/2.8",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = 1channel/Info.plist;

@@ -45,7 +45,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if segmentControl.selectedSegmentIndex == 0 {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("seriesCell", forIndexPath: indexPath) as SeriesCollectionViewCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("seriesCell", forIndexPath: indexPath) as! SeriesCollectionViewCell
             
             // make sure all the series have been loaded from backend
             if seriesList.count != 0 {
@@ -55,8 +55,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             
             return cell
         } else {
-            
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("movieCell", forIndexPath: indexPath) as MovieCollectionViewCell
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("movieCell", forIndexPath: indexPath) as! MovieCollectionViewCell
             
             // make sure all the movies have been loaded from backend
             if movieList.count != 0 {
@@ -69,7 +68,12 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                         var url = NSURL(string: imageUrl)
                         var data = NSData(contentsOfURL : url!)
-                        var image = UIImage(data : data!)
+                        var image: UIImage?
+                        if data != nil {
+                            image = UIImage(data : data!)
+                        } else {
+                            image = UIImage(named: "noposter.jpg")!
+                        }
                         dispatch_async(dispatch_get_main_queue(), {
                             cell.image.image = image
                             if self.filteredMovieList.count == 0 {
@@ -141,7 +145,12 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         alertView.show()
         // update movies whenever app opens
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            DataManager.sharedInstance.downloadMovieData()
+            DataManager.sharedInstance.downloadMovieData({DataManager.sharedInstance.getMovies({self.movieList = DataManager.sharedInstance.movieList})})
+            dispatch_async(dispatch_get_main_queue(), {
+                self.collectionView.performBatchUpdates({
+                    self.collectionView.reloadSections(NSIndexSet(index: 0))
+                    }, completion: nil)
+            })
         })
     }
     
@@ -151,8 +160,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSeasons"{
             // destination view controller
-            let stvc = segue.destinationViewController as SeasonsTableViewController
-            let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
+            let stvc = segue.destinationViewController as! SeasonsTableViewController
+            let indexPath = (self.collectionView.indexPathsForSelectedItems() as! Array<NSIndexPath>)[0]
             
             // variables being passed
             stvc.episode = (filteredSeriesList.count == 0 ) ? seriesList[indexPath.row] : filteredSeriesList[indexPath.row]
@@ -165,8 +174,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
             PFAnalytics.trackEvent("watchSeries", dimensions:dimensions)
         } else if segue.identifier == "showSources" {
             // destination view controller
-            let ltvc = segue.destinationViewController as LinksTableViewController
-            let indexPath = (self.collectionView.indexPathsForSelectedItems() as Array<NSIndexPath>)[0]
+            let ltvc = segue.destinationViewController as! LinksTableViewController
+            let indexPath = (self.collectionView.indexPathsForSelectedItems() as! Array<NSIndexPath>)[0]
             
             // variables being passed
             let movieToPass = (filteredMovieList.count == 0) ? movieList[indexPath.row] : filteredMovieList[indexPath.row]

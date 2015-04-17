@@ -49,9 +49,10 @@ class SeasonsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         if seasons.count != 0 {
             cell.textLabel?.text = seasons[indexPath.row]
+            cell.textLabel?.sizeToFit()
         }
         return cell
     }
@@ -62,10 +63,10 @@ class SeasonsTableViewController: UITableViewController {
     func getSeasonsFromQuery(objects: [AnyObject]!) {
         
         for object in objects {
-            let season = (object as PFObject)["season"] as String
+            let season = (object as! PFObject)["season"] as! String
             self.seasons.append(season)
         }
-        self.seasons = NSSet(array: self.seasons).allObjects as Array<String>
+        self.seasons = NSSet(array: self.seasons).allObjects as! Array<String>
         self.seasons.sort({$0 < $1})
         self.tableView.reloadData()
     }
@@ -92,7 +93,7 @@ class SeasonsTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showEpisodes" {
-            let etvc = segue.destinationViewController as EpisodesTableViewController
+            let etvc = segue.destinationViewController as! EpisodesTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
             episode.season = seasons[indexPath!.row]
             

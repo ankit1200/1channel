@@ -45,7 +45,7 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         
         if episodes.count != 0 {
             cell.textLabel?.text = episodes[indexPath.row].episodeName
@@ -73,8 +73,8 @@ class EpisodesTableViewController : UITableViewController {
     func getEpisodesFromQuery(objects: [AnyObject]!) {
 
         for object in objects {
-            var numberString = (object as PFObject)["episodeNumber"] as String
-            let name = (object as PFObject)["episodeTitle"] as String
+            var numberString = (object as! PFObject)["episodeNumber"] as! String
+            let name = (object as! PFObject)["episodeTitle"] as! String
             numberString = numberString.stringByReplacingOccurrencesOfString("Episode ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             let number = numberString.toInt()
             self.episodes.append(episodeNumber: number!, episodeName: name)
@@ -96,7 +96,7 @@ class EpisodesTableViewController : UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSources" {
-            let ltvc = segue.destinationViewController as LinksTableViewController
+            let ltvc = segue.destinationViewController as! LinksTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             episode.episodeNumber = "Episode \(episodes[indexPath!.row].episodeNumber)"

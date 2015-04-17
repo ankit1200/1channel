@@ -49,7 +49,7 @@ class LinksTableViewController : UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showLink" {
             
-            let dvc = segue.destinationViewController as DetailViewController
+            let dvc = segue.destinationViewController as! DetailViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
             
             // set variables
@@ -75,7 +75,7 @@ class LinksTableViewController : UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         
         let source = links[indexPath.row].source
         
@@ -101,7 +101,7 @@ class LinksTableViewController : UITableViewController {
     
     func getLinksFromQuery(objects: [AnyObject]!) {
         
-        let linksFromQuery = (objects[0] as PFObject)["links"] as NSArray
+        let linksFromQuery = (objects[0] as! PFObject)["links"] as! NSArray
         for link in linksFromQuery {
             let linkTuple = (link:link["link"] as? String, source: link["source"] as? String)
             if let source = linkTuple.source {
