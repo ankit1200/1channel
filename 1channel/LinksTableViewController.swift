@@ -87,7 +87,7 @@ class LinksTableViewController : UITableViewController {
 //                    cell.imageView?.image = getImageWithColor(UIColor.greenColor())
             } else if source == "bestreams.net" ||
                         source == "cloudzilla.to" {
-                cell.textLabel?.textColor = UIColor.yellowColor()
+//                cell.textLabel?.textColor = UIColor.yellowColor()
 //                    cell.imageView?.image = getImageWithColor(UIColor.yellowColor())
             } else {
                 cell.textLabel?.textColor = UIColor.blackColor()
