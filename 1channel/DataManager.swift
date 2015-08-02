@@ -44,14 +44,14 @@ class DataManager : NSObject
     
     //MARK: Download Series Data
     
-    func downloadSeriesData(seriesName: String, seriesId: String, seasonsFromParseQuery: Array<String>) {
+    func downloadSeriesData(seriesName: String, seriesId: String, seasonsFromParseQuery: Array<String>?) {
         println("Starting Series Download")
         
         // download number of seasons
         var seasons:Array<String>
 
-        if seasonsFromParseQuery.count == 1 {
-            seasons = seasonsFromParseQuery
+        if seasonsFromParseQuery != nil {
+            seasons = seasonsFromParseQuery!
         } else {
             seasons = self.downloadSeriesNameAndSeasons(seriesId)
         }
@@ -195,7 +195,7 @@ class DataManager : NSObject
         // parse json outputted from Kimono
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForMovieData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
         let results = jsonDict["results"] as! NSArray
-        
+
         for result in results {
             if let page = result as? NSDictionary {
                 let movieInfo = (page["movieInfo"] as! NSArray)[0] as! NSDictionary

@@ -73,18 +73,18 @@ class SeasonsTableViewController: UITableViewController {
     
     @IBAction func downloadNewEpisodes(sender: AnyObject) {
         if !downloadStarted {
-            downloadData(self.seasons)
+            downloadData()
             downloadStarted = true
         } else {
             getSeasonsForSeries()
         }
     }
     
-    func downloadData(seasonsFromParseQuery: Array<String>) {
+    func downloadData() {
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             // background thread
             let manager = DataManager()
-            manager.downloadSeriesData(self.episode.parseQueryName, seriesId: self.episode.seriesId, seasonsFromParseQuery: seasonsFromParseQuery)
+            manager.downloadSeriesData(self.episode.parseQueryName, seriesId: self.episode.seriesId, seasonsFromParseQuery: nil)
         })
     }
     
