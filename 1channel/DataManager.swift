@@ -294,12 +294,13 @@ class DataManager : NSObject
     func removeFakeSoruces(links: NSArray) -> NSArray {
         var newLinks = NSMutableArray()
         for link in links {
-            if let link = link as? Dictionary<String, String> {
-                if link["source"] != "Watch HD" &&
-                    link["source"] != "Sponsor Host" &&
-                    link["source"] != "Promo Host" &&
-                    link["source"] != "" {
-                        newLinks.addObject(link)
+            if let linkSource = link["source"] as? String {
+            
+                if linkSource != "Watch HD" &&
+                    linkSource != "Sponsor Host" &&
+                    linkSource != "Promo Host" &&
+                    linkSource != "" {
+                        newLinks.addObject(["source": link["source"] as! String, "links" : link["links"] as! String])
                 }
             }
         }
