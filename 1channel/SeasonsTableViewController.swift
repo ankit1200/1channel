@@ -84,7 +84,20 @@ class SeasonsTableViewController: UITableViewController {
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             // background thread
             let manager = DataManager()
-            manager.downloadSeriesData(self.episode.parseQueryName, seriesId: self.episode.seriesId, seasonsFromParseQuery: nil)
+            if self.episode.seriesName == "The Big Bang Theory" || self.episode.seriesName == "Arrow" ||
+                self.episode.seriesName == "Better Call Saul" || self.episode.seriesName == "Fresh Off the Boat" ||
+                self.episode.seriesName == "Game of Thrones" || self.episode.seriesName == "The Walking Dead"
+            {
+                manager.downloadLinksForEpisode(0)
+            } else if self.episode.seriesName == "The Vampire Diaries" || self.episode.seriesName == "Pretty Little Liars" ||
+                self.episode.seriesName == "Modern Family" || self.episode.seriesName == "Suits" ||
+                self.episode.seriesName == "Silicon Valley" || self.episode.seriesName == "Brooklyn Nine Nine"
+            {
+                manager.downloadLinksForEpisode(1)
+            } else if self.episode.seriesName == "Supernatural" || self.episode.seriesName == "New Girl" ||
+                self.episode.seriesName == "Two and a Half Men" || self.episode.seriesName == "True Blood"{
+                manager.downloadLinksForEpisode(2)
+            }
         })
     }
     

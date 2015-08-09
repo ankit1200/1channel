@@ -145,7 +145,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         alertView.show()
         // update movies whenever app opens
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-            DataManager.sharedInstance.downloadMovieData({DataManager.sharedInstance.getMovies({self.movieList = DataManager.sharedInstance.movieList})})
+            DataManager.sharedInstance.downloadMovieLinks({DataManager.sharedInstance.getMovies({self.movieList = DataManager.sharedInstance.movieList})})
             dispatch_async(dispatch_get_main_queue(), {
                 self.collectionView.performBatchUpdates({
                     self.collectionView.reloadSections(NSIndexSet(index: 0))

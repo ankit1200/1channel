@@ -23,7 +23,6 @@ extension NSDate
 
 class DataManager : NSObject
 {
-    var imageDownloaded = false; // boolean to check if image has been downloaded
     var seriesList = Array<Episode>()
     var movieList = Array<Movie>()
     
@@ -43,145 +42,95 @@ class DataManager : NSObject
     
     
     //MARK: Download Series Data
-    
-    func downloadSeriesData(seriesName: String, seriesId: String, seasonsFromParseQuery: Array<String>?) {
+        
+    func downloadLinksForEpisode(seriesI:Int) {
         println("Starting Series Download")
-        
-        // download number of seasons
-        var seasons:Array<String>
-
-        if seasonsFromParseQuery != nil {
-            seasons = seasonsFromParseQuery!
-        } else {
-            seasons = self.downloadSeriesNameAndSeasons(seriesId)
-        }
-        
-        println("Seasons Downloaded")
-        // download episodes for each season and links for each episode and save it to parse
-        let primewireId = seriesId.stringByReplacingOccurrencesOfString("watch", withString: "tv", options: NSStringCompareOptions.LiteralSearch, range: nil)
-        var seriesClassName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-        self.downloadEpisodesForSeason(seriesName, seriesId: primewireId, seasons: seasons)
-        println("Series Download Complete")
-    }
-    
-    func downloadSeriesNameAndSeasons(seriesId: String) -> Array<String> {
         
         // get data from kimono
         var error: NSError?
-        let seriesNameAndSeasonsUrl = "http://www.kimonolabs.com/api/ondemand/70ef8q9g?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)"
-        var seriesNameAndSeasonsData:NSData? = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl)!)
-        
-        while seriesNameAndSeasonsData == nil {
-            println("seasons fetch failed, trying again....")
-            seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl)!)
-        }
-        
-        // parse json outputted from Kimono
-        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(seriesNameAndSeasonsData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
-        let results = jsonDict["results"] as! NSDictionary
-
-        // create swift array from NSArray
-        var seasons:Array<String> = []
-        for season in (results["seasons"] as! NSArray) {
-            seasons.append((season["season"] as! NSDictionary)["text"] as! String) // Seasons is a dictionary containing text and a href, we have to get the text
-        }
-        
-        return seasons;
-    }
-    
-    func downloadEpisodesForSeason(seriesName: String, seriesId:String, seasons: Array<String>) {
-        println("Downloaded episodes for season")
-        // Start downloading from the lastest season
-        for season in seasons.reverse() {
-            var seasonNum = season.lowercaseString
-            seasonNum = seasonNum.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        var offset = 0                                      // Offset for kimono, because each query only shows 2500 rows at once
+        var results = NSArray()                             // Results variable is defined outside, because its used in the while loop to see when the data has been parsed through
+        var seriesImages = Dictionary<String, String>()     // Array of images of series to be downloaded
+        do {
+            var linksForEpisodeUrl = ""
+            if seriesI == 0 {
+                linksForEpisodeUrl = "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
+            } else if seriesI == 1 {
+                linksForEpisodeUrl = "https://www.kimonolabs.com/api/7cezuv7y?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
+            } else if seriesI == 2 {
+                linksForEpisodeUrl = "https://www.kimonolabs.com/api/edoju7e4?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
+            }
             
-            // get data from kimono
-            var error: NSError?
-            let episodesForSeasonUrl = "http://www.kimonolabs.com/api/ondemand/2lcduwri?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(seasonNum)"
-            var episodesForSeasonData:NSData? = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl)!)
+            var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
             
-            while episodesForSeasonData == nil {
-                println("episodes fetch failed, trying again....")
-                episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl)!)
+            while linksForEpisodeData == nil {
+                println("links fetch failed, trying again....")
+                linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
             }
             
             // parse json outputted from Kimono
-            let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
-            let results = jsonDict["results"] as! NSDictionary
-
-            // create swift array from NSArray
-            var episodes:Array<(String, String)> = []
-            for episode in (results["episodes"] as! NSArray) {
-                // episode number is a dictionary that contains a href and a text, we need the text
-                episodes.append((episode["episodeNumber"] as! NSDictionary)["text"] as! String, (episode["episodeName"] as! NSDictionary)["text"] as! String)
-            }
-
-            // get links for each episode in current season
-            // start downloading from the latest episode
-            for episode in episodes.reverse() {
-                var episodeNum = (episode.0).lowercaseString
-                episodeNum = episodeNum.stringByReplacingOccurrencesOfString("e", withString: "episode-", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
+            results = jsonDict["results"] as! NSArray
+            
+            for page in results {
                 
-                self.downloadLinksForEpisode(seriesName, seriesId:seriesId, season:seasonNum, episodeNum:episodeNum)
+                let episodeInfo = (page["episode_info"] as! NSArray)[0] as! NSDictionary
+                
+                // check to see if the page is the last one in the current set of data
+                if (page["page"] as! String) == ((results[results.count - 1])["page"] as! String) {
+                    offset += (episodeInfo["index"] as! Int) - 1
+                    // if the last section of results only has one page
+                    if results.count == 1 {
+                        offset += 1000
+                    }
+                    continue
+                }
+                println(episodeInfo)
+                var links = page["episode_links"] as? NSArray
+                var episodeURLArray = split(page["url"] as! String) {$0 == "/"}
+                var seriesID = episodeURLArray[2]
+                var seriesName = (episodeInfo["seriesName"] as! String)
+                seriesName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                
+                seriesImages[seriesID] = episodeInfo["image"] as? String
+                
+                if links != nil {
+                    links = removeFakeSoruces(links!, isMovie: false)
+                    
+                    // save data to parse
+                    if links!.count > 0 {
+//                        self.saveObjectToParse(seriesName, id: seriesID, info: episodeInfo, links: links!, image:"", year:"", isMovie: false);
+                    }
+                }
             }
-        }
-    }
-    
-    func downloadLinksForEpisode(seriesName:String, seriesId:String, season:String, episodeNum:String) {
-        // get data from kimono
-        var error: NSError?
-
-        let linksForEpisodeUrl = "http://www.kimonolabs.com/api/ondemand/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episodeNum)"
-        var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
-        
-        while linksForEpisodeData == nil {
-            println("links fetch failed, trying again....")
-            linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
-        }
-        
-        // parse json outputted from Kimono
-        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
-        let results = jsonDict["results"] as! NSDictionary
-
-        var links = results["episode_links"] as! NSArray
-        let episodeInfo = (results["episode_info"] as! NSArray)[0] as! NSDictionary
+        } while results.count > 0
         
         // add image to the series
-        if !imageDownloaded {
-            let query = PFQuery(className: "Series")
-            query.limit = 1000
-            query.whereKey("seriesID", equalTo: seriesId.stringByReplacingOccurrencesOfString("tv", withString: "watch", options: NSStringCompareOptions.LiteralSearch, range: nil))
+        let query = PFQuery(className: "Series")
+        query.limit = 100
+        for (seriesID, image) in seriesImages {
+            println(seriesID)
+            query.whereKey("seriesID", equalTo: seriesID)
             query.getFirstObjectInBackgroundWithBlock {
                 (object: PFObject!, error: NSError!) -> Void in
                 if object != nil {
-                    object["image"] = episodeInfo["image"];
+                    object["image"] = image
                     println("image downloaded")
+                } else {
+                    println(error)
                 }
                 object.saveInBackground()
             }
-            imageDownloaded = true
         }
         
-        links = removeFakeSoruces(links)
-        // save data to parse
-        if links.count > 0 {
-            self.saveObjectToParse(seriesName, id: seriesId, info: episodeInfo, links: links, image:"", year:"", isMovie: false);
-        }
+        println("Finished Series Download")
     }
     
     //MARK: Download Movies Data
     
-    func downloadMovieData(completionHandler: ()->()) {
-        
+    func downloadMovieLinks(completionHandler: ()->()) {
         println("Starting Movie Download")
         
-        self.downloadMovieLinks({completionHandler()})
-        
-        println("Movie Download Complete")
-    }
-    
-    func downloadMovieLinks(completionHandler: ()->()) {
         // get data from kimono
         var error: NSError?
         let linksForMovieUrl = "http://www.kimonolabs.com/api/bf6pc8gm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1"
@@ -202,13 +151,15 @@ class DataManager : NSObject
                 let movieName = (movieInfo["name"] as! String)
                 var movieID = (page["url"] as! String).stringByReplacingOccurrencesOfString("http://www.primewire.ag/", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 movieID = movieID.stringByReplacingOccurrencesOfString("-online-free", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                let links = removeFakeSoruces(page["links"] as! NSArray)
+                let links = removeFakeSoruces(page["links"] as! NSArray, isMovie: true)
                 let image = movieInfo["image"] as! String
                 var year = movieInfo["releaseDate"] as! String
                 self.saveObjectToParse(movieName, id: movieID, info: movieInfo, links: links, image: image, year:year, isMovie:true)
             }
         }
         completionHandler()
+        
+        println("Movie Download Complete")
     }
     
     //MARK: Helper Methods
@@ -291,7 +242,7 @@ class DataManager : NSObject
     }
     
     // remove all fake sources
-    func removeFakeSoruces(links: NSArray) -> NSArray {
+    func removeFakeSoruces(links: NSArray, isMovie:Bool) -> NSArray {
         var newLinks = NSMutableArray()
         for link in links {
             if let linkSource = link["source"] as? String {
@@ -300,7 +251,13 @@ class DataManager : NSObject
                     linkSource != "Sponsor Host" &&
                     linkSource != "Promo Host" &&
                     linkSource != "" {
-                        newLinks.addObject(["source": link["source"] as! String, "links" : link["links"] as! String])
+                        if isMovie {
+                            newLinks.addObject(["source": link["source"] as! String, "links" : link["links"] as! String])
+                        } else {
+                            if !(link["link"] is NSArray) {
+                                newLinks.addObject(["source": link["source"] as! String, "link" : link["link"] as! String])
+                            }
+                        }
                 }
             }
         }
