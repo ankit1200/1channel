@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Bolts
+import Parse
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Set up Parse
         Parse.setApplicationId("EW0pxeQlkY3n1bPwzLdG3YVYjRVAtS6zTJmZhObN", clientKey: "LOvP72WZzGhBnMu956p5Uft026G3dWe6X6gy9sX7")
-        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        PFAnalytics.trackAppOpenedWithLaunchOptionsInBackground(launchOptions, block: nil)
         
         return true
     }

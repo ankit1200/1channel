@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
 

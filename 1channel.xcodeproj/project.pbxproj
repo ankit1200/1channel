@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		472703E81B79B93B0084780B /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47A75A101B771F6700CA2567 /* Parse.framework */; };
+		472703EA1B79B9990084780B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 472703E91B79B9990084780B /* libsqlite3.dylib */; };
 		47453DD819DA17CC00818EE0 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47453DD719DA17CC00818EE0 /* Movie.swift */; };
 		47706B3819D7D4DF00957A7E /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47706B3719D7D4DF00957A7E /* CollectionViewController.swift */; };
 		47706B3A19D7D72200957A7E /* SeriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47706B3919D7D72200957A7E /* SeriesCollectionViewCell.swift */; };
 		478A5E1D1A1B3E6100F9FF19 /* noposter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 478A5E1C1A1B3E6100F9FF19 /* noposter.jpg */; };
+		47A75A131B77207600CA2567 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47A75A121B77207600CA2567 /* Bolts.framework */; };
 		47B3EB6619DA58D80095B9FE /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B3EB6519DA58D80095B9FE /* MovieCollectionViewCell.swift */; };
 		EBBDFBF4196B1A3400BB8C14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */; };
 		EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */; };
@@ -29,7 +32,6 @@
 		EBE4FF71197EE15B00745582 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */; };
 		EBE4FF72197EE15B00745582 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF57197EE0C300745582 /* CFNetwork.framework */; };
 		EBE4FF73197EE15B00745582 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */; };
-		EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF53197EE08800745582 /* Parse.framework */; };
 		EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */; };
 		EBF979F61984620500B44654 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF979F51984620500B44654 /* Episode.swift */; };
 /* End PBXBuildFile section */
@@ -45,10 +47,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		472703E91B79B9990084780B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		47453DD719DA17CC00818EE0 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		47706B3719D7D4DF00957A7E /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		47706B3919D7D72200957A7E /* SeriesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesCollectionViewCell.swift; sourceTree = "<group>"; };
 		478A5E1C1A1B3E6100F9FF19 /* noposter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = noposter.jpg; sourceTree = "<group>"; };
+		47A75A101B771F6700CA2567 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		47A75A121B77207600CA2567 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		47B3EB6519DA58D80095B9FE /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		EBBDFBEE196B1A3400BB8C14 /* 1channel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1channel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBDFBF2196B1A3400BB8C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -63,7 +68,6 @@
 		EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodesTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinksTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFCD2196B266A00BB8C14 /* 1channel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "1channel-Bridging-Header.h"; sourceTree = "<group>"; };
-		EBE4FF53197EE08800745582 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		EBE4FF57197EE0C300745582 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -82,6 +86,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				472703EA1B79B9990084780B /* libsqlite3.dylib in Frameworks */,
+				472703E81B79B93B0084780B /* Parse.framework in Frameworks */,
+				47A75A131B77207600CA2567 /* Bolts.framework in Frameworks */,
 				EBE4FF6A197EE15B00745582 /* SystemConfiguration.framework in Frameworks */,
 				EBE4FF6C197EE15B00745582 /* Security.framework in Frameworks */,
 				EBE4FF6D197EE15B00745582 /* QuartzCore.framework in Frameworks */,
@@ -91,7 +98,6 @@
 				EBE4FF71197EE15B00745582 /* CoreGraphics.framework in Frameworks */,
 				EBE4FF72197EE15B00745582 /* CFNetwork.framework in Frameworks */,
 				EBE4FF73197EE15B00745582 /* AudioToolbox.framework in Frameworks */,
-				EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,6 +189,9 @@
 		EBE4FF69197EE13A00745582 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				472703E91B79B9990084780B /* libsqlite3.dylib */,
+				47A75A121B77207600CA2567 /* Bolts.framework */,
+				47A75A101B771F6700CA2567 /* Parse.framework */,
 				EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */,
 				EBE4FF63197EE0FA00745582 /* Security.framework */,
 				EBE4FF61197EE0F300745582 /* QuartzCore.framework */,
@@ -192,7 +201,6 @@
 				EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */,
 				EBE4FF57197EE0C300745582 /* CFNetwork.framework */,
 				EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */,
-				EBE4FF53197EE08800745582 /* Parse.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -444,6 +452,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"/Users/ankit1200/Downloads/parse-library-1.7.5",
 				);
 				INFOPLIST_FILE = 1channel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
@@ -469,6 +478,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"/Users/ankit1200/Downloads/parse-library-1.7.5",
 				);
 				INFOPLIST_FILE = 1channel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;

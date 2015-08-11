@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class LinksTableViewController : UITableViewController {
     
@@ -36,7 +37,7 @@ class LinksTableViewController : UITableViewController {
         query.whereKey("episodeNumber", equalTo: episode.episodeNumber)
         
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 self.getLinksFromQuery(objects)
             }

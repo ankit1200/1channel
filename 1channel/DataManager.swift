@@ -9,6 +9,7 @@
 //
 
 import Foundation
+import Parse
 
 extension NSDate
 {
@@ -85,7 +86,7 @@ class DataManager : NSObject
                     }
                     continue
                 }
-                println(episodeInfo)
+
                 var links = page["episode_links"] as? NSArray
                 var episodeURLArray = split(page["url"] as! String) {$0 == "/"}
                 var seriesID = episodeURLArray[2]
@@ -99,27 +100,26 @@ class DataManager : NSObject
                     
                     // save data to parse
                     if links!.count > 0 {
-//                        self.saveObjectToParse(seriesName, id: seriesID, info: episodeInfo, links: links!, image:"", year:"", isMovie: false);
+                        self.saveObjectToParse(seriesName, id: seriesID, info: episodeInfo, links: links!, image:"", year:"", isMovie: false);
                     }
                 }
             }
         } while results.count > 0
         
         // add image to the series
-        let query = PFQuery(className: "Series")
-        query.limit = 100
         for (seriesID, image) in seriesImages {
-            println(seriesID)
+            var query = PFQuery(className: "Series")
+            query.limit = 100
             query.whereKey("seriesID", equalTo: seriesID)
             query.getFirstObjectInBackgroundWithBlock {
-                (object: PFObject!, error: NSError!) -> Void in
-                if object != nil {
-                    object["image"] = image
+                (object: PFObject?, error: NSError?) -> Void in
+                if error == nil {
+                    object!["image"] = image
                     println("image downloaded")
                 } else {
                     println(error)
                 }
-                object.saveInBackground()
+                object!.saveInBackground()
             }
         }
         
@@ -179,17 +179,17 @@ class DataManager : NSObject
                 println("new object\n\(info)")
             } else {
                 // The find succeeded update found object
-                self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
+                self.configureParseObject(object!, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
                 println("update object\n\(info)")
             }
         } else {
             query = PFQuery(className: name)
-            query.whereKey("episodeNumber", equalTo: info["episode"])
-            query.whereKey("season", equalTo: info["season"])
+            query.whereKey("episodeNumber", equalTo: info["episode"]!)
+            query.whereKey("season", equalTo: info["season"]!)
             query.limit = 1000
         
             query.getFirstObjectInBackgroundWithBlock {
-                (foundObject: PFObject!, error: NSError!) -> Void in
+                (foundObject: PFObject?, error: NSError?) -> Void in
                 if foundObject == nil {
                     // The find failed create new object and add
                     var object = PFObject(className:name)
@@ -197,7 +197,7 @@ class DataManager : NSObject
                     println("new object\n\(info)")
                 } else {
                     // The find succeeded update found object
-                    self.configureParseObject(foundObject, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: false)
+                    self.configureParseObject(foundObject!, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: false)
                     println("update object\n\(info)")
                 }
             }
@@ -270,9 +270,9 @@ class DataManager : NSObject
         let query = PFQuery(className: "Series")
         query.limit = 1000
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
-                for object in objects {
+                for object in objects! {
                     let series = Episode()
                     var seriesName = (object as! PFObject)["name"] as! String
                     series.parseQueryName = seriesName
@@ -306,9 +306,9 @@ class DataManager : NSObject
         query.limit = 1000
         query.orderByDescending("dateReleased")
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
-                for object in objects {
+                for object in objects! {
                     let movie = Movie()
                     var movieName = (object as! PFObject)["name"] as! String
                     movieName = movieName.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)

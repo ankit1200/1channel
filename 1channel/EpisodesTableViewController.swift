@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class EpisodesTableViewController : UITableViewController {
     
@@ -30,7 +31,7 @@ class EpisodesTableViewController : UITableViewController {
         query.whereKey("season", equalTo: episode.season)
         
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects: [AnyObject]?, error: NSError?) -> Void in
             if error == nil {
                 self.getEpisodesFromQuery(objects)
             }
