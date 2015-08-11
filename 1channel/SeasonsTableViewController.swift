@@ -10,7 +10,7 @@ import UIKit
 
 class SeasonsTableViewController: UITableViewController {
 
-    var seasons:Array<String> = []
+    var seasons:Array<Int> = []
     var episode = Episode()
     var downloadStarted = false
     
@@ -51,7 +51,7 @@ class SeasonsTableViewController: UITableViewController {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
         if seasons.count != 0 {
-            cell.textLabel?.text = seasons[indexPath.row]
+            cell.textLabel?.text = "Season \(seasons[indexPath.row])"
             cell.textLabel?.sizeToFit()
         }
         return cell
@@ -63,10 +63,11 @@ class SeasonsTableViewController: UITableViewController {
     func getSeasonsFromQuery(objects: [AnyObject]!) {
         
         for object in objects {
-            let season = (object as! PFObject)["season"] as! String
-            self.seasons.append(season)
+            let seasonString = (object as! PFObject)["season"] as! String
+            var seasonNumber = seasonString.stringByReplacingOccurrencesOfString("Season ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            self.seasons.append(seasonNumber.toInt()!)
         }
-        self.seasons = NSSet(array: self.seasons).allObjects as! Array<String>
+        self.seasons = NSSet(array: self.seasons).allObjects as! Array<Int>
         self.seasons.sort({$0 < $1})
         self.tableView.reloadData()
     }
@@ -108,7 +109,7 @@ class SeasonsTableViewController: UITableViewController {
         if segue.identifier == "showEpisodes" {
             let etvc = segue.destinationViewController as! EpisodesTableViewController
             let indexPath = self.tableView.indexPathForSelectedRow()
-            episode.season = seasons[indexPath!.row]
+            episode.season = "Season \(seasons[indexPath!.row])"
             
             // variables being passed
             etvc.episode = episode
