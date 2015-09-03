@@ -58,16 +58,16 @@ class EpisodesTableViewController : UITableViewController {
     
     //MARK: Refresh button
     
-    @IBAction func getNewEpisodes(sender: AnyObject) {
-        
-        if !downloadStarted {
-            let season = [self.episode.season]
-            downloadData(season)
-            downloadStarted = true
-        } else {
-            getEpisodesForSeason()
-        }
-    }
+//    @IBAction func getNewEpisodes(sender: AnyObject) {
+//        
+//        if !downloadStarted {
+//            let season = [self.episode.season]
+//            downloadData(season)
+//            downloadStarted = true
+//        } else {
+//            getEpisodesForSeason()
+//        }
+//    }
     
     //MARK: Helper Methods
     
