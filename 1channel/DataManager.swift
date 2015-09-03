@@ -207,7 +207,13 @@ class DataManager : NSObject
     // add object to parse
     func configureParseObject(object:PFObject, name: String, id: String, info: NSDictionary, links:NSArray, image:String, year:String, isMovie: Bool) {
 
-        if !isMovie {
+        if isMovie {
+            object["name"] = name
+            object["movieId"] = id
+            object["links"] = links
+            object["image"] = image
+            object["dateReleased"] = NSDate(dateString: year)
+        } else {
             object["seriesName"] = name
             object["seriesId"] = id
             object["season"] = info["season"]
@@ -215,31 +221,10 @@ class DataManager : NSObject
             object["episodeTitle"] = info["title"]
             object["links"] = links
             object["description"] = info["description"]
-        } else {
-            object["name"] = name
-            object["movieId"] = id
-            object["links"] = links
-            object["image"] = image
-            object["dateReleased"] = NSDate(dateString: year)
         }
         object.saveInBackground()
     }
     
-    // check to see if season is fake
-    // return true if not a fake episode, else return false
-    func checkFakeLinks(links: NSArray) -> Bool {
-        for link in links {
-
-            if let link = link as? Dictionary<String, String> {
-                if link["source"] != "Watch HD" ||
-                    link["source"] != "Sponsor Host" ||
-                    link["source"] != "Promo Host" {
-                    return true
-                }
-            }
-        }
-        return false
-    }
     
     // remove all fake sources
     func removeFakeSoruces(links: NSArray, isMovie:Bool) -> NSArray {
