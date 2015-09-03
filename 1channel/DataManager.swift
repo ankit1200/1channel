@@ -9,34 +9,47 @@
 //
 
 import Foundation
+import Parse
+
+extension NSDate
+{
+    convenience
+    init(dateString:String) {
+        let dateStringFormatter = NSDateFormatter()
+        dateStringFormatter.dateFormat = "LLLL dd, yyyy"
+        let d = dateStringFormatter.dateFromString(dateString)
+        self.init(timeInterval:0, sinceDate:d!)
+    }
+}
 
 class DataManager : NSObject
 {
-    var addNewSeries = true;
+    var seriesList = Array<Episode>()
+    var movieList = Array<Movie>()
     
-    //MARK: download series info
     
-    func downloadSeriesData(seriesName: String, seriesId: String) {
-        // download number of seasons
-        println("Starting Download")
-        
-        let seasons = self.downloadSeriesNameAndSeasons(seriesId)
-        println("Seasons Downloaded")
-        
-        // download episodes for each season and links for each episode and save it to parse
-        let primewireId = seriesId.stringByReplacingOccurrencesOfString("watch", withString: "tv", options: NSStringCompareOptions.LiteralSearch, range: nil)
-        var seriesClassName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-        self.downloadEpisodesForSeason(seriesName, seriesId: primewireId, seasons: seasons)
-        println("Download Complete")
+    //MARK: Singleton Function
+    
+    class var sharedInstance: DataManager {
+        struct Static {
+            static var instance: DataManager?
+            static var token: dispatch_once_t = 0
+        }
+        dispatch_once(&Static.token) {
+            Static.instance = DataManager()
+        }
+        return Static.instance!
     }
     
     
-    //MARK: helper methods
-    
-    func downloadSeriesNameAndSeasons(seriesId: String) -> NSArray {
+    //MARK: Download Series Data
+        
+    func downloadLinksForEpisode(seriesI:Int) {
+        println("Starting Series Download")
         
         // get data from kimono
         var error: NSError?
+<<<<<<< HEAD
         let seriesNameAndSeasonsUrl = "https://www.kimonolabs.com/api/70ef8q9g?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)"
         var seriesNameAndSeasonsData:NSData? = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
         
@@ -60,83 +73,291 @@ class DataManager : NSObject
             var seasonNum = tempSeasonDict["season"] as String
             seasonNum = seasonNum.lowercaseString
             seasonNum = seasonNum.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
+=======
+        var offset = 0                                      // Offset for kimono, because each query only shows 2500 rows at once
+        var results = NSArray()                             // Results variable is defined outside, because its used in the while loop to see when the data has been parsed through
+        var seriesImages = Dictionary<String, String>()     // Array of images of series to be downloaded
+        do {
+            var linksForEpisodeUrl = ""
+            if seriesI == 0 {
+                linksForEpisodeUrl = "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
+            } else if seriesI == 1 {
+                linksForEpisodeUrl = "https://www.kimonolabs.com/api/7cezuv7y?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
+            } else if seriesI == 2 {
+                linksForEpisodeUrl = "https://www.kimonolabs.com/api/edoju7e4?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
+            }
+>>>>>>> origin/master
             
-            // get data from kimono
-            var error: NSError?
-            let episodesForSeasonUrl = "https://www.kimonolabs.com/api/2lcduwri?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(seasonNum)"
-            var episodesForSeasonData:NSData? = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
+            var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
             
-            while episodesForSeasonData == nil {
-                println("episodes fetch failed, trying again....")
-                episodesForSeasonData = NSData(contentsOfURL: NSURL(string: episodesForSeasonUrl))
+            while linksForEpisodeData == nil {
+                println("links fetch failed, trying again....")
+                linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
             }
             
+<<<<<<< HEAD
             let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
             let results = jsonDict["results"] as NSDictionary
             let episodes = results["episodes"] as NSArray
+=======
+            // parse json outputted from Kimono
+            let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
+            results = jsonDict["results"] as! NSArray
+>>>>>>> origin/master
             
-            // get links for each episode in current season
-            for episode in episodes {
-                let tempEpisodeDict = episode as NSDictionary
-                var episodeNum = tempEpisodeDict["episodeNumber"] as String
-                episodeNum = episodeNum.lowercaseString
-                episodeNum = episodeNum.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            for page in results {
                 
-                self.downloadLinksForEpisode(seriesName, seriesId:seriesId, season:seasonNum, episodeNum:episodeNum)
+                let episodeInfo = (page["episode_info"] as! NSArray)[0] as! NSDictionary
+                
+                // check to see if the page is the last one in the current set of data
+                if (page["page"] as! String) == ((results[results.count - 1])["page"] as! String) {
+                    offset += (episodeInfo["index"] as! Int) - 1
+                    // if the last section of results only has one page
+                    if results.count == 1 {
+                        offset += 1000
+                    }
+                    continue
+                }
+
+                var links = page["episode_links"] as? NSArray
+                var episodeURLArray = split(page["url"] as! String) {$0 == "/"}
+                var seriesID = episodeURLArray[2]
+                var seriesName = (episodeInfo["seriesName"] as! String)
+                seriesName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                
+                seriesImages[seriesID] = episodeInfo["image"] as? String
+                
+                if links != nil {
+                    links = removeFakeSoruces(links!, isMovie: false)
+                    
+                    // save data to parse
+                    if links!.count > 0 {
+                        self.saveObjectToParse(seriesName, id: seriesID, info: episodeInfo, links: links!, image:"", year:"", isMovie: false);
+                    }
+                }
+            }
+        } while results.count > 0
+        
+        // add image to the series
+        for (seriesID, image) in seriesImages {
+            var query = PFQuery(className: "Series")
+            query.limit = 100
+            query.whereKey("seriesID", equalTo: seriesID)
+            query.getFirstObjectInBackgroundWithBlock {
+                (object: PFObject?, error: NSError?) -> Void in
+                if error == nil {
+                    object!["image"] = image
+                    println("image downloaded")
+                } else {
+                    println(error)
+                }
+                object!.saveInBackground()
             }
         }
+        
+        println("Finished Series Download")
     }
     
-    func downloadLinksForEpisode(seriesName:String, seriesId:String, season:String, episodeNum:String) {
+    //MARK: Download Movies Data
+    
+    func downloadMovieLinks(completionHandler: ()->()) {
+        println("Starting Movie Download")
+        
         // get data from kimono
         var error: NSError?
-        let linksForEpisodeUrl = "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)&kimpath2=\(season)-\(episodeNum)"
-        var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
+        let linksForMovieUrl = "http://www.kimonolabs.com/api/bf6pc8gm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1"
+        var linksForMovieData:NSData? = NSData(contentsOfURL: NSURL(string: linksForMovieUrl)!)
         
-        while linksForEpisodeData == nil {
+        while linksForMovieData == nil {
             println("links fetch failed, trying again....")
-            linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl))
+            linksForMovieData = NSData(contentsOfURL: NSURL(string: linksForMovieUrl)!)
         }
         
+<<<<<<< HEAD
         let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
         let results = jsonDict["results"] as NSDictionary
         let links = results["episode_links"] as NSArray
         let episodeInfo = (results["episode_info"] as NSArray)[0] as NSDictionary
+=======
+        // parse json outputted from Kimono
+        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForMovieData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
+        let results = jsonDict["results"] as! NSArray
+>>>>>>> origin/master
 
-        // save data to parse
-        self.saveObjectToParse(seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links);
+        for result in results {
+            if let page = result as? NSDictionary {
+                let movieInfo = (page["movieInfo"] as! NSArray)[0] as! NSDictionary
+                let movieName = (movieInfo["name"] as! String)
+                var movieID = (page["url"] as! String).stringByReplacingOccurrencesOfString("http://www.primewire.ag/", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                movieID = movieID.stringByReplacingOccurrencesOfString("-online-free", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                let links = removeFakeSoruces(page["links"] as! NSArray, isMovie: true)
+                let image = movieInfo["image"] as! String
+                var year = movieInfo["releaseDate"] as! String
+                self.saveObjectToParse(movieName, id: movieID, info: movieInfo, links: links, image: image, year:year, isMovie:true)
+            }
+        }
+        completionHandler()
+        
+        println("Movie Download Complete")
     }
     
-    func saveObjectToParse(seriesName:String, seriesId: String, episodeInfo: NSDictionary, links: NSArray) {
+    //MARK: Helper Methods
+    
+    func saveObjectToParse(name:String, id: String, info: NSDictionary, links: NSArray, image: String, year:String, isMovie: Bool) {
 
-        let query = PFQuery(className: seriesName)
-        query.whereKey("episodeNumber", equalTo: episodeInfo["episode"])
-        query.whereKey("episodeTitle", equalTo: episodeInfo["title"])
-
-        query.getFirstObjectInBackgroundWithBlock {
-            (foundObject: PFObject!, error: NSError!) -> Void in
-
+<<<<<<< HEAD
             if (foundObject != nil) {
                 // The find failed create new object and add
                 let seriesObject = PFObject(className:seriesName)
                 self.configureParseObject(seriesObject, seriesName: seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links)
                 println("new object\n\(episodeInfo)")
             } else if !self.addNewSeries {
+=======
+        var query: PFQuery
+        if isMovie {
+            query = PFQuery(className: "Movies")
+            query.whereKey("movieId", equalTo: id)
+            query.limit = 1000
+            
+            var object = query.getFirstObject()
+            if object == nil {
+                var newObject = PFObject(className: "Movies")
+                self.configureParseObject(newObject, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
+                println("new object\n\(info)")
+            } else {
+>>>>>>> origin/master
                 // The find succeeded update found object
-                self.configureParseObject(foundObject, seriesName: seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links)
-                println("update object\n\(episodeInfo)")
+                self.configureParseObject(object!, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
+                println("update object\n\(info)")
+            }
+        } else {
+            query = PFQuery(className: name)
+            query.whereKey("episodeNumber", equalTo: info["episode"]!)
+            query.whereKey("season", equalTo: info["season"]!)
+            query.limit = 1000
+        
+            query.getFirstObjectInBackgroundWithBlock {
+                (foundObject: PFObject?, error: NSError?) -> Void in
+                if foundObject == nil {
+                    // The find failed create new object and add
+                    var object = PFObject(className:name)
+                    self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: false)
+                    println("new object\n\(info)")
+                } else {
+                    // The find succeeded update found object
+                    self.configureParseObject(foundObject!, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: false)
+                    println("update object\n\(info)")
+                }
             }
         }
     }
     
-    
-    func configureParseObject(object:PFObject, seriesName: String, seriesId: String, episodeInfo: NSDictionary, links:NSArray) {
-        object["seriesName"] = seriesName
-        object["seriesId"] = seriesId
-        object["season"] = episodeInfo["season"]
-        object["episodeNumber"] = episodeInfo["episode"]
-        object["episodeTitle"] = episodeInfo["title"]
-        object["links"] = links
+    // add object to parse
+    func configureParseObject(object:PFObject, name: String, id: String, info: NSDictionary, links:NSArray, image:String, year:String, isMovie: Bool) {
+
+        if isMovie {
+            object["name"] = name
+            object["movieId"] = id
+            object["links"] = links
+            object["image"] = image
+            object["dateReleased"] = NSDate(dateString: year)
+        } else {
+            object["seriesName"] = name
+            object["seriesId"] = id
+            object["season"] = info["season"]
+            object["episodeNumber"] = info["episode"]
+            object["episodeTitle"] = info["title"]
+            object["links"] = links
+            object["description"] = info["description"]
+        }
         object.saveInBackground()
+    }
+    
+    
+    // remove all fake sources
+    func removeFakeSoruces(links: NSArray, isMovie:Bool) -> NSArray {
+        var newLinks = NSMutableArray()
+        for link in links {
+            if let linkSource = link["source"] as? String {
+            
+                if linkSource != "Watch HD" &&
+                    linkSource != "Sponsor Host" &&
+                    linkSource != "Promo Host" &&
+                    linkSource != "" {
+                        if isMovie {
+                            newLinks.addObject(["source": link["source"] as! String, "links" : link["links"] as! String])
+                        } else {
+                            if !(link["link"] is NSArray) {
+                                newLinks.addObject(["source": link["source"] as! String, "link" : link["link"] as! String])
+                            }
+                        }
+                }
+            }
+        }
+        return newLinks
+    }
+    
+    //MARK: Parse Query Methods
+    func getSupportedSeries(completionHandler: ()->()) {
+        seriesList = []
+        let query = PFQuery(className: "Series")
+        query.limit = 1000
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]?, error: NSError?) -> Void in
+            if error == nil {
+                for object in objects! {
+                    let series = Episode()
+                    var seriesName = (object as! PFObject)["name"] as! String
+                    series.parseQueryName = seriesName
+                    seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    series.seriesName = seriesName
+                    series.seriesId = (object as! PFObject)["seriesID"] as! String
+                    var urlString = (object as! PFObject)["image"] as? String
+                    if urlString != nil {
+                        var data = NSData(contentsOfURL: NSURL(string: urlString!)!)
+                        if data != nil {
+                            series.image = UIImage(data: data!)
+                        } else {
+                            series.image = UIImage(named: "noposter.jpg")
+                        }
+                    }
+                    self.seriesList.append(series)
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler()
+                }
+            } else {
+                println(error)
+            }
+        }
+    }
+    
+    func getMovies(completionHandler: ()->()) {
+        movieList = []
+        let query = PFQuery(className: "Movies")
+        query.limit = 1000
+        query.orderByDescending("dateReleased")
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [AnyObject]?, error: NSError?) -> Void in
+            if error == nil {
+                for object in objects! {
+                    let movie = Movie()
+                    var movieName = (object as! PFObject)["name"] as! String
+                    movieName = movieName.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    movie.name = movieName
+                    movie.id = (object as! PFObject)["movieId"] as! String
+                    movie.links = (object as! PFObject)["links"] as! NSArray
+                    movie.imageUrl = (object as! PFObject)["image"] as! String
+                    self.movieList.append(movie)
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    completionHandler()
+                }
+            } else {
+                println(error)
+            }
+        }
     }
 }

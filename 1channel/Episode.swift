@@ -12,8 +12,10 @@ import UIKit
 class Episode {
     
     var seriesName = ""
+    var parseQueryName = ""
     var seriesId = ""
     var season = ""
     var episodeNumber = ""
     var episodeName = ""
+    var image = UIImage(named: "noposter.jpg")
 }
