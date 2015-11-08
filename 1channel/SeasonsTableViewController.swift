@@ -30,11 +30,11 @@ class SeasonsTableViewController: UITableViewController {
         query.selectKeys(["season"])
         
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
                 self.getSeasonsFromQuery(objects!)
             } else {
-                println(error)
+                print(error)
             }
         }
     }
@@ -49,7 +49,7 @@ class SeasonsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
         if seasons.count != 0 {
             cell.textLabel?.text = "Season \(seasons[indexPath.row])"
             cell.textLabel?.sizeToFit()
@@ -64,11 +64,11 @@ class SeasonsTableViewController: UITableViewController {
         
         for object in objects {
             let seasonString = (object as! PFObject)["season"] as! String
-            var seasonNumber = seasonString.stringByReplacingOccurrencesOfString("Season ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            self.seasons.append(seasonNumber.toInt()!)
+            let seasonNumber = seasonString.stringByReplacingOccurrencesOfString("Season ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+            self.seasons.append(Int(seasonNumber)!)
         }
         self.seasons = NSSet(array: self.seasons).allObjects as! Array<Int>
-        self.seasons.sort({$0 < $1})
+        self.seasons.sortInPlace({$0 < $1})
         self.tableView.reloadData()
     }
     
@@ -108,7 +108,7 @@ class SeasonsTableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showEpisodes" {
             let etvc = segue.destinationViewController as! EpisodesTableViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
+            let indexPath = self.tableView.indexPathForSelectedRow
             episode.season = "Season \(seasons[indexPath!.row])"
             
             // variables being passed

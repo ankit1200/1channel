@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Parse
 
 class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
 
@@ -67,8 +66,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                     cell.image.image = movie.image
                 } else {
                     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var url = NSURL(string: imageUrl)
-                        var data = NSData(contentsOfURL : url!)
+                        let url = NSURL(string: imageUrl)
+                        let data = NSData(contentsOfURL : url!)
                         var image: UIImage?
                         if data != nil {
                             image = UIImage(data : data!)
@@ -142,7 +141,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: Refresh Movies
     
     @IBAction func refreshMovies(sender: AnyObject) {
-        var alertView = UIAlertView(title: "Movies Updating", message: "The movies are being updated! Movies list will refresh upon completion!", delegate: nil, cancelButtonTitle: "OK")
+        let alertView = UIAlertView(title: "Movies Updating", message: "The movies are being updated! Movies list will refresh upon completion!", delegate: nil, cancelButtonTitle: "OK")
         alertView.show()
         // update movies whenever app opens
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -162,7 +161,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         if segue.identifier == "showSeasons"{
             // destination view controller
             let stvc = segue.destinationViewController as! SeasonsTableViewController
-            let indexPath = (self.collectionView.indexPathsForSelectedItems() as! Array<NSIndexPath>)[0]
+            let indexPath = (self.collectionView.indexPathsForSelectedItems()!)[0]
             
             // variables being passed
             stvc.episode = (filteredSeriesList.count == 0 ) ? seriesList[indexPath.row] : filteredSeriesList[indexPath.row]
@@ -176,7 +175,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         } else if segue.identifier == "showSources" {
             // destination view controller
             let ltvc = segue.destinationViewController as! LinksTableViewController
-            let indexPath = (self.collectionView.indexPathsForSelectedItems() as! Array<NSIndexPath>)[0]
+            let indexPath = (self.collectionView.indexPathsForSelectedItems()!)[0]
             
             // variables being passed
             let movieToPass = (filteredMovieList.count == 0) ? movieList[indexPath.row] : filteredMovieList[indexPath.row]

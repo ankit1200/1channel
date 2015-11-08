@@ -9,7 +9,6 @@
 //
 
 import Foundation
-import Parse
 
 extension NSDate
 {
@@ -45,14 +44,13 @@ class DataManager : NSObject
     //MARK: Download Series Data
         
     func downloadLinksForEpisode(seriesI:Int) {
-        println("Starting Series Download")
+        print("Starting Series Download")
         
         // get data from kimono
-        var error: NSError?
         var offset = 0                                      // Offset for kimono, because each query only shows 2500 rows at once
         var results = NSArray()                             // Results variable is defined outside, because its used in the while loop to see when the data has been parsed through
         var seriesImages = Dictionary<String, String>()     // Array of images of series to be downloaded
-        do {
+        repeat {
             var linksForEpisodeUrl = ""
             if seriesI == 0 {
                 linksForEpisodeUrl = "https://www.kimonolabs.com/api/4nb0gypm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
@@ -65,12 +63,12 @@ class DataManager : NSObject
             var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
             
             while linksForEpisodeData == nil {
-                println("links fetch failed, trying again....")
+                print("links fetch failed, trying again....")
                 linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
             }
             
             // parse json outputted from Kimono
-            let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
+            let jsonDict: NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
             results = jsonDict["results"] as! NSArray
             
             for page in results {
@@ -88,8 +86,8 @@ class DataManager : NSObject
                 }
 
                 var links = page["episode_links"] as? NSArray
-                var episodeURLArray = split(page["url"] as! String) {$0 == "/"}
-                var seriesID = episodeURLArray[2]
+                var episodeURLArray = (page["url"] as! String).characters.split {$0 == "/"}.map { String($0) }
+                let seriesID = episodeURLArray[2]
                 var seriesName = (episodeInfo["seriesName"] as! String)
                 seriesName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 
@@ -108,41 +106,40 @@ class DataManager : NSObject
         
         // add image to the series
         for (seriesID, image) in seriesImages {
-            var query = PFQuery(className: "Series")
+            let query = PFQuery(className: "Series")
             query.limit = 100
             query.whereKey("seriesID", equalTo: seriesID)
             query.getFirstObjectInBackgroundWithBlock {
                 (object: PFObject?, error: NSError?) -> Void in
                 if error == nil {
                     object!["image"] = image
-                    println("image downloaded")
+                    print("image downloaded")
                 } else {
-                    println(error)
+                    print(error)
                 }
                 object!.saveInBackground()
             }
         }
         
-        println("Finished Series Download")
+        print("Finished Series Download")
     }
     
     //MARK: Download Movies Data
     
     func downloadMovieLinks(completionHandler: ()->()) {
-        println("Starting Movie Download")
+        print("Starting Movie Download")
         
         // get data from kimono
-        var error: NSError?
         let linksForMovieUrl = "http://www.kimonolabs.com/api/bf6pc8gm?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1"
         var linksForMovieData:NSData? = NSData(contentsOfURL: NSURL(string: linksForMovieUrl)!)
         
         while linksForMovieData == nil {
-            println("links fetch failed, trying again....")
+            print("links fetch failed, trying again....")
             linksForMovieData = NSData(contentsOfURL: NSURL(string: linksForMovieUrl)!)
         }
         
         // parse json outputted from Kimono
-        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForMovieData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as! NSDictionary
+        let jsonDict: NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(linksForMovieData!, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
         let results = jsonDict["results"] as! NSArray
 
         for result in results {
@@ -153,13 +150,13 @@ class DataManager : NSObject
                 movieID = movieID.stringByReplacingOccurrencesOfString("-online-free", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 let links = removeFakeSoruces(page["links"] as! NSArray, isMovie: true)
                 let image = movieInfo["image"] as! String
-                var year = movieInfo["releaseDate"] as! String
+                let year = movieInfo["releaseDate"] as! String
                 self.saveObjectToParse(movieName, id: movieID, info: movieInfo, links: links, image: image, year:year, isMovie:true)
             }
         }
         completionHandler()
         
-        println("Movie Download Complete")
+        print("Movie Download Complete")
     }
     
     //MARK: Helper Methods
@@ -172,15 +169,14 @@ class DataManager : NSObject
             query.whereKey("movieId", equalTo: id)
             query.limit = 1000
             
-            var object = query.getFirstObject()
-            if object == nil {
-                var newObject = PFObject(className: "Movies")
-                self.configureParseObject(newObject, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
-                println("new object\n\(info)")
-            } else {
+            if let object = try? query.getFirstObject() {
                 // The find succeeded update found object
-                self.configureParseObject(object!, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
-                println("update object\n\(info)")
+                self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
+                print("update object\n\(info)")
+            } else {
+                let newObject = PFObject(className: "Movies")
+                self.configureParseObject(newObject, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
+                print("new object\n\(info)")
             }
         } else {
             query = PFQuery(className: name)
@@ -192,13 +188,13 @@ class DataManager : NSObject
                 (foundObject: PFObject?, error: NSError?) -> Void in
                 if foundObject == nil {
                     // The find failed create new object and add
-                    var object = PFObject(className:name)
+                    let object = PFObject(className:name)
                     self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: false)
-                    println("new object\n\(info)")
+                    print("new object\n\(info)")
                 } else {
                     // The find succeeded update found object
                     self.configureParseObject(foundObject!, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: false)
-                    println("update object\n\(info)")
+                    print("update object\n\(info)")
                 }
             }
         }
@@ -228,7 +224,7 @@ class DataManager : NSObject
     
     // remove all fake sources
     func removeFakeSoruces(links: NSArray, isMovie:Bool) -> NSArray {
-        var newLinks = NSMutableArray()
+        let newLinks = NSMutableArray()
         for link in links {
             if let linkSource = link["source"] as? String {
             
@@ -255,19 +251,19 @@ class DataManager : NSObject
         let query = PFQuery(className: "Series")
         query.limit = 1000
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
                 for object in objects! {
                     let series = Episode()
-                    var seriesName = (object as! PFObject)["name"] as! String
+                    var seriesName = object["name"] as! String
                     series.parseQueryName = seriesName
-                    seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
+                    seriesName = seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                     seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
                     series.seriesName = seriesName
-                    series.seriesId = (object as! PFObject)["seriesID"] as! String
-                    var urlString = (object as! PFObject)["image"] as? String
+                    series.seriesId = object["seriesID"] as! String
+                    let urlString = object["image"] as? String
                     if urlString != nil {
-                        var data = NSData(contentsOfURL: NSURL(string: urlString!)!)
+                        let data = NSData(contentsOfURL: NSURL(string: urlString!)!)
                         if data != nil {
                             series.image = UIImage(data: data!)
                         } else {
@@ -280,7 +276,7 @@ class DataManager : NSObject
                     completionHandler()
                 }
             } else {
-                println(error)
+                print(error)
             }
         }
     }
@@ -291,24 +287,24 @@ class DataManager : NSObject
         query.limit = 1000
         query.orderByDescending("dateReleased")
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
                 for object in objects! {
                     let movie = Movie()
-                    var movieName = (object as! PFObject)["name"] as! String
+                    var movieName = object["name"] as! String
                     movieName = movieName.stringByReplacingOccurrencesOfString("movie_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                     movieName = movieName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
                     movie.name = movieName
-                    movie.id = (object as! PFObject)["movieId"] as! String
-                    movie.links = (object as! PFObject)["links"] as! NSArray
-                    movie.imageUrl = (object as! PFObject)["image"] as! String
+                    movie.id = object["movieId"] as! String
+                    movie.links = object["links"] as! NSArray
+                    movie.imageUrl = object["image"] as! String
                     self.movieList.append(movie)
                 }
                 dispatch_async(dispatch_get_main_queue()) {
                     completionHandler()
                 }
             } else {
-                println(error)
+                print(error)
             }
         }
     }
