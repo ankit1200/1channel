@@ -52,6 +52,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 let episode = (filteredSeriesList.count == 0 ) ? seriesList[indexPath.row] : filteredSeriesList[indexPath.row]
                 cell.image.image = episode.image
             }
+            cell.image.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.image.layer.borderWidth = 2.0
             
             return cell
         } else {
@@ -84,8 +86,10 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                         })
                     })
                 }
-            
             }
+            cell.image.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.image.layer.borderWidth = 2.0
+            
             return cell
         }
     }

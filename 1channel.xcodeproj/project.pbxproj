@@ -43,6 +43,7 @@
 		478A5E1C1A1B3E6100F9FF19 /* noposter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = noposter.jpg; sourceTree = "<group>"; };
 		47B3EB6519DA58D80095B9FE /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		47FC94191BEFCCFA0023D174 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		47FC941B1BEFD3100023D174 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		882B015F99EF40DF8699759E /* Pods-1channel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1channel.release.xcconfig"; path = "Pods/Target Support Files/Pods-1channel/Pods-1channel.release.xcconfig"; sourceTree = "<group>"; };
 		D603A9D8605B932547941058 /* Pods-1channel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1channel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-1channel/Pods-1channel.debug.xcconfig"; sourceTree = "<group>"; };
 		E19688E17AF6C4F5B850819A /* libPods-1channel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-1channel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -171,6 +172,7 @@
 		EBE4FF69197EE13A00745582 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				47FC941B1BEFD3100023D174 /* QuartzCore.framework */,
 				E19688E17AF6C4F5B850819A /* libPods-1channel.a */,
 			);
 			name = Frameworks;
