@@ -43,7 +43,7 @@ class DataManager : NSObject
     
     //MARK: Download Series Data
         
-    func downloadLinksForEpisode(seriesI:Int) {
+    func downloadLinksForEpisode(seriesI:Int, name:String) {
         print("Starting Series Download")
         
         // get data from kimono
@@ -89,8 +89,11 @@ class DataManager : NSObject
                 var episodeURLArray = (page["url"] as! String).characters.split {$0 == "/"}.map { String($0) }
                 let seriesID = episodeURLArray[2]
                 var seriesName = (episodeInfo["seriesName"] as! String)
+                // find the right series in the api call
+                if seriesName != name {
+                    continue
+                }
                 seriesName = seriesName.stringByReplacingOccurrencesOfString(" ", withString: "_", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                
                 seriesImages[seriesID] = episodeInfo["image"] as? String
                 
                 if links != nil {
@@ -148,10 +151,13 @@ class DataManager : NSObject
                 let movieName = (movieInfo["name"] as! String)
                 var movieID = (page["url"] as! String).stringByReplacingOccurrencesOfString("http://www.primewire.ag/", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
                 movieID = movieID.stringByReplacingOccurrencesOfString("-online-free", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-                let links = removeFakeSoruces(page["links"] as! NSArray, isMovie: true)
                 let image = movieInfo["image"] as! String
                 let year = movieInfo["releaseDate"] as! String
-                self.saveObjectToParse(movieName, id: movieID, info: movieInfo, links: links, image: image, year:year, isMovie:true)
+                // make sure movie has links
+                if page["links"] != nil {
+                    let links = removeFakeSoruces(page["links"] as! NSArray, isMovie: true)
+                    self.saveObjectToParse(movieName, id: movieID, info: movieInfo, links: links, image: image, year:year, isMovie:true)
+                }
             }
         }
         completionHandler()

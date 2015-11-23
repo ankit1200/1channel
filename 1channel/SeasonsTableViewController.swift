@@ -73,6 +73,8 @@ class SeasonsTableViewController: UITableViewController {
     }
     
     @IBAction func downloadNewEpisodes(sender: AnyObject) {
+        // If download not started get new data
+        // Else reload tableview with new data
         if !downloadStarted {
             downloadData()
             downloadStarted = true
@@ -81,6 +83,8 @@ class SeasonsTableViewController: UITableViewController {
         }
     }
     
+    
+    // Decide which API to call, based on TV show
     func downloadData() {
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             // background thread
@@ -89,15 +93,15 @@ class SeasonsTableViewController: UITableViewController {
                 self.episode.seriesName == "Better Call Saul" || self.episode.seriesName == "Fresh Off the Boat" ||
                 self.episode.seriesName == "Game of Thrones" || self.episode.seriesName == "The Walking Dead"
             {
-                manager.downloadLinksForEpisode(0)
+                manager.downloadLinksForEpisode(0, name: self.episode.seriesName)
             } else if self.episode.seriesName == "The Vampire Diaries" || self.episode.seriesName == "Pretty Little Liars" ||
                 self.episode.seriesName == "Modern Family" || self.episode.seriesName == "Suits" ||
                 self.episode.seriesName == "Silicon Valley" || self.episode.seriesName == "Brooklyn Nine Nine"
             {
-                manager.downloadLinksForEpisode(1)
+                manager.downloadLinksForEpisode(1, name: self.episode.seriesName)
             } else if self.episode.seriesName == "Supernatural" || self.episode.seriesName == "New Girl" ||
                 self.episode.seriesName == "Two and a Half Men" || self.episode.seriesName == "True Blood"{
-                manager.downloadLinksForEpisode(2)
+                manager.downloadLinksForEpisode(2, name: self.episode.seriesName)
             }
         })
     }

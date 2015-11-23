@@ -119,11 +119,9 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         
-        if (DeviceType.IS_IPHONE_5) {
-            print("test")
+        if (DeviceType.IS_IPHONE_5){
             return UIEdgeInsetsMake(25, 9, 0, 9)
         } else {
-            print("test234567890")
             return UIEdgeInsetsMake(25, 20, 0, 20)
         }
     }
