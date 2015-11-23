@@ -18,6 +18,8 @@ class SeasonsTableViewController: UITableViewController {
         super.viewDidLoad()
         self.getSeasonsForSeries()
         self.title = episode.seriesName
+        self.tableView.backgroundView = UIImageView(image: episode.image)
+        self.tableView.backgroundView?.alpha = 0.4
     }
     
     
