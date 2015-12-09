@@ -58,6 +58,8 @@ class DataManager : NSObject
                 linksForEpisodeUrl = "https://www.kimonolabs.com/api/7cezuv7y?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
             } else if seriesI == 2 {
                 linksForEpisodeUrl = "https://www.kimonolabs.com/api/edoju7e4?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
+            } else if seriesI == 3 {
+                linksForEpisodeUrl = "https://www.kimonolabs.com/api/8pjsbvcq?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
             }
             
             var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)

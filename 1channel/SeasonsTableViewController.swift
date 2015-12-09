@@ -104,6 +104,8 @@ class SeasonsTableViewController: UITableViewController {
             } else if self.episode.seriesName == "Supernatural" || self.episode.seriesName == "New Girl" ||
                 self.episode.seriesName == "Two and a Half Men" || self.episode.seriesName == "True Blood"{
                 manager.downloadLinksForEpisode(2, name: self.episode.seriesName)
+            } else if self.episode.seriesName == "Homeland" {
+                    manager.downloadLinksForEpisode(3, name: self.episode.seriesName)
             }
         })
     }
