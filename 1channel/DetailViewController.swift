@@ -13,8 +13,8 @@ extension String {
     func contains(other: String) -> Bool{
         var start = startIndex
         
-        do{
-            var subString = self[Range(start: start++, end: endIndex)]
+        repeat{
+            let subString = self[Range(start: start++, end: endIndex)]
             if subString.hasPrefix(other){
                 return true
             }
@@ -107,10 +107,8 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
             (urlString!.lowercaseString.rangeOfString(".mp4") != nil)
 >>>>>>> origin/master
         {
-            println("passed: \(urlString)")
             return true
         }
-        println("failed: \(urlString)")
         return false
     }
     
@@ -128,17 +126,28 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
         // Finished loading the web page. Hide the activity indicator in the status bar.
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
+        if linkAndSource!.source == "beststreams.net" {
+            if !webView.loading {
+                let delay = 1.0 * Double(NSEC_PER_SEC)
+                let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                dispatch_after(time, dispatch_get_main_queue()) {
+                    webView.stringByEvaluatingJavaScriptFromString("document.getElementsByName('imhuman')[0].click()")!
+                }
+            }
+        }
+        
         // Call this function to set the colors of the back and forward buttons
         setBackForwardButtons()
     }
     
-    func webView(webView: UIWebView, didFailLoadWithError error: NSError) {
+    
+    func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
         /*
         Ignore this error if the page is instantly redirected via javascript or in another way.
         NSURLErrorCancelled is returned when an asynchronous load is cancelled, which happens
         when the page is instantly redirected via javascript or in another way.
         */
-        if error.code == NSURLErrorCancelled {
+        if error!.code == NSURLErrorCancelled {
             return
         }
         
@@ -149,7 +158,7 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
         // Create the error message in HTML as a character string and store it into the local constant errorString
-        let errorString = "<html><font size=+2 color='red'><p>An error occurred: <br />Possible causes for this error:<br />- No network connection<br />- Wrong URL entered<br />- Server computer is down</p></font></html>" + error.localizedDescription
+        let errorString = "<html><font size=+2 color='red'><p>An error occurred: <br />Possible causes for this error:<br />- No network connection<br />- Wrong URL entered<br />- Server computer is down</p></font></html>" + error!.localizedDescription
         
         // Display the error message within the UIWebView object
         self.webView.loadHTMLString(errorString, baseURL: nil)
@@ -157,8 +166,8 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
     
     func configureView() {
         // Update the user interface for the detail item.
-        if let detail = self.linkAndSource {
-            if let loadLink = self.webView {
+        if self.linkAndSource != nil {
+            if self.webView != nil {
                loadAddressURL()
             }
         }
@@ -169,7 +178,7 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
     func getSourceName(source: String) -> String {
         var sourceString = ""
         
-        for char in source {
+        for char in source.characters {
             if char == "." {
                 return sourceString
             } else {

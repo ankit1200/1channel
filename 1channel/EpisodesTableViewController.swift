@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Parse
 
 class EpisodesTableViewController : UITableViewController {
     
@@ -51,7 +50,7 @@ class EpisodesTableViewController : UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
         
         if episodes.count != 0 {
             cell.textLabel?.text = episodes[indexPath.row].episodeName
@@ -82,17 +81,17 @@ class EpisodesTableViewController : UITableViewController {
             var numberString = (object as! PFObject)["episodeNumber"] as! String
             let name = (object as! PFObject)["episodeTitle"] as! String
             numberString = numberString.stringByReplacingOccurrencesOfString("Episode ", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            let number = numberString.toInt()
+            let number = Int(numberString)
             self.episodes.append(episodeNumber: number!, episodeName: name)
         }
-        self.episodes.sort({$0.0 < $1.0})
+        self.episodes.sortInPlace({$0.0 < $1.0})
         self.tableView.reloadData()
     }
     
     func downloadData(seasonsFromParseQuery: Array<String>) {
         dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             // background thread
-            let manager = DataManager()
+//            let manager = DataManager()
 //            manager.downloadSeriesData(self.episode.parseQueryName, seriesId: self.episode.seriesId, seasonsFromParseQuery: seasonsFromParseQuery)
         })
     }
@@ -103,7 +102,7 @@ class EpisodesTableViewController : UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSources" {
             let ltvc = segue.destinationViewController as! LinksTableViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
+            let indexPath = self.tableView.indexPathForSelectedRow
             
             episode.episodeNumber = "Episode \(episodes[indexPath!.row].episodeNumber)"
             episode.episodeName = episodes[indexPath!.row].episodeName

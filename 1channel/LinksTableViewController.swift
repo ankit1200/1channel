@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Parse
 
 class LinksTableViewController : UITableViewController {
     
@@ -56,7 +55,7 @@ class LinksTableViewController : UITableViewController {
         if segue.identifier == "showLink" {
             
             let dvc = segue.destinationViewController as! DetailViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
+            let indexPath = self.tableView.indexPathForSelectedRow
             
             // set variables
             dvc.linkAndSource = links[indexPath!.row]
@@ -81,18 +80,18 @@ class LinksTableViewController : UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) 
         
         let source = links[indexPath.row].source
         
         if links.count != 0 {
             cell.textLabel?.text = source
             if source == "thevideo.me" ||
-                source == "gorillavid.in" {
+                source == "gorillavid.in" ||
+                source == "bestreams.net" {
                 cell.textLabel?.textColor = UIColor.greenColor()
 //                    cell.imageView?.image = getImageWithColor(UIColor.greenColor())
-            } else if source == "bestreams.net" ||
-                        source == "cloudzilla.to" {
+            } else if source == "cloudzilla.to" {
 //                cell.textLabel?.textColor = UIColor.yellowColor()
 //                    cell.imageView?.image = getImageWithColor(UIColor.yellowColor())
             } else {
@@ -145,8 +144,8 @@ class LinksTableViewController : UITableViewController {
     
     // create an image with solid color background
     func getImageWithColor(color: UIColor) -> UIImage {
-        var circle = CGRectMake(0, 0, 30, 30)
-        var context = UIGraphicsGetCurrentContext()
+        let circle = CGRectMake(0, 0, 30, 30)
+        let context = UIGraphicsGetCurrentContext()
         CGContextSetFillColorWithColor(context, color.CGColor);
         CGContextFillEllipseInRect(context, circle);
         CGContextStrokeEllipseInRect(context, circle);
@@ -154,7 +153,7 @@ class LinksTableViewController : UITableViewController {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 30, height: 30), false, 0)
         color.setFill()
         UIRectFill(circle)
-        var image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return image
     }

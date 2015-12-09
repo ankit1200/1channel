@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import Parse
 
-class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
+class CollectionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
 
     var filteredSeriesList = Array<Episode>()
     var seriesList = Array<Episode>()
@@ -23,6 +22,23 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet var movieRefresh: UIBarButtonItem!
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var dismissKeyboardButton: UIButton!
+    
+    
+    // Structs to check iphone screen size
+    struct ScreenSize
+    {
+        static let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
+        static let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
+        static let SCREEN_MAX_LENGTH = max(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
+        static let SCREEN_MIN_LENGTH = min(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
+    }
+    
+    struct DeviceType
+    {
+        static let IS_IPHONE_5 = UIDevice.currentDevice().userInterfaceIdiom == .Phone && ScreenSize.SCREEN_MAX_LENGTH == 568.0
+        static let IS_IPHONE_6 = UIDevice.currentDevice().userInterfaceIdiom == .Phone && ScreenSize.SCREEN_MAX_LENGTH == 667.0
+        static let IS_IPHONE_6P = UIDevice.currentDevice().userInterfaceIdiom == .Phone && ScreenSize.SCREEN_MAX_LENGTH == 736.0
+    }
     
     override func viewDidLoad() {
         // Populate Arrays
@@ -53,6 +69,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                 let episode = (filteredSeriesList.count == 0 ) ? seriesList[indexPath.row] : filteredSeriesList[indexPath.row]
                 cell.image.image = episode.image
             }
+            cell.image.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.image.layer.borderWidth = 2.0
             
             return cell
         } else {
@@ -67,8 +85,8 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                     cell.image.image = movie.image
                 } else {
                     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
-                        var url = NSURL(string: imageUrl)
-                        var data = NSData(contentsOfURL : url!)
+                        let url = NSURL(string: imageUrl)
+                        let data = NSData(contentsOfURL : url!)
                         var image: UIImage?
                         if data != nil {
                             image = UIImage(data : data!)
@@ -85,8 +103,10 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
                         })
                     })
                 }
-            
             }
+            cell.image.layer.borderColor = UIColor.whiteColor().CGColor
+            cell.image.layer.borderWidth = 2.0
+            
             return cell
         }
     }
@@ -97,6 +117,14 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         selectedIndex = indexPath.row
     }
     
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        
+        if (DeviceType.IS_IPHONE_5){
+            return UIEdgeInsetsMake(25, 9, 0, 9)
+        } else {
+            return UIEdgeInsetsMake(25, 20, 0, 20)
+        }
+    }
     
     // MARK: Segment Value Changed
     @IBAction func segmentValueChanged(sender: UISegmentedControl) {
@@ -142,7 +170,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
     // MARK: Refresh Movies
     
     @IBAction func refreshMovies(sender: AnyObject) {
-        var alertView = UIAlertView(title: "Movies Updating", message: "The movies are being updated! Movies list will refresh upon completion!", delegate: nil, cancelButtonTitle: "OK")
+        let alertView = UIAlertView(title: "Movies Updating", message: "The movies are being updated! Movies list will refresh upon completion!", delegate: nil, cancelButtonTitle: "OK")
         alertView.show()
         // update movies whenever app opens
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
@@ -162,7 +190,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         if segue.identifier == "showSeasons"{
             // destination view controller
             let stvc = segue.destinationViewController as! SeasonsTableViewController
-            let indexPath = (self.collectionView.indexPathsForSelectedItems() as! Array<NSIndexPath>)[0]
+            let indexPath = (self.collectionView.indexPathsForSelectedItems()!)[0]
             
             // variables being passed
             stvc.episode = (filteredSeriesList.count == 0 ) ? seriesList[indexPath.row] : filteredSeriesList[indexPath.row]
@@ -176,7 +204,7 @@ class CollectionViewController: UIViewController, UICollectionViewDataSource, UI
         } else if segue.identifier == "showSources" {
             // destination view controller
             let ltvc = segue.destinationViewController as! LinksTableViewController
-            let indexPath = (self.collectionView.indexPathsForSelectedItems() as! Array<NSIndexPath>)[0]
+            let indexPath = (self.collectionView.indexPathsForSelectedItems()!)[0]
             
             // variables being passed
             let movieToPass = (filteredMovieList.count == 0) ? movieList[indexPath.row] : filteredMovieList[indexPath.row]
