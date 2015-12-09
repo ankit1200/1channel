@@ -101,10 +101,8 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
             (urlString.lowercaseString.rangeOfString(source) != nil) ||
             (urlString.lowercaseString.rangeOfString(".mp4") != nil)
         {
-            print("passed: \(urlString)")
             return true
         }
-        print("failed: \(urlString)")
         return false
     }
     
@@ -122,9 +120,20 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
         // Finished loading the web page. Hide the activity indicator in the status bar.
         UIApplication.sharedApplication().networkActivityIndicatorVisible = false
         
+        if linkAndSource!.source == "beststreams.net" {
+            if !webView.loading {
+                let delay = 1.0 * Double(NSEC_PER_SEC)
+                let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                dispatch_after(time, dispatch_get_main_queue()) {
+                    webView.stringByEvaluatingJavaScriptFromString("document.getElementsByName('imhuman')[0].click()")!
+                }
+            }
+        }
+        
         // Call this function to set the colors of the back and forward buttons
         setBackForwardButtons()
     }
+    
     
     func webView(webView: UIWebView, didFailLoadWithError error: NSError?) {
         /*

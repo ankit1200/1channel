@@ -82,11 +82,11 @@ class LinksTableViewController : UITableViewController {
         if links.count != 0 {
             cell.textLabel?.text = source
             if source == "thevideo.me" ||
-                source == "gorillavid.in" {
+                source == "gorillavid.in" ||
+                source == "bestreams.net" {
                 cell.textLabel?.textColor = UIColor.greenColor()
 //                    cell.imageView?.image = getImageWithColor(UIColor.greenColor())
-            } else if source == "bestreams.net" ||
-                        source == "cloudzilla.to" {
+            } else if source == "cloudzilla.to" {
 //                cell.textLabel?.textColor = UIColor.yellowColor()
 //                    cell.imageView?.image = getImageWithColor(UIColor.yellowColor())
             } else {
