@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C6F4C8B9790BC538F084E5E3 /* libPods-1channel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F26A1A117F123F79D801B5 /* libPods-1channel.a */; };
 		EB30AB82196DC9930024F1F2 /* SeriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */; };
 		EBBDFBF4196B1A3400BB8C14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */; };
 		EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */; };
@@ -42,6 +43,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7CE2FCC8A06EAB925EA4C335 /* Pods-1channel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1channel.release.xcconfig"; path = "Pods/Target Support Files/Pods-1channel/Pods-1channel.release.xcconfig"; sourceTree = "<group>"; };
+		B9F26A1A117F123F79D801B5 /* libPods-1channel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-1channel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C46DA0A61070C663483EF334 /* Pods-1channel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1channel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-1channel/Pods-1channel.debug.xcconfig"; sourceTree = "<group>"; };
 		EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFBEE196B1A3400BB8C14 /* 1channel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1channel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBDFBF2196B1A3400BB8C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -87,6 +91,7 @@
 				EBE4FF72197EE15B00745582 /* CFNetwork.framework in Frameworks */,
 				EBE4FF73197EE15B00745582 /* AudioToolbox.framework in Frameworks */,
 				EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */,
+				C6F4C8B9790BC538F084E5E3 /* libPods-1channel.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,8 +108,8 @@
 		A4CA5482F5499C6CAD31856C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D603A9D8605B932547941058 /* Pods-1channel.debug.xcconfig */,
-				882B015F99EF40DF8699759E /* Pods-1channel.release.xcconfig */,
+				C46DA0A61070C663483EF334 /* Pods-1channel.debug.xcconfig */,
+				7CE2FCC8A06EAB925EA4C335 /* Pods-1channel.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -138,7 +143,6 @@
 				EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */,
 				EBF979F51984620500B44654 /* Episode.swift */,
 				EBBDFBF9196B1A3400BB8C14 /* Main.storyboard */,
-				47FC94191BEFCCFA0023D174 /* LaunchScreen.storyboard */,
 				EBBDFBFC196B1A3400BB8C14 /* Images.xcassets */,
 				EBBDFBF1196B1A3400BB8C14 /* Supporting Files */,
 			);
@@ -196,6 +200,7 @@
 				EBE4FF57197EE0C300745582 /* CFNetwork.framework */,
 				EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */,
 				EBE4FF53197EE08800745582 /* Parse.framework */,
+				B9F26A1A117F123F79D801B5 /* libPods-1channel.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -287,7 +292,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBBDFBFB196B1A3400BB8C14 /* Main.storyboard in Resources */,
-				47FC941A1BEFCCFA0023D174 /* LaunchScreen.storyboard in Resources */,
 				EBBDFBFD196B1A3500BB8C14 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -477,7 +481,7 @@
 		};
 		EBBDFC0D196B1A3500BB8C14 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D603A9D8605B932547941058 /* Pods-1channel.debug.xcconfig */;
+			baseConfigurationReference = C46DA0A61070C663483EF334 /* Pods-1channel.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -503,7 +507,7 @@
 		};
 		EBBDFC0E196B1A3500BB8C14 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 882B015F99EF40DF8699759E /* Pods-1channel.release.xcconfig */;
+			baseConfigurationReference = 7CE2FCC8A06EAB925EA4C335 /* Pods-1channel.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
