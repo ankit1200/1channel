@@ -30,14 +30,9 @@ class EpisodesTableViewController : UITableViewController {
         query.whereKey("season", equalTo: episode.season)
         
         query.findObjectsInBackgroundWithBlock {
-<<<<<<< HEAD
-            (objects: [AnyObject]!, error: NSError!) -> Void in
-            if (error != nil) {
-=======
-            (objects: [AnyObject]?, error: NSError?) -> Void in
-            if error == nil {
->>>>>>> origin/master
-                self.getEpisodesFromQuery(objects)
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if (error == nil) {
+                self.getEpisodesFromQuery(objects!)
             }
         }
     }

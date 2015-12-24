@@ -36,14 +36,9 @@ class LinksTableViewController : UITableViewController {
         query.whereKey("episodeNumber", equalTo: episode.episodeNumber)
         
         query.findObjectsInBackgroundWithBlock {
-<<<<<<< HEAD
-            (objects: [AnyObject]!, error: NSError!) -> Void in
-            if (error != nil) {
-=======
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
->>>>>>> origin/master
-                self.getLinksFromQuery(objects)
+                self.getLinksFromQuery(objects!)
             }
         }
     }

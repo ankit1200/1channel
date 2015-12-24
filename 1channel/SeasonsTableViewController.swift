@@ -32,17 +32,11 @@ class SeasonsTableViewController: UITableViewController {
         query.selectKeys(["season"])
         
         query.findObjectsInBackgroundWithBlock {
-<<<<<<< HEAD
-            (objects: [AnyObject]!, error: NSError!) -> Void in
-            if (error != nil) {
-                self.getSeasonsFromQuery(objects)
-=======
-            (objects: [AnyObject]?, error: NSError?) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
                 self.getSeasonsFromQuery(objects!)
             } else {
-                println(error)
->>>>>>> origin/master
+                print(error)
             }
         }
     }

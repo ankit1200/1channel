@@ -28,15 +28,12 @@ class SeriesTableViewController: UITableViewController {
         let query = PFQuery(className: "Series")
         
         query.findObjectsInBackgroundWithBlock {
-            (objects: [AnyObject]!, error: NSError!) -> Void in
+            (objects: [PFObject]?, error: NSError?) -> Void in
             if (error != nil) {
-                for object in objects {
-                    
+                for object in objects! {
                     let series = Episode()
-                    var seriesName = (object as PFObject)["name"] as String
-                    
-                    series.seriesName = seriesName
-                    series.seriesId = (object as PFObject)["seriesID"] as String
+                    series.seriesName = object["name"] as! String
+                    series.seriesId = object["seriesID"] as! String
                     self.seriesList.append(series)
                 }
                 self.tableView.reloadData()
@@ -49,11 +46,11 @@ class SeriesTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showSeasons" {
-            let stvc = segue.destinationViewController as SeasonsTableViewController
-            let indexPath = self.tableView.indexPathForSelectedRow()
+            let stvc = segue.destinationViewController as! SeasonsTableViewController
+            let indexPath = self.tableView.indexPathForSelectedRow
             
             // variables being passed
-            stvc.episode = seriesList[indexPath.row]
+            stvc.episode = seriesList[indexPath!.row]
             
             // analytics
             let dimensions = [
@@ -82,7 +79,7 @@ class SeriesTableViewController: UITableViewController {
         if seriesList.count != 0 {
             var seriesName = seriesList[indexPath.row].seriesName.stringByReplacingOccurrencesOfString("series_", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
             seriesName = seriesName.stringByReplacingOccurrencesOfString("_", withString: " ", options: NSStringCompareOptions.LiteralSearch, range: nil)
-            cell.textLabel.text = seriesName
+            cell.textLabel!.text = seriesName
         }
         return cell
     }
