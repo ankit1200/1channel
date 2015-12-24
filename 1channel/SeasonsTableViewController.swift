@@ -96,15 +96,14 @@ class SeasonsTableViewController: UITableViewController {
                 self.episode.seriesName == "Game of Thrones" || self.episode.seriesName == "The Walking Dead"
             {
                 manager.downloadLinksForEpisode(0, name: self.episode.seriesName)
-            } else if self.episode.seriesName == "The Vampire Diaries" || self.episode.seriesName == "Pretty Little Liars" ||
-                self.episode.seriesName == "Modern Family" || self.episode.seriesName == "Suits" ||
+            } else if self.episode.seriesName == "Modern Family" || self.episode.seriesName == "Suits" ||
                 self.episode.seriesName == "Silicon Valley" || self.episode.seriesName == "Brooklyn Nine Nine"
             {
                 manager.downloadLinksForEpisode(1, name: self.episode.seriesName)
             } else if self.episode.seriesName == "Supernatural" || self.episode.seriesName == "New Girl" ||
-                self.episode.seriesName == "Two and a Half Men" || self.episode.seriesName == "True Blood"{
+                self.episode.seriesName == "Parks and Recreation" {
                 manager.downloadLinksForEpisode(2, name: self.episode.seriesName)
-            } else if self.episode.seriesName == "Homeland" {
+            } else if self.episode.seriesName == "Homeland" || self.episode.seriesName == "The Flash" {
                     manager.downloadLinksForEpisode(3, name: self.episode.seriesName)
             }
         })
