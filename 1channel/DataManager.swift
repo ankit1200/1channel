@@ -47,6 +47,32 @@ class DataManager : NSObject
         print("Starting Series Download")
         
         // get data from kimono
+        var error: NSError?
+<<<<<<< HEAD
+        let seriesNameAndSeasonsUrl = "https://www.kimonolabs.com/api/70ef8q9g?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimpath1=\(seriesId)"
+        var seriesNameAndSeasonsData:NSData? = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
+        
+        while seriesNameAndSeasonsData == nil {
+            println("seasons fetch failed, trying again....")
+            seriesNameAndSeasonsData = NSData(contentsOfURL: NSURL(string: seriesNameAndSeasonsUrl))
+        }
+        
+        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(seriesNameAndSeasonsData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+        let results = jsonDict["results"] as NSDictionary
+        let seasons = results["seasons"] as NSArray
+        
+        return seasons;
+    }
+    
+    func downloadEpisodesForSeason(seriesName: String, seriesId:String, seasons: NSArray) {
+        println("Downloaded episodes for season")
+        for season in seasons {
+            
+            let tempSeasonDict = season as NSDictionary
+            var seasonNum = tempSeasonDict["season"] as String
+            seasonNum = seasonNum.lowercaseString
+            seasonNum = seasonNum.stringByReplacingOccurrencesOfString(" ", withString: "-", options: NSStringCompareOptions.LiteralSearch, range: nil)
+=======
         var offset = 0                                      // Offset for kimono, because each query only shows 2500 rows at once
         var results = NSArray()                             // Results variable is defined outside, because its used in the while loop to see when the data has been parsed through
         var seriesImages = Dictionary<String, String>()     // Array of images of series to be downloaded
@@ -61,6 +87,7 @@ class DataManager : NSObject
             } else if seriesI == 3 {
                 linksForEpisodeUrl = "https://www.kimonolabs.com/api/8pjsbvcq?apikey=kPOHhmqHVO3WCVK0J09sj1pvhc9a1baQ&kimbypage=1&kimoffset=\(offset)"
             }
+>>>>>>> origin/master
             
             var linksForEpisodeData:NSData? = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
             
@@ -69,9 +96,15 @@ class DataManager : NSObject
                 linksForEpisodeData = NSData(contentsOfURL: NSURL(string: linksForEpisodeUrl)!)
             }
             
+<<<<<<< HEAD
+            let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(episodesForSeasonData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+            let results = jsonDict["results"] as NSDictionary
+            let episodes = results["episodes"] as NSArray
+=======
             // parse json outputted from Kimono
             let jsonDict: NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
             results = jsonDict["results"] as! NSArray
+>>>>>>> origin/master
             
             for page in results {
                 
@@ -143,9 +176,16 @@ class DataManager : NSObject
             linksForMovieData = NSData(contentsOfURL: NSURL(string: linksForMovieUrl)!)
         }
         
+<<<<<<< HEAD
+        let jsonDict: NSDictionary = NSJSONSerialization.JSONObjectWithData(linksForEpisodeData!, options: NSJSONReadingOptions.MutableContainers, error: &error) as NSDictionary
+        let results = jsonDict["results"] as NSDictionary
+        let links = results["episode_links"] as NSArray
+        let episodeInfo = (results["episode_info"] as NSArray)[0] as NSDictionary
+=======
         // parse json outputted from Kimono
         let jsonDict: NSDictionary = (try! NSJSONSerialization.JSONObjectWithData(linksForMovieData!, options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
         let results = jsonDict["results"] as! NSArray
+>>>>>>> origin/master
 
         for result in results {
             if let page = result as? NSDictionary {
@@ -171,13 +211,27 @@ class DataManager : NSObject
     
     func saveObjectToParse(name:String, id: String, info: NSDictionary, links: NSArray, image: String, year:String, isMovie: Bool) {
 
+<<<<<<< HEAD
+            if (foundObject != nil) {
+                // The find failed create new object and add
+                let seriesObject = PFObject(className:seriesName)
+                self.configureParseObject(seriesObject, seriesName: seriesName, seriesId: seriesId, episodeInfo: episodeInfo, links: links)
+                println("new object\n\(episodeInfo)")
+            } else if !self.addNewSeries {
+=======
         var query: PFQuery
         if isMovie {
             query = PFQuery(className: "Movies")
             query.whereKey("movieId", equalTo: id)
             query.limit = 1000
             
-            if let object = try? query.getFirstObject() {
+            var object = query.getFirstObject()
+            if object == nil {
+                var newObject = PFObject(className: "Movies")
+                self.configureParseObject(newObject, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
+                println("new object\n\(info)")
+            } else {
+>>>>>>> origin/master
                 // The find succeeded update found object
                 self.configureParseObject(object, name: name, id: id, info: info, links: links, image: image, year:year, isMovie: true)
                 print("update object\n\(info)")

@@ -7,13 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		47453DD819DA17CC00818EE0 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47453DD719DA17CC00818EE0 /* Movie.swift */; };
-		47706B3819D7D4DF00957A7E /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47706B3719D7D4DF00957A7E /* CollectionViewController.swift */; };
-		47706B3A19D7D72200957A7E /* SeriesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47706B3919D7D72200957A7E /* SeriesCollectionViewCell.swift */; };
-		478A5E1D1A1B3E6100F9FF19 /* noposter.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 478A5E1C1A1B3E6100F9FF19 /* noposter.jpg */; };
-		47B3EB6619DA58D80095B9FE /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B3EB6519DA58D80095B9FE /* MovieCollectionViewCell.swift */; };
-		47FC941A1BEFCCFA0023D174 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 47FC94191BEFCCFA0023D174 /* LaunchScreen.storyboard */; };
-		E6B21C9E9AF0A8D5C1E066C1 /* libPods-1channel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E19688E17AF6C4F5B850819A /* libPods-1channel.a */; };
+		C6F4C8B9790BC538F084E5E3 /* libPods-1channel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9F26A1A117F123F79D801B5 /* libPods-1channel.a */; };
+		EB30AB82196DC9930024F1F2 /* SeriesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */; };
 		EBBDFBF4196B1A3400BB8C14 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */; };
 		EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */; };
 		EBBDFBFB196B1A3400BB8C14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EBBDFBF9196B1A3400BB8C14 /* Main.storyboard */; };
@@ -22,6 +17,17 @@
 		EBBDFC15196B1A7800BB8C14 /* SeasonsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC12196B1A7800BB8C14 /* SeasonsTableViewController.swift */; };
 		EBBDFC16196B1A7800BB8C14 /* EpisodesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */; };
 		EBBDFC17196B1A7800BB8C14 /* LinksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */; };
+		EBE4FF6A197EE15B00745582 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */; };
+		EBE4FF6B197EE15B00745582 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF65197EE10100745582 /* StoreKit.framework */; };
+		EBE4FF6C197EE15B00745582 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF63197EE0FA00745582 /* Security.framework */; };
+		EBE4FF6D197EE15B00745582 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF61197EE0F300745582 /* QuartzCore.framework */; };
+		EBE4FF6E197EE15B00745582 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */; };
+		EBE4FF6F197EE15B00745582 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF5D197EE0E100745582 /* libz.dylib */; };
+		EBE4FF70197EE15B00745582 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF5B197EE0D100745582 /* CoreLocation.framework */; };
+		EBE4FF71197EE15B00745582 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */; };
+		EBE4FF72197EE15B00745582 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF57197EE0C300745582 /* CFNetwork.framework */; };
+		EBE4FF73197EE15B00745582 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */; };
+		EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBE4FF53197EE08800745582 /* Parse.framework */; };
 		EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */; };
 		EBF979F61984620500B44654 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF979F51984620500B44654 /* Episode.swift */; };
 /* End PBXBuildFile section */
@@ -37,16 +43,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		47453DD719DA17CC00818EE0 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
-		47706B3719D7D4DF00957A7E /* CollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
-		47706B3919D7D72200957A7E /* SeriesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesCollectionViewCell.swift; sourceTree = "<group>"; };
-		478A5E1C1A1B3E6100F9FF19 /* noposter.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = noposter.jpg; sourceTree = "<group>"; };
-		47B3EB6519DA58D80095B9FE /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
-		47FC94191BEFCCFA0023D174 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		47FC941B1BEFD3100023D174 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		882B015F99EF40DF8699759E /* Pods-1channel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1channel.release.xcconfig"; path = "Pods/Target Support Files/Pods-1channel/Pods-1channel.release.xcconfig"; sourceTree = "<group>"; };
-		D603A9D8605B932547941058 /* Pods-1channel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1channel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-1channel/Pods-1channel.debug.xcconfig"; sourceTree = "<group>"; };
-		E19688E17AF6C4F5B850819A /* libPods-1channel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-1channel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CE2FCC8A06EAB925EA4C335 /* Pods-1channel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1channel.release.xcconfig"; path = "Pods/Target Support Files/Pods-1channel/Pods-1channel.release.xcconfig"; sourceTree = "<group>"; };
+		B9F26A1A117F123F79D801B5 /* libPods-1channel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-1channel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C46DA0A61070C663483EF334 /* Pods-1channel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-1channel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-1channel/Pods-1channel.debug.xcconfig"; sourceTree = "<group>"; };
+		EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeriesTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFBEE196B1A3400BB8C14 /* 1channel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 1channel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EBBDFBF2196B1A3400BB8C14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +60,17 @@
 		EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EpisodesTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinksTableViewController.swift; sourceTree = "<group>"; };
 		EBBDFCD2196B266A00BB8C14 /* 1channel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "1channel-Bridging-Header.h"; sourceTree = "<group>"; };
+		EBE4FF53197EE08800745582 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		EBE4FF57197EE0C300745582 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		EBE4FF5B197EE0D100745582 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		EBE4FF5D197EE0E100745582 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		EBE4FF61197EE0F300745582 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		EBE4FF63197EE0FA00745582 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		EBE4FF65197EE10100745582 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		EBF979F51984620500B44654 /* Episode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,7 +80,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E6B21C9E9AF0A8D5C1E066C1 /* libPods-1channel.a in Frameworks */,
+				EBE4FF6A197EE15B00745582 /* SystemConfiguration.framework in Frameworks */,
+				EBE4FF6B197EE15B00745582 /* StoreKit.framework in Frameworks */,
+				EBE4FF6C197EE15B00745582 /* Security.framework in Frameworks */,
+				EBE4FF6D197EE15B00745582 /* QuartzCore.framework in Frameworks */,
+				EBE4FF6E197EE15B00745582 /* MobileCoreServices.framework in Frameworks */,
+				EBE4FF6F197EE15B00745582 /* libz.dylib in Frameworks */,
+				EBE4FF70197EE15B00745582 /* CoreLocation.framework in Frameworks */,
+				EBE4FF71197EE15B00745582 /* CoreGraphics.framework in Frameworks */,
+				EBE4FF72197EE15B00745582 /* CFNetwork.framework in Frameworks */,
+				EBE4FF73197EE15B00745582 /* AudioToolbox.framework in Frameworks */,
+				EBE4FF74197EE15B00745582 /* Parse.framework in Frameworks */,
+				C6F4C8B9790BC538F084E5E3 /* libPods-1channel.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,8 +108,8 @@
 		A4CA5482F5499C6CAD31856C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D603A9D8605B932547941058 /* Pods-1channel.debug.xcconfig */,
-				882B015F99EF40DF8699759E /* Pods-1channel.release.xcconfig */,
+				C46DA0A61070C663483EF334 /* Pods-1channel.debug.xcconfig */,
+				7CE2FCC8A06EAB925EA4C335 /* Pods-1channel.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -116,14 +138,11 @@
 			isa = PBXGroup;
 			children = (
 				EBBDFBF3196B1A3400BB8C14 /* AppDelegate.swift */,
-				EBBDFC18196B1A7E00BB8C14 /* View Controllers */,
-				47706B3919D7D72200957A7E /* SeriesCollectionViewCell.swift */,
-				47B3EB6519DA58D80095B9FE /* MovieCollectionViewCell.swift */,
+				EBBDFC18196B1A7E00BB8C14 /* Table View Controllers */,
+				EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */,
 				EBE74DE3197C5D3500CBF3B8 /* DataManager.swift */,
 				EBF979F51984620500B44654 /* Episode.swift */,
-				47453DD719DA17CC00818EE0 /* Movie.swift */,
 				EBBDFBF9196B1A3400BB8C14 /* Main.storyboard */,
-				47FC94191BEFCCFA0023D174 /* LaunchScreen.storyboard */,
 				EBBDFBFC196B1A3400BB8C14 /* Images.xcassets */,
 				EBBDFBF1196B1A3400BB8C14 /* Supporting Files */,
 			);
@@ -133,7 +152,6 @@
 		EBBDFBF1196B1A3400BB8C14 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				478A5E1C1A1B3E6100F9FF19 /* noposter.jpg */,
 				EBBDFCD2196B266A00BB8C14 /* 1channel-Bridging-Header.h */,
 				EBBDFBF2196B1A3400BB8C14 /* Info.plist */,
 			);
@@ -157,23 +175,32 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		EBBDFC18196B1A7E00BB8C14 /* View Controllers */ = {
+		EBBDFC18196B1A7E00BB8C14 /* Table View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				47706B3719D7D4DF00957A7E /* CollectionViewController.swift */,
+				EB30AB81196DC9930024F1F2 /* SeriesTableViewController.swift */,
 				EBBDFC12196B1A7800BB8C14 /* SeasonsTableViewController.swift */,
 				EBBDFC13196B1A7800BB8C14 /* EpisodesTableViewController.swift */,
 				EBBDFC14196B1A7800BB8C14 /* LinksTableViewController.swift */,
-				EBBDFBF7196B1A3400BB8C14 /* DetailViewController.swift */,
 			);
-			name = "View Controllers";
+			name = "Table View Controllers";
 			sourceTree = "<group>";
 		};
 		EBE4FF69197EE13A00745582 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				47FC941B1BEFD3100023D174 /* QuartzCore.framework */,
-				E19688E17AF6C4F5B850819A /* libPods-1channel.a */,
+				EBE4FF67197EE10B00745582 /* SystemConfiguration.framework */,
+				EBE4FF65197EE10100745582 /* StoreKit.framework */,
+				EBE4FF63197EE0FA00745582 /* Security.framework */,
+				EBE4FF61197EE0F300745582 /* QuartzCore.framework */,
+				EBE4FF5F197EE0EB00745582 /* MobileCoreServices.framework */,
+				EBE4FF5D197EE0E100745582 /* libz.dylib */,
+				EBE4FF5B197EE0D100745582 /* CoreLocation.framework */,
+				EBE4FF59197EE0CA00745582 /* CoreGraphics.framework */,
+				EBE4FF57197EE0C300745582 /* CFNetwork.framework */,
+				EBE4FF55197EE0BB00745582 /* AudioToolbox.framework */,
+				EBE4FF53197EE08800745582 /* Parse.framework */,
+				B9F26A1A117F123F79D801B5 /* libPods-1channel.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -233,14 +260,6 @@
 					EBBDFBED196B1A3400BB8C14 = {
 						CreatedOnToolsVersion = 6.0;
 						DevelopmentTeam = A28NM53F25;
-						SystemCapabilities = {
-							com.apple.InAppPurchase = {
-								enabled = 0;
-							};
-							com.apple.OMC = {
-								enabled = 0;
-							};
-						};
 					};
 					EBBDFC01196B1A3500BB8C14 = {
 						CreatedOnToolsVersion = 6.0;
@@ -273,9 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EBBDFBFB196B1A3400BB8C14 /* Main.storyboard in Resources */,
-				47FC941A1BEFCCFA0023D174 /* LaunchScreen.storyboard in Resources */,
 				EBBDFBFD196B1A3500BB8C14 /* Images.xcassets in Resources */,
-				478A5E1D1A1B3E6100F9FF19 /* noposter.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,17 +358,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB30AB82196DC9930024F1F2 /* SeriesTableViewController.swift in Sources */,
 				EBBDFBF8196B1A3400BB8C14 /* DetailViewController.swift in Sources */,
 				EBF979F61984620500B44654 /* Episode.swift in Sources */,
 				EBBDFC17196B1A7800BB8C14 /* LinksTableViewController.swift in Sources */,
 				EBE74DE4197C5D3500CBF3B8 /* DataManager.swift in Sources */,
-				47453DD819DA17CC00818EE0 /* Movie.swift in Sources */,
 				EBBDFC16196B1A7800BB8C14 /* EpisodesTableViewController.swift in Sources */,
 				EBBDFC15196B1A7800BB8C14 /* SeasonsTableViewController.swift in Sources */,
 				EBBDFBF4196B1A3400BB8C14 /* AppDelegate.swift in Sources */,
-				47B3EB6619DA58D80095B9FE /* MovieCollectionViewCell.swift in Sources */,
-				47706B3819D7D4DF00957A7E /* CollectionViewController.swift in Sources */,
-				47706B3A19D7D72200957A7E /* SeriesCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,8 +416,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Appify LLC (A28NM53F25)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Appify LLC (A28NM53F25)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -447,9 +460,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Appify LLC (A28NM53F25)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Appify LLC (A28NM53F25)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Appify LLC (A28NM53F25)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -470,14 +481,18 @@
 		};
 		EBBDFC0D196B1A3500BB8C14 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D603A9D8605B932547941058 /* Pods-1channel.debug.xcconfig */;
+			baseConfigurationReference = C46DA0A61070C663483EF334 /* Pods-1channel.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/agarwala/Downloads/App42_iOS_SDK-master/2.8",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = 1channel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -486,30 +501,33 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "1channel/1channel-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
 		EBBDFC0E196B1A3500BB8C14 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 882B015F99EF40DF8699759E /* Pods-1channel.release.xcconfig */;
+			baseConfigurationReference = 7CE2FCC8A06EAB925EA4C335 /* Pods-1channel.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/agarwala/Downloads/App42_iOS_SDK-master/2.8",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = 1channel/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Appify.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "235B5DDF-D1D2-492B-B1BF-20A185F29731";
 				SWIFT_OBJC_BRIDGING_HEADER = "1channel/1channel-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

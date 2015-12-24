@@ -97,9 +97,15 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
         let urlString = request.URL!.absoluteString
         let source = getSourceName(linkAndSource!.source)
         
-        if (urlString.lowercaseString.rangeOfString("primewire") != nil) ||
-            (urlString.lowercaseString.rangeOfString(source) != nil) ||
-            (urlString.lowercaseString.rangeOfString(".mp4") != nil)
+<<<<<<< HEAD
+        if urlString?.lowercaseString.rangeOfString("primewire.ag") != nil ||
+           urlString?.lowercaseString.rangeOfString(source) != nil ||
+            urlString?.lowercaseString.rangeOfString(".mp4") != nil
+=======
+        if (urlString!.lowercaseString.rangeOfString("primewire") != nil) ||
+            (urlString!.lowercaseString.rangeOfString(source) != nil) ||
+            (urlString!.lowercaseString.rangeOfString(".mp4") != nil)
+>>>>>>> origin/master
         {
             return true
         }
@@ -176,7 +182,11 @@ class DetailViewController: UIViewController, UIWebViewDelegate {
             if char == "." {
                 return sourceString
             } else {
-                sourceString.append(char)
+<<<<<<< HEAD
+                sourceString =  sourceString + [char]
+=======
+                sourceString = sourceString + [char]
+>>>>>>> origin/master
             }
         }
         return source
